@@ -13,8 +13,8 @@ using namespace std;
 
 // tipos
 typedef enum{CUBO, PIRAMIDE, OBJETO_PLY, ROTACION, ARTICULADO} _tipo_objeto;
-_tipo_objeto t_objeto=CUBO;
-_modo   modo=POINTS;
+_tipo_objeto t_objeto=ARTICULADO;
+_modo   modo=SOLID;
 
 // variables que definen la posicion de la camara en coordenadas polares
 GLfloat Observer_distance;

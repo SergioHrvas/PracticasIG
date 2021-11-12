@@ -226,7 +226,8 @@ float radio;
 
 protected:
 _cubo carcasa;
-
+_esfera foco;
+_cilindro sirena;
 };
 
 

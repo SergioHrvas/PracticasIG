@@ -664,7 +664,7 @@ _ruedas::_ruedas()
 {
 // perfil para un cilindro
 
-rueda = _cilindro(0.26, 0.18, 15, 1);
+rueda = _cilindro(0.235, 0.165, 15, 1);
 
 };
 
@@ -689,12 +689,14 @@ _carroceria::_carroceria()
 {
 // perfil para un cilindro
 carcasa = _cubo();
-
+foco = _esfera();
+sirena = _cilindro();
 };
 
 void _carroceria::draw(_modo modo, float r1, float g1, float b1, float r2, float g2, float b2, float grosor)
 {
 
+//cuadro rojo
 glPushMatrix();
 glTranslatef(1.4,0.6,0.0);
 glScalef(3.6,0.8,1);
@@ -705,6 +707,108 @@ glPushMatrix();
 glTranslatef(2.2,1.1,0.0);
 glScalef(0.15,0.2,1);
 carcasa.draw(modo, r1, g1, b1, r2, g2, b2, grosor);
+glPopMatrix();
+
+
+//Ventanas
+
+glPushMatrix();
+glTranslatef(2.8,0.8,0.501);
+glScalef(0.5,0.3,0.01);
+carcasa.draw(modo, 0.2, 0.2, 0.2, 0.5, 0.5, 0.5, grosor);
+glPopMatrix();
+
+glPushMatrix();
+glTranslatef(2.8,0.8,-0.501);
+glScalef(0.5,0.3,0.01);
+carcasa.draw(modo, 0.2, 0.2, 0.2, 0.5, 0.5, 0.5, grosor);
+glPopMatrix();
+
+glPushMatrix();
+glTranslatef(3.21,0.8,0.0);
+glScalef(0.01,0.3,0.8);
+carcasa.draw(modo, 0.2, 0.2, 0.2, 0.5, 0.5, 0.5, grosor);
+glPopMatrix();
+
+//focos
+glPushMatrix();
+glTranslatef(3.21,0.4,0.38);
+glScalef(0.07,0.07,0.07);
+foco.draw(modo, 1, 0.9882, 0.2745, 0.8588, 0.4627, 0.0941, grosor);
+glPopMatrix();
+
+glPushMatrix();
+glTranslatef(3.21,0.4,-0.38);
+glScalef(0.07,0.07,0.07);
+foco.draw(modo, 1, 0.9882, 0.2745, 0.8588, 0.4627, 0.0941, grosor);
+glPopMatrix();
+
+glPushMatrix();
+glTranslatef(-0.4,0.3,0.0);
+glScalef(0.01,0.15,0.98);
+carcasa.draw(modo, 0.55, 0.55, 0.55, 0.7, 0.7, 0.7, grosor);
+glPopMatrix();
+
+glPushMatrix();
+glTranslatef(-0.41,0.3,0.3);
+glScalef(0.01,0.07,0.15);
+carcasa.draw(modo, 0.803,0.043,0.043,0.819,0.3686,0.3686, grosor);
+glPopMatrix();
+
+glPushMatrix();
+glTranslatef(-0.41,0.3,0.41);
+glScalef(0.01,0.07,0.07);
+carcasa.draw(modo, 1, 0.9882, 0.2745, 0.8588, 0.4627, 0.0941, grosor);
+glPopMatrix();
+
+glPushMatrix();
+glTranslatef(-0.41,0.3,-0.3);
+glScalef(0.01,0.07,0.15);
+carcasa.draw(modo, 0.803,0.043,0.043,0.819,0.3686,0.3686, grosor);
+glPopMatrix();
+
+glPushMatrix();
+glTranslatef(-0.41,0.3,-0.41);
+glScalef(0.01,0.07,0.07);
+carcasa.draw(modo, 1, 0.9882, 0.2745, 0.8588, 0.4627, 0.0941, grosor);
+glPopMatrix();
+
+//matriculas
+glPushMatrix();
+glTranslatef(-0.41,0.3,0.0);
+glScalef(0.01,0.15,0.4);
+carcasa.draw(modo, 0.9, 0.9, 0.9, 0.8, 0.8, 0.8, grosor);
+glPopMatrix();
+
+glPushMatrix();
+glTranslatef(-0.415,0.3,-0.15);
+glScalef(0.01,0.15,0.1);
+carcasa.draw(modo, 0.0, 0.2902, 0.8353, 0.0, 0.0, 0.3333, grosor);
+glPopMatrix();
+
+glPushMatrix();
+glTranslatef(3.2,0.3,0.0);
+glScalef(0.01,0.15,0.4);
+carcasa.draw(modo, 0.9, 0.9, 0.9, 0.8, 0.8, 0.8, grosor);
+glPopMatrix();
+
+glPushMatrix();
+glTranslatef(3.21,0.3,-0.15);
+glScalef(0.01,0.15,0.1);
+carcasa.draw(modo, 0.0, 0.2902, 0.8353, 0.0, 0.0, 0.3333, grosor);
+glPopMatrix();
+
+//Sirenas
+glPushMatrix();
+glTranslatef(3.21,0.7,-0.15);
+glScalef(0.1,0.1,0.1);
+sirena.draw(modo, 0.0, 0.2902, 0.8353, 0.0, 0.0, 0.3333, grosor);
+glPopMatrix();
+
+glPushMatrix();
+glTranslatef(3.21,0.7,-0.15);
+glScalef(0.01,0.15,0.1);
+sirena.draw(modo, 0.0, 0.2902, 0.8353, 0.0, 0.0, 0.3333, grosor);
 glPopMatrix();
 
 }
