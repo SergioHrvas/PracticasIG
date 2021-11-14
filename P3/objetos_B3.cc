@@ -1288,18 +1288,21 @@ void _camionbomberos::draw(_modo modo, float r1, float g1, float b1, float r2, f
 
 
 glPushMatrix();
+glTranslatef(movimiento_camion, 0, 0);
 glTranslatef(0.0,0.2,0.0);
 glRotatef(giro_ruedas,0,0,1);
 ruedas.draw(modo, 0, 0, 0, 0.7, 0.7, 0.7, grosor);
 glPopMatrix();
 
 glPushMatrix();
+glTranslatef(movimiento_camion, 0, 0);
 glTranslatef(1.9,0.2,0.0);
 glRotatef(giro_ruedas,0,0,1);
 ruedas.draw(modo, 0, 0, 0, 0.7, 0.7, 0.7, grosor);
 glPopMatrix();
 
 glPushMatrix();
+glTranslatef(movimiento_camion, 0, 0);
 glTranslatef(2.7,0.2,0.0);
 glRotatef(giro_ruedas,0,0,1);
 ruedas.draw(modo, 0, 0, 0, 0.7, 0.7, 0.7, grosor);
@@ -1309,16 +1312,19 @@ glPopMatrix();
 //luego se giran y se ponen bien en la puta clase tanque de mierda
 
 glPushMatrix();
+glTranslatef(movimiento_camion, 0, 0);
 carroceria.draw(modo, r1, g1, b1, r2, g2, b2, grosor);
 glPopMatrix();
 
 glPushMatrix();
+glTranslatef(movimiento_camion, 0, 0);
 glTranslatef(0.0,1.05,0.0);
 glRotatef(giro_plataforma,0,1,0);
 plataforma.draw(modo, r1, g1, b1, r2, g2, b2, grosor);
 glPopMatrix();
 
 glPushMatrix();
+glTranslatef(movimiento_camion, 0, 0);
 glTranslatef(0.0,1.30,0.0);
 glRotatef(giro_plataforma,0,1,0);
 glRotatef(giro_escalera,0,0,1);
@@ -1326,6 +1332,7 @@ escaleragrande.draw(modo, 0.75, 0.75, 0.75, 0.8, 0.8, 0.1, grosor);
 glPopMatrix();
 
 glPushMatrix();
+glTranslatef(movimiento_camion, 0, 0);
 glTranslatef(0.0,1.30,0.0);
 glRotatef(giro_plataforma,0,1,0);
 glRotatef(giro_escalera,0,0,1);
@@ -1334,6 +1341,7 @@ escalerachica.draw(modo, 0.3, 0.5, 0.7, 0.1, 0.1, 0.5, grosor);
 glPopMatrix();
 
 glPushMatrix();
+glTranslatef(movimiento_camion, 0, 0);
 glTranslatef(0.0,1.30,0.0);
 glRotatef(giro_plataforma,0,1,0);
 glRotatef(giro_escalera,0,0,1);
@@ -1344,6 +1352,7 @@ cabina.draw(modo, 0.1, 0.3, 0.1, 0.1, 0.1, 0.5, grosor);
 glPopMatrix();
 
 glPushMatrix();
+glTranslatef(movimiento_camion, 0, 0);
 glTranslatef(0.0,1.30,0.0);
 glRotatef(giro_plataforma,0,1,0);
 glRotatef(giro_escalera,0,0,1);
@@ -1356,11 +1365,12 @@ glPopMatrix();
 
 
 glPushMatrix();
-glTranslatef(0.0,1.30,0.0);
+glTranslatef(movimiento_camion, 0, 0);
+glTranslatef(0.45,1.65,0.0);
 glRotatef(giro_plataforma,0,1,0);
 glRotatef(giro_escalera,0,0,1);
 glTranslatef(translacion_escalera,0,0);
-glTranslatef(3,0.35,0);
+glTranslatef(2.55,0,0);
 glRotatef(-giro_escalera,0,0,1);
 glTranslatef(0,levantamiento,0);
 glRotatef(giro_pistola_vertical, 0, 0 ,1);
@@ -1369,11 +1379,12 @@ pistola.draw(modo, 0.27,0.6235,0.5686, r2, g2, b2, grosor);
 glPopMatrix();
 
 glPushMatrix();
-glTranslatef(0.0,1.30,0.0);
+glTranslatef(movimiento_camion, 0, 0);
+glTranslatef(0.65,1.65,0.0);
 glRotatef(giro_plataforma,0,1,0);
 glRotatef(giro_escalera,0,0,1);
 glTranslatef(translacion_escalera,0,0);
-glTranslatef(3.05,0.35,0);
+glTranslatef(2.55,0,0);
 glRotatef(-giro_escalera,0,0,1);
 glTranslatef(0,levantamiento,0);
 glRotatef(giro_pistola_vertical, 0, 0 ,1);

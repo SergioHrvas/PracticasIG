@@ -337,7 +337,7 @@ class _camionbomberos: public _triangulos3D{
        float translacion_escalera = 0.0;
        float translacion_escalera_min = 0.0;
        float translacion_escalera_max = 2.3;
-       int giro_escalera = -2;
+       float giro_escalera = 0;
        float giro_escalera_min = -2.0;
        float giro_escalera_max = 30.0;
        float levantamiento = 0;
@@ -350,6 +350,9 @@ class _camionbomberos: public _triangulos3D{
        float giro_pistola_vertical_max = 30;
        float giro_pistola_vertical = 0;
        float movimiento_agua = 0;
+       float movimiento_camion = 0;
+       float movimiento_camion_max = 3;
+       float movimiento_camion_min = -3;
        
        protected:
        _ruedas  ruedas;

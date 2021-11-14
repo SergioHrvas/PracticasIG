@@ -46,6 +46,9 @@ _pistola pistola;
 _agua agua;
 // _objeto_ply *ply1;
 
+bool mov = false;
+int n_mov = 0;
+int n = 0;
 
 //**************************************************************************
 //
@@ -190,7 +193,9 @@ switch (toupper(Tecla1)){
         case 'O':t_objeto=OBJETO_PLY;break;	
         case 'R':t_objeto=ROTACION;break;
         case 'A':t_objeto=ARTICULADO;break;
-
+        case 'N':camionbomberos.movimiento_camion+=0.1;break;
+        case 'M':mov=true;break;
+      
 	}
 glutPostRedisplay();
 }
@@ -255,10 +260,69 @@ switch (Tecla1){
                          if (camionbomberos.movimiento_agua>1) camionbomberos.movimiento_agua=0;
                          break;
 	}
+
 glutPostRedisplay();
 }
 
+void movimiento()
+{
+if(mov){
+switch(n_mov){
+	case 0: //camion acelera
+                camionbomberos.giro_ruedas-=2;  
+                n++;
+                if(n>20) //para que acelere bien
+                camionbomberos.movimiento_camion+=0.01;
+                if(camionbomberos.movimiento_camion > 2){
+                        n_mov = 1;
+                }
+        break;
+	case 1: //levanto las escaleras
+                camionbomberos.giro_escalera+=0.4;  
+                if(camionbomberos.giro_escalera > camionbomberos.giro_escalera_max){
+                        n_mov = 2;
+                }
+        break;
+	case 2: //giro las escaleras
+                camionbomberos.giro_plataforma+=1;  
+                if(camionbomberos.giro_plataforma > 30){
+                        n_mov = 3;
+                }
+        break;
+	case 3: //subo la escalera pequeña
+                camionbomberos.translacion_escalera+=0.007;
+                if(camionbomberos.translacion_escalera > camionbomberos.translacion_escalera_max){
+                        n_mov = 4;
+                }
+        break;
+	case 4: //subo el elevador
+                camionbomberos.levantamiento+=0.005;
+                if(camionbomberos.levantamiento > camionbomberos.levantamiento_max){
+                        n_mov = 5;
+                }
+        break;
+	case 5:
+                //muevo la pistola
+                camionbomberos.giro_pistola_horizontal+=0.4;
+                camionbomberos.giro_pistola_vertical+=0.4;
+                if (camionbomberos.giro_pistola_horizontal > 2.3)
+                        n_mov = 6;
+        break;
+	case 6:
+        break;
+	case 7:
+        break;
+	case 8:
+        break;
+	case 9:
+        break;
+	
 
+
+}
+glutPostRedisplay();
+}
+}
 
 //***************************************************************************
 // Funcion de incializacion
@@ -370,6 +434,8 @@ glutReshapeFunc(change_window_size);
 glutKeyboardFunc(normal_key);
 // asignación de la funcion llamada "tecla_Especial" al evento correspondiente
 glutSpecialFunc(special_key);
+
+glutIdleFunc(movimiento);
 
 // funcion de inicialización
 initialize();
