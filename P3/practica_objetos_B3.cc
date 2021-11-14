@@ -257,7 +257,7 @@ switch (Tecla1){
                          if (camionbomberos.giro_pistola_horizontal<camionbomberos.giro_pistola_horizontal_min) camionbomberos.giro_pistola_horizontal=camionbomberos.giro_pistola_horizontal_min;
                          break;
         case GLUT_KEY_INSERT: camionbomberos.movimiento_agua+=0.1;
-                         if (camionbomberos.movimiento_agua>1) camionbomberos.movimiento_agua=0;
+                         if (camionbomberos.movimiento_agua>2) camionbomberos.movimiento_agua=0;
                          break;
 	}
 
@@ -275,6 +275,7 @@ switch(n_mov){
                 camionbomberos.movimiento_camion+=0.01;
                 if(camionbomberos.movimiento_camion > 2){
                         n_mov = 1;
+                        n=0;
                 }
         break;
 	case 1: //levanto las escaleras
@@ -301,14 +302,23 @@ switch(n_mov){
                         n_mov = 5;
                 }
         break;
-	case 5:
-                //muevo la pistola
+	case 5: //muevo la pistola
                 camionbomberos.giro_pistola_horizontal+=0.4;
                 camionbomberos.giro_pistola_vertical+=0.4;
-                if (camionbomberos.giro_pistola_horizontal > 2.3)
+                if (camionbomberos.giro_pistola_horizontal > 8.3)
                         n_mov = 6;
         break;
-	case 6:
+	case 6: //expulso agua
+                if(n<20){
+                        camionbomberos.movimiento_agua+=0.1;
+                        if (camionbomberos.movimiento_agua > 2){
+                                camionbomberos.movimiento_agua=0;
+                                n++;
+                        }
+                }
+                else{
+                        n_mov = 7;
+                }
         break;
 	case 7:
         break;

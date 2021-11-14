@@ -1366,11 +1366,12 @@ glPopMatrix();
 
 glPushMatrix();
 glTranslatef(movimiento_camion, 0, 0);
-glTranslatef(0.45,1.65,0.0);
+glTranslatef(0.0,1.30,0.0);
 glRotatef(giro_plataforma,0,1,0);
+glTranslatef(0.4,+0.35,0);
 glRotatef(giro_escalera,0,0,1);
 glTranslatef(translacion_escalera,0,0);
-glTranslatef(2.55,0,0);
+glTranslatef(2.55,0.00,0);
 glRotatef(-giro_escalera,0,0,1);
 glTranslatef(0,levantamiento,0);
 glRotatef(giro_pistola_vertical, 0, 0 ,1);
@@ -1380,8 +1381,9 @@ glPopMatrix();
 
 glPushMatrix();
 glTranslatef(movimiento_camion, 0, 0);
-glTranslatef(0.65,1.65,0.0);
+glTranslatef(0.0,1.30,0.0);
 glRotatef(giro_plataforma,0,1,0);
+glTranslatef(0.45,+0.35,0);
 glRotatef(giro_escalera,0,0,1);
 glTranslatef(translacion_escalera,0,0);
 glTranslatef(2.55,0,0);
