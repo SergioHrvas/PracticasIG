@@ -42,6 +42,8 @@ _escalerachica escalerachica;
 _cabina cabina;
 _camionbomberos camionbomberos;
 _elevador elevador;
+_pistola pistola;
+_agua agua;
 // _objeto_ply *ply1;
 
 
@@ -188,6 +190,7 @@ switch (toupper(Tecla1)){
         case 'O':t_objeto=OBJETO_PLY;break;	
         case 'R':t_objeto=ROTACION;break;
         case 'A':t_objeto=ARTICULADO;break;
+
 	}
 glutPostRedisplay();
 }
@@ -236,6 +239,21 @@ switch (Tecla1){
         case GLUT_KEY_F10:camionbomberos.levantamiento-=0.08;
                         if (camionbomberos.levantamiento<camionbomberos.levantamiento_min) camionbomberos.levantamiento=camionbomberos.levantamiento_min;
                         break;
+        case GLUT_KEY_F11:camionbomberos.giro_pistola_vertical+=1;
+                         if (camionbomberos.giro_pistola_vertical>camionbomberos.giro_pistola_vertical_max) camionbomberos.giro_pistola_vertical=camionbomberos.giro_pistola_vertical_max;
+                         break;
+        case GLUT_KEY_F12:camionbomberos.giro_pistola_vertical-=1;
+                         if (camionbomberos.giro_pistola_vertical<camionbomberos.giro_pistola_vertical_min) camionbomberos.giro_pistola_vertical=camionbomberos.giro_pistola_vertical_min;
+                         break;
+        case GLUT_KEY_HOME:camionbomberos.giro_pistola_horizontal+=1;
+                         if (camionbomberos.giro_pistola_horizontal>camionbomberos.giro_pistola_horizontal_max) camionbomberos.giro_pistola_horizontal=camionbomberos.giro_pistola_horizontal_max;
+                         break;
+        case GLUT_KEY_END: camionbomberos.giro_pistola_horizontal-=1;
+                         if (camionbomberos.giro_pistola_horizontal<camionbomberos.giro_pistola_horizontal_min) camionbomberos.giro_pistola_horizontal=camionbomberos.giro_pistola_horizontal_min;
+                         break;
+        case GLUT_KEY_INSERT: camionbomberos.movimiento_agua+=0.1;
+                         if (camionbomberos.movimiento_agua>1) camionbomberos.movimiento_agua=0;
+                         break;
 	}
 glutPostRedisplay();
 }
@@ -288,7 +306,7 @@ int main(int argc, char **argv)
 
 // creación del objeto ply
 
-ply.parametros(argv[1]);
+ply.parametros((char *)"beethoven");
 
 
 // perfil 
@@ -342,7 +360,7 @@ glutInitWindowSize(Window_width,Window_high);
 
 // llamada para crear la ventana, indicando el titulo (no se visualiza hasta que se llama
 // al bucle de eventos)
-glutCreateWindow("PRACTICA - 2");
+glutCreateWindow("PRACTICA - 3");
 
 // asignación de la funcion llamada "dibujar" al evento de dibujo
 glutDisplayFunc(draw);

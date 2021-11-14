@@ -314,6 +314,17 @@ _esfera gota;
 
 };
 
+class _pistola: public _triangulos3D
+{
+public:
+       _pistola();
+void 	draw(_modo modo, float r1, float g1, float b1, float r2, float g2, float b2, float grosor);
+
+protected:
+_cubo base;
+_cilindro pistola;
+
+};
 
 class _camionbomberos: public _triangulos3D{
        public:
@@ -332,7 +343,14 @@ class _camionbomberos: public _triangulos3D{
        float levantamiento = 0;
        float levantamiento_max = 0.6;
        float levantamiento_min = 0;
+       float giro_pistola_horizontal_min = -30;
+       float giro_pistola_horizontal_max = 30;
+       float giro_pistola_horizontal = 0;
+       float giro_pistola_vertical_min = -30;
+       float giro_pistola_vertical_max = 30;
+       float giro_pistola_vertical = 0;
        float movimiento_agua = 0;
+       
        protected:
        _ruedas  ruedas;
        _carroceria carroceria;
@@ -341,5 +359,6 @@ class _camionbomberos: public _triangulos3D{
        _escalerachica escalerachica;
        _cabina cabina;
        _elevador elevador;
+       _pistola pistola;
        _agua agua;
 };

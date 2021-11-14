@@ -1164,59 +1164,62 @@ void _elevador::draw(_modo modo, float r1, float g1, float b1, float r2, float g
 glPushMatrix();
 glTranslated(0.25, 0.0, 0.0);
 glScalef(0.50,0.05,0.5);
-barra.draw(modo, r1, g1, b1, r2, g2, b2, grosor);
+barra.draw(modo, 0.8,0.8,0.8, r2, g2, b2, grosor);
 glPopMatrix();
 
 glPushMatrix();
-glTranslated(0.0,0.025,0.23);
+glTranslated(0.0,0.025,0);
 glRotatef(-90,1,0,0);
 glTranslated(0.02, 0.0, 0.2);
-glScalef(0.04,0.04,0.4);
-barra.draw(modo, r1, g1, b1, r2, g2, b2, grosor);
-glPopMatrix();
-
-glPushMatrix();
-glTranslated(0.0,0.025,-0.23);
-glRotatef(-90,1,0,0);
-glTranslated(0.02, 0.0, 0.2);
-glScalef(0.04,0.04,0.4);
+glScalef(0.04,0.5,0.40);
 barra.draw(modo, r1, g1, b1, r2, g2, b2, grosor);
 glPopMatrix();
 
 
 glPushMatrix();
-glTranslated(0.46,0.025,0.23);
+glTranslated(0.23,0.025,-0.23);
 glRotatef(-90,1,0,0);
 glTranslated(0.02, 0.0, 0.2);
-glScalef(0.04,0.04,0.4);
+glScalef(0.42,0.04,0.40);
 barra.draw(modo, r1, g1, b1, r2, g2, b2, grosor);
 glPopMatrix();
 
 glPushMatrix();
-glTranslated(0.46,0.025,-0.23);
+glTranslated(0.46,0.025,0);
 glRotatef(-90,1,0,0);
 glTranslated(0.02, 0.0, 0.2);
-glScalef(0.04,0.04,0.4);
+glScalef(0.04,0.5,0.40);
 barra.draw(modo, r1, g1, b1, r2, g2, b2, grosor);
 glPopMatrix();
+
+
+glPushMatrix();
+glTranslated(0.23,0.025,0.23);
+glRotatef(-90,1,0,0);
+glTranslated(0.02, 0.0, 0.2);
+glScalef(0.42,0.04,0.40);
+barra.draw(modo, r1, g1, b1, r2, g2, b2, grosor);
+glPopMatrix();
+
+
 
 glPushMatrix();
 glTranslated(0.02, 0.44, 0.0);
 glScalef(0.04,0.04,0.5);
-barra.draw(modo, r1, g1, b1, r2, g2, b2, grosor);
+barra.draw(modo,0.3, 0.3,0.3, r2, g2, b2, grosor);
 glPopMatrix();
 
 glPushMatrix();
 glTranslated(0.48, 0.44, 0.0);
 glScalef(0.04,0.04,0.5);
-barra.draw(modo, r1, g1, b1, r2, g2, b2, grosor);
+barra.draw(modo,0.3, 0.3,0.3, r2, g2, b2, grosor);
 glPopMatrix();
 
 glPushMatrix();
 glTranslated(0.25, 0.44, 0.23);
 glRotatef(90,0,1,0);
 glScalef(0.04,0.04,0.42);
-barra.draw(modo, r1, g1, b1, r2, g2, b2, grosor);
+barra.draw(modo,0.3, 0.3,0.3, r2, g2, b2, grosor);
 glPopMatrix();
 
 
@@ -1224,7 +1227,33 @@ glPushMatrix();
 glTranslated(0.25, 0.44, -0.23);
 glRotatef(90,0,1,0);
 glScalef(0.04,0.04,0.5);
-barra.draw(modo, r1, g1, b1, r2, g2, b2, grosor);
+barra.draw(modo,0.3, 0.3,0.3, r2, g2, b2, grosor);
+glPopMatrix();
+
+//base de la pistola
+glPushMatrix();
+glTranslated(0.5,0.15,0);
+glRotatef(-90,1,0,0);
+glTranslated(0.02, 0.0, 0.2);
+glScalef(0.04,0.24,0.24);
+barra.draw(modo, 0.87,0.6235,0.1686, r2, g2, b2, grosor);
+glPopMatrix();
+}
+
+//************************************************************************
+
+_pistola::_pistola()
+{
+pistola = _cilindro(0.06,0.4,15,1);
+};
+
+void _pistola::draw(_modo modo, float r1, float g1, float b1, float r2, float g2, float b2, float grosor)
+{
+
+glPushMatrix();
+glTranslatef(0.2,0,0);
+glRotatef(90,0,0,1);
+pistola.draw(modo, r1, g1, b1, r2, g2, b2, grosor);
 glPopMatrix();
 }
 
@@ -1241,10 +1270,9 @@ void _agua::draw(_modo modo, float r1, float g1, float b1, float r2, float g2, f
 
 
 glPushMatrix();
-glTranslated(1, 0.44, 1);
 glRotatef(90,0,1,0);
-glScalef(0.1,0.1,0.1);
-gota.draw(modo, 1,1,1, 0.2,0.5,0.1, grosor);
+glScalef(0.04,0.04,0.04);
+gota.draw(modo, r1, g1, b1, r2,g2,b2, grosor);
 glPopMatrix();
 }
 
@@ -1294,7 +1322,7 @@ glPushMatrix();
 glTranslatef(0.0,1.30,0.0);
 glRotatef(giro_plataforma,0,1,0);
 glRotatef(giro_escalera,0,0,1);
-escaleragrande.draw(modo, 0.22, 0.9, 0.4, 0.8, 0.8, 0.1, grosor);
+escaleragrande.draw(modo, 0.75, 0.75, 0.75, 0.8, 0.8, 0.1, grosor);
 glPopMatrix();
 
 glPushMatrix();
@@ -1302,7 +1330,7 @@ glTranslatef(0.0,1.30,0.0);
 glRotatef(giro_plataforma,0,1,0);
 glRotatef(giro_escalera,0,0,1);
 glTranslatef(translacion_escalera,0,0);
-escalerachica.draw(modo, 0.9, 0.5, 0.9, 0.1, 0.1, 0.5, grosor);
+escalerachica.draw(modo, 0.3, 0.5, 0.7, 0.1, 0.1, 0.5, grosor);
 glPopMatrix();
 
 glPushMatrix();
@@ -1312,7 +1340,7 @@ glRotatef(giro_escalera,0,0,1);
 glTranslatef(translacion_escalera,0,0);
 glTranslatef(2.5,0,0);
 glRotatef(-giro_escalera,0,0,1);
-cabina.draw(modo, 0.9, 0.5, 0.9, 0.1, 0.1, 0.5, grosor);
+cabina.draw(modo, 0.1, 0.3, 0.1, 0.1, 0.1, 0.5, grosor);
 glPopMatrix();
 
 glPushMatrix();
@@ -1323,11 +1351,34 @@ glTranslatef(translacion_escalera,0,0);
 glTranslatef(2.55,0,0);
 glRotatef(-giro_escalera,0,0,1);
 glTranslatef(0,levantamiento,0);
-elevador.draw(modo, 0.9, 0.1, 0.3, 0.34, 0.1, 0.1, grosor);
+elevador.draw(modo, 0.45,0.45,0.45,0.8,0.8,0.8, grosor);
+glPopMatrix();
+
+
+glPushMatrix();
+glTranslatef(0.0,1.30,0.0);
+glRotatef(giro_plataforma,0,1,0);
+glRotatef(giro_escalera,0,0,1);
+glTranslatef(translacion_escalera,0,0);
+glTranslatef(3,0.35,0);
+glRotatef(-giro_escalera,0,0,1);
+glTranslatef(0,levantamiento,0);
+glRotatef(giro_pistola_vertical, 0, 0 ,1);
+glRotatef(giro_pistola_horizontal, 0, 1 ,0);
+pistola.draw(modo, 0.27,0.6235,0.5686, r2, g2, b2, grosor);
 glPopMatrix();
 
 glPushMatrix();
-glTranslatef(0, 0, movimiento_agua);
-agua.draw(modo, 0.9, 0.1, 0.3, 0.34, 0.1, 0.1, grosor);
+glTranslatef(0.0,1.30,0.0);
+glRotatef(giro_plataforma,0,1,0);
+glRotatef(giro_escalera,0,0,1);
+glTranslatef(translacion_escalera,0,0);
+glTranslatef(3.05,0.35,0);
+glRotatef(-giro_escalera,0,0,1);
+glTranslatef(0,levantamiento,0);
+glRotatef(giro_pistola_vertical, 0, 0 ,1);
+glRotatef(giro_pistola_horizontal, 0, 1 ,0);
+glTranslatef(movimiento_agua, 0, 0);
+agua.draw(modo, 0.0, 0.81, 1, 0.34, 0.1, 0.1, grosor);
 glPopMatrix();
 };
