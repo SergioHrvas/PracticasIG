@@ -303,6 +303,16 @@ _cubo barra;
 
 };
 
+class _agua: public _triangulos3D
+{
+public:
+       _agua();
+void 	draw(_modo modo, float r1, float g1, float b1, float r2, float g2, float b2, float grosor);
+
+protected:
+_esfera gota;
+
+};
 
 
 class _camionbomberos: public _triangulos3D{
@@ -322,6 +332,7 @@ class _camionbomberos: public _triangulos3D{
        float levantamiento = 0;
        float levantamiento_max = 0.6;
        float levantamiento_min = 0;
+       float movimiento_agua = 0;
        protected:
        _ruedas  ruedas;
        _carroceria carroceria;
@@ -330,4 +341,5 @@ class _camionbomberos: public _triangulos3D{
        _escalerachica escalerachica;
        _cabina cabina;
        _elevador elevador;
+       _agua agua;
 };

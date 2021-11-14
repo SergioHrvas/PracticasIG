@@ -719,8 +719,8 @@ carcasa.draw(modo, r1, g1, b1, r2, g2, b2, grosor);
 glPopMatrix();
 
 glPushMatrix();
-glTranslatef(2.2,1.1,0.0);
-glScalef(0.15,0.2,1);
+glTranslatef(2.8,1.1,0.0);
+glScalef(0.9,0.2,1);
 carcasa.draw(modo, r1, g1, b1, r2, g2, b2, grosor);
 glPopMatrix();
 
@@ -815,17 +815,29 @@ glPopMatrix();
 
 //Sirenas
 glPushMatrix();
-glTranslatef(3.05,0.97,0.24);
+glTranslatef(3.18,1.17,0.24);
 glScalef(0.1,0.1,0.1);
 sirena.draw(modo, 0.0, 0.5020, 0.8745, 0.0, 0.2902, 0.8353, grosor);
 glPopMatrix();
 
 glPushMatrix();
-glTranslatef(3.05,0.97,-0.24);
+glTranslatef(3.18,1.17,-0.24);
 glScalef(0.1,0.1,0.1);
 sirena.draw(modo, 0.0, 0.5020, 0.8745, 0.0, 0.2902, 0.8353, grosor);
 glPopMatrix();
 
+//Puertas
+glPushMatrix();
+glTranslatef(1.2,0.7,0.501);
+glScalef(0.6,0.34,0.01);
+carcasa.draw(modo, 0.6, 0.6, 0.6, 0.8, 0.8, 0.8, grosor);
+glPopMatrix();
+
+glPushMatrix();
+glTranslatef(2.8,0.8,-0.501);
+glScalef(0.5,0.3,0.01);
+carcasa.draw(modo, 0.6, 0.6, 0.6, 0.8, 0.8, 0.8, grosor);
+glPopMatrix();
 }
 //************************************************************************
 
@@ -856,6 +868,7 @@ glTranslatef(0.0,0.31,-0.37);
 glScalef(0.6,0.5,0.04);
 lateral2.draw(modo, r1, g1, b1, r2, g2, b2, grosor);
 glPopMatrix();
+
 
 }
 
@@ -1215,6 +1228,26 @@ barra.draw(modo, r1, g1, b1, r2, g2, b2, grosor);
 glPopMatrix();
 }
 
+
+//************************************************************************
+
+_agua::_agua()
+{
+gota = _esfera();
+};
+
+void _agua::draw(_modo modo, float r1, float g1, float b1, float r2, float g2, float b2, float grosor)
+{
+
+
+glPushMatrix();
+glTranslated(1, 0.44, 1);
+glRotatef(90,0,1,0);
+glScalef(0.1,0.1,0.1);
+gota.draw(modo, 1,1,1, 0.2,0.5,0.1, grosor);
+glPopMatrix();
+}
+
 //************************************************************************
 
 _camionbomberos::_camionbomberos()
@@ -1291,5 +1324,10 @@ glTranslatef(2.55,0,0);
 glRotatef(-giro_escalera,0,0,1);
 glTranslatef(0,levantamiento,0);
 elevador.draw(modo, 0.9, 0.1, 0.3, 0.34, 0.1, 0.1, grosor);
+glPopMatrix();
+
+glPushMatrix();
+glTranslatef(0, 0, movimiento_agua);
+agua.draw(modo, 0.9, 0.1, 0.3, 0.34, 0.1, 0.1, grosor);
 glPopMatrix();
 };
