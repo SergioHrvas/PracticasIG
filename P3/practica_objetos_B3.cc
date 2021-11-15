@@ -129,7 +129,7 @@ switch (t_objeto){
 	case PIRAMIDE: piramide.draw(modo,1.0,0.0,0.0,0.0,1.0,0.0,2);break;
         case OBJETO_PLY: ply.draw(modo,1.0,0.6,0.0,0.0,1.0,0.3,2);break;
         case ROTACION: rotacion.draw(modo,1.0,0.0,0.0,0.0,1.0,0.0,2);break;
-        case ARTICULADO: camionbomberos.draw(modo,0.803,0.043,0.043,0.819,0.3686,0.3686,2);break;
+        case ARTICULADO: elevador.draw(modo,0.803,0.043,0.043,0.819,0.3686,0.3686,2);break;
 	}
 
 }

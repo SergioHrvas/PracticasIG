@@ -240,10 +240,7 @@ void 	draw(_modo modo, float r1, float g1, float b1, float r2, float g2, float b
 float radio;
 
 protected:
-_cubo base;
-_cubo lateral1;
-_cubo lateral2;
-
+_cubo cubo;
 };
 
 
@@ -257,8 +254,7 @@ void 	draw(_modo modo, float r1, float g1, float b1, float r2, float g2, float b
 float radio;
 
 protected:
-_cubo barra_mano;
-_cubo barra_lateral;
+_cubo barra;
 
 };
 
@@ -271,8 +267,7 @@ void 	draw(_modo modo, float r1, float g1, float b1, float r2, float g2, float b
 float radio;
 
 protected:
-_cubo barra_mano;
-_cubo barra_lateral;
+_cubo barra;
 
 };
 
