@@ -1175,7 +1175,7 @@ glScalef(0.50,0.05,0.5);
 barra.draw(modo, 0.8,0.8,0.8, r2, g2, b2, grosor);
 glPopMatrix();
 
-//barras
+//paredes elevador
 glPushMatrix();
 glTranslated(0.0,0.025,0);
 glRotatef(-90,1,0,0);
@@ -1184,12 +1184,11 @@ glScalef(0.04,0.5,0.40);
 barra.draw(modo, r1, g1, b1, r2, g2, b2, grosor);
 glPopMatrix();
 
-
 glPushMatrix();
 glTranslated(0.23,0.025,-0.23);
 glRotatef(-90,1,0,0);
 glTranslated(0.02, 0.0, 0.2);
-glScalef(0.4,0.04,0.40);
+glScalef(0.42,0.04,0.40);
 barra.draw(modo, 0.3, 0.2, b1, r2, g2, b2, grosor);
 glPopMatrix();
 
@@ -1201,17 +1200,16 @@ glScalef(0.04,0.5,0.40);
 barra.draw(modo, r1, g1, b1, r2, g2, b2, grosor);
 glPopMatrix();
 
-
 glPushMatrix();
 glTranslated(0.23,0.025,0.23);
 glRotatef(-90,1,0,0);
 glTranslated(0.02, 0.0, 0.2);
-glScalef(0.4,0.04,0.40);
+glScalef(0.42,0.04,0.40);
 barra.draw(modo, r1, g1, b1, r2, g2, b2, grosor);
 glPopMatrix();
 
 
-
+//barras superiores
 glPushMatrix();
 glTranslated(0.02, 0.44, 0.0);
 glScalef(0.04,0.04,0.5);
@@ -1230,7 +1228,6 @@ glRotatef(90,0,1,0);
 glScalef(0.04,0.04,0.42);
 barra.draw(modo,0.3, 0.3,0.3, r2, g2, b2, grosor);
 glPopMatrix();
-
 
 glPushMatrix();
 glTranslated(0.25, 0.44, -0.23);
