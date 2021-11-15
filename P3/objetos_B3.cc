@@ -1277,7 +1277,7 @@ void _agua::draw(_modo modo, float r1, float g1, float b1, float r2, float g2, f
 
 glPushMatrix();
 glRotatef(90,0,1,0);
-glScalef(0.04,0.04,0.04);
+glScalef(0.035,0.035,0.035);
 gota.draw(modo, r1, g1, b1, r2,g2,b2, grosor);
 glPopMatrix();
 }
