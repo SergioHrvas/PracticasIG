@@ -1189,7 +1189,7 @@ glTranslated(0.23,0.025,-0.23);
 glRotatef(-90,1,0,0);
 glTranslated(0.02, 0.0, 0.2);
 glScalef(0.42,0.04,0.40);
-barra.draw(modo, 0.3, 0.2, b1, r2, g2, b2, grosor);
+barra.draw(modo, r1, g1, b1, r2, g2, b2, grosor);
 glPopMatrix();
 
 glPushMatrix();
