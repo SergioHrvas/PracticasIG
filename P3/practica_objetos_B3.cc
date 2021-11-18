@@ -47,9 +47,13 @@ _pistola pistola;
 _agua agua;
 // _objeto_ply *ply1;
 
+//variables de movimiento
 bool mov = false;
 int n_mov = 0;
 int n = 0;
+float velocidad = 1;
+float v_max = 2;
+float v_min = 0.1;
 
 //**************************************************************************
 //
@@ -194,9 +198,15 @@ switch (toupper(Tecla1)){
         case 'O':t_objeto=OBJETO_PLY;break;	
         case 'R':t_objeto=ROTACION;break;
         case 'A':t_objeto=ARTICULADO;break;
-        case 'N':camionbomberos.movimiento_camion+=0.1;break;
+        case 'N':camionbomberos.movimiento_camion+=0.1*velocidad;break;
+        case 'B':camionbomberos.movimiento_camion-=0.1*velocidad;break;
         case 'M':mov=true;break;
-      
+        case '+':velocidad+=0.1;
+                if(velocidad > v_max) velocidad = v_max;
+                break;
+        case '-':velocidad-=0.1;
+                if (velocidad < v_min) velocidad = v_min; 
+                break;
 	}
 glutPostRedisplay();
 }
@@ -221,43 +231,43 @@ switch (Tecla1){
 	case GLUT_KEY_DOWN:Observer_angle_x++;break;
 	case GLUT_KEY_PAGE_UP:Observer_distance*=1.2;break;
 	case GLUT_KEY_PAGE_DOWN:Observer_distance/=1.2;break;
-        case GLUT_KEY_F1:camionbomberos.giro_escalera-=1;
+        case GLUT_KEY_F1:camionbomberos.giro_escalera-=1*velocidad;
                          if (camionbomberos.giro_escalera<camionbomberos.giro_escalera_min) camionbomberos.giro_escalera=camionbomberos.giro_escalera_min;
                          break;
-        case GLUT_KEY_F2:camionbomberos.giro_escalera+=1;
+        case GLUT_KEY_F2:camionbomberos.giro_escalera+=1*velocidad;
                          if (camionbomberos.giro_escalera>camionbomberos.giro_escalera_max) camionbomberos.giro_escalera=camionbomberos.giro_escalera_max;
                          break;
-        case GLUT_KEY_F3:camionbomberos.giro_plataforma+=5;break;
-        case GLUT_KEY_F4:camionbomberos.giro_plataforma-=5;break;
-        case GLUT_KEY_F5:camionbomberos.translacion_escalera-=0.1;
+        case GLUT_KEY_F3:camionbomberos.giro_plataforma+=5*velocidad;break;
+        case GLUT_KEY_F4:camionbomberos.giro_plataforma-=5*velocidad;break;
+        case GLUT_KEY_F5:camionbomberos.translacion_escalera-=0.1*velocidad;
                          if (camionbomberos.translacion_escalera<camionbomberos.translacion_escalera_min) camionbomberos.translacion_escalera=camionbomberos.translacion_escalera_min;
                         break;
-        case GLUT_KEY_F6:camionbomberos.translacion_escalera+=0.1;
+        case GLUT_KEY_F6:camionbomberos.translacion_escalera+=0.1*velocidad;
                         if (camionbomberos.translacion_escalera>camionbomberos.translacion_escalera_max) camionbomberos.translacion_escalera=camionbomberos.translacion_escalera_max;
                         break;
-        case GLUT_KEY_F7:camionbomberos.giro_ruedas+=2;
+        case GLUT_KEY_F7:camionbomberos.giro_ruedas+=2*velocidad;
                         break;
-        case GLUT_KEY_F8:camionbomberos.giro_ruedas-=2;
+        case GLUT_KEY_F8:camionbomberos.giro_ruedas-=2*velocidad;
                         break;
-        case GLUT_KEY_F9:camionbomberos.levantamiento+=0.08;
+        case GLUT_KEY_F9:camionbomberos.levantamiento+=0.08*velocidad;
                          if (camionbomberos.levantamiento>camionbomberos.levantamiento_max) camionbomberos.levantamiento=camionbomberos.levantamiento_max;
                         break;
-        case GLUT_KEY_F10:camionbomberos.levantamiento-=0.08;
+        case GLUT_KEY_F10:camionbomberos.levantamiento-=0.08*velocidad;
                         if (camionbomberos.levantamiento<camionbomberos.levantamiento_min) camionbomberos.levantamiento=camionbomberos.levantamiento_min;
                         break;
-        case GLUT_KEY_F11:camionbomberos.giro_pistola_vertical+=1;
+        case GLUT_KEY_F11:camionbomberos.giro_pistola_vertical+=1*velocidad;
                          if (camionbomberos.giro_pistola_vertical>camionbomberos.giro_pistola_vertical_max) camionbomberos.giro_pistola_vertical=camionbomberos.giro_pistola_vertical_max;
                          break;
-        case GLUT_KEY_F12:camionbomberos.giro_pistola_vertical-=1;
+        case GLUT_KEY_F12:camionbomberos.giro_pistola_vertical-=1*velocidad;
                          if (camionbomberos.giro_pistola_vertical<camionbomberos.giro_pistola_vertical_min) camionbomberos.giro_pistola_vertical=camionbomberos.giro_pistola_vertical_min;
                          break;
-        case GLUT_KEY_HOME:camionbomberos.giro_pistola_horizontal+=1;
+        case GLUT_KEY_HOME:camionbomberos.giro_pistola_horizontal+=1*velocidad;
                          if (camionbomberos.giro_pistola_horizontal>camionbomberos.giro_pistola_horizontal_max) camionbomberos.giro_pistola_horizontal=camionbomberos.giro_pistola_horizontal_max;
                          break;
-        case GLUT_KEY_END: camionbomberos.giro_pistola_horizontal-=1;
+        case GLUT_KEY_END: camionbomberos.giro_pistola_horizontal-=1*velocidad;
                          if (camionbomberos.giro_pistola_horizontal<camionbomberos.giro_pistola_horizontal_min) camionbomberos.giro_pistola_horizontal=camionbomberos.giro_pistola_horizontal_min;
                          break;
-        case GLUT_KEY_INSERT: camionbomberos.movimiento_agua+=0.1;
+        case GLUT_KEY_INSERT: camionbomberos.movimiento_agua+=0.1*velocidad;
                          if (camionbomberos.movimiento_agua>2) camionbomberos.movimiento_agua=0;
                          break;
 	}
