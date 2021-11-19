@@ -51,9 +51,17 @@ _agua agua;
 bool mov = false;
 int n_mov = 0;
 int n = 0;
-float velocidad = 1;
+float v_plataforma = 1;
+float v_ruedas = 1;
+float v_escaleras = 1;
+float v_escalera = 1;
+float v_elevador = 1;
+float v_camion = 1;
+float v_pistola = 1;
+float v_agua = 1;
 float v_max = 2;
 float v_min = 0.1;
+int velocidad_gl = 0;
 
 //**************************************************************************
 //
@@ -198,14 +206,162 @@ switch (toupper(Tecla1)){
         case 'O':t_objeto=OBJETO_PLY;break;	
         case 'R':t_objeto=ROTACION;break;
         case 'A':t_objeto=ARTICULADO;break;
-        case 'N':camionbomberos.movimiento_camion+=0.1*velocidad;break;
-        case 'B':camionbomberos.movimiento_camion-=0.1*velocidad;break;
+        case 'N':camionbomberos.movimiento_camion+=0.1*v_camion;break;
+        case 'B':camionbomberos.movimiento_camion-=0.1*v_camion;break;
+        case '5':velocidad_gl = 1;break;
+        case '6':velocidad_gl = 2;break;
+        case '7':velocidad_gl = 3;break;
+        case '8':velocidad_gl = 4;break;
+        case '9':velocidad_gl = 5;break;
+        case 'I':velocidad_gl = 6;break;
+        case 'U':velocidad_gl = 7;break;
+        case 'Y':velocidad_gl = 8;break;
+        case '0':velocidad_gl = 0;break;
+
         case 'M':mov=true;break;
-        case '+':velocidad+=0.1;
-                if(velocidad > v_max) velocidad = v_max;
-                break;
-        case '-':velocidad-=0.1;
-                if (velocidad < v_min) velocidad = v_min; 
+        case '+':
+                switch(velocidad_gl){
+                        case 0:
+                                v_agua += 0.1;
+                                v_camion += 0.1;
+                                v_elevador += 0.1;
+                                v_ruedas += 0.1;
+                                v_pistola += 0.1;
+                                v_plataforma += 0.1;
+                                v_escalera += 0.1;
+                                v_escaleras += 0.1;
+                                if (v_agua > v_max)
+                                        v_agua = v_max;
+                                if(v_camion > v_max)
+                                        v_camion = v_max;
+                                if (v_elevador > v_elevador)
+                                        v_elevador = v_max;
+                                if(v_ruedas > v_max)
+                                        v_ruedas = v_max;
+                                if (v_pistola > v_max)
+                                        v_pistola = v_max;
+                                if(v_plataforma > v_max)
+                                        v_plataforma = v_max;
+                                if (v_escalera > v_max)
+                                        v_escalera = v_max;
+                                if(v_escaleras > v_max)
+                                        v_escaleras = v_max;
+                                break;
+                        case 1:
+                                v_camion += 0.1;
+                                if(v_camion > v_max)
+                                        v_camion = v_max;
+                                break;
+                        case 2:
+                                v_plataforma += 0.1;
+                                if(v_plataforma > v_max)
+                                        v_plataforma = v_max;
+                                break;
+                        case 3:
+                                v_escaleras += 0.1;
+                                if(v_escaleras > v_max)
+                                        v_escaleras = v_max;
+                                break;
+                        case 4:
+                                v_escalera += 0.1;
+                                if(v_escalera > v_max)
+                                        v_escalera = v_max;
+                                break;
+                        case 5:
+                                v_ruedas += 0.1;
+                                if(v_ruedas > v_max)
+                                        v_ruedas = v_max;
+                                break;
+                        case 6:
+                                v_elevador += 0.1;
+                                if(v_elevador > v_max)
+                                        v_elevador = v_max;
+                                break;
+                        case 7: 
+                                v_pistola += 0.1;
+                                if(v_pistola > v_max)
+                                        v_pistola = v_max;
+                                break;
+                        case 8: 
+                                v_agua += 0.1;
+                                if(v_agua > v_max)
+                                        v_agua = v_max;
+                                break;
+
+                }
+
+
+        break;
+        case '-':switch(velocidad_gl){
+                        case 0:
+                                v_agua -= 0.1;
+                                v_camion -= 0.1;
+                                v_elevador -= 0.1;
+                                v_ruedas -= 0.1;
+                                v_pistola -= 0.1;
+                                v_plataforma -= 0.1;
+                                v_escalera -= 0.1;
+                                v_escaleras -= 0.1;
+                                if (v_agua < v_min)
+                                        v_agua = v_min;
+                                if(v_camion < v_min)
+                                        v_camion = v_min;
+                                if (v_elevador > v_elevador)
+                                        v_elevador = v_min;
+                                if(v_ruedas < v_min)
+                                        v_ruedas = v_min;
+                                if (v_pistola < v_min)
+                                        v_pistola = v_min;
+                                if(v_plataforma < v_min)
+                                        v_plataforma = v_min;
+                                if (v_escalera < v_min)
+                                        v_escalera = v_min;
+                                if(v_escaleras < v_min)
+                                        v_escaleras = v_min;
+                                break;
+                        case 1:
+                                v_camion -= 0.1;
+                                if(v_camion < v_min)
+                                        v_camion = v_min;
+                                break;
+                        case 2:
+                                v_plataforma -= 0.1;
+                                if(v_plataforma < v_min)
+                                        v_plataforma = v_min;
+                                break;
+                        case 3:
+                                v_escaleras -= 0.1;
+                                if(v_escaleras < v_min)
+                                        v_escaleras = v_min;
+                                break;
+                        case 4:
+                                v_escalera -= 0.1;
+                                if(v_escalera < v_min)
+                                        v_escalera = v_min;
+                                break;
+                        case 5:
+                                v_ruedas -= 0.1;
+                                if(v_ruedas < v_min)
+                                        v_ruedas = v_min;
+                                break;
+                        case 6:
+                                v_elevador -= 0.1;
+                                if(v_elevador < v_min)
+                                        v_elevador = v_min;
+                                break;
+                        case 7: 
+                                v_pistola -= 0.1;
+                                if(v_pistola < v_min)
+                                        v_pistola = v_min;
+                                break;
+                        case 8: 
+                                v_agua -= 0.1;
+                                if(v_agua < v_min)
+                                        v_agua = v_min;
+                                break;
+
+                }
+
                 break;
 	}
 glutPostRedisplay();
@@ -231,43 +387,43 @@ switch (Tecla1){
 	case GLUT_KEY_DOWN:Observer_angle_x++;break;
 	case GLUT_KEY_PAGE_UP:Observer_distance*=1.2;break;
 	case GLUT_KEY_PAGE_DOWN:Observer_distance/=1.2;break;
-        case GLUT_KEY_F1:camionbomberos.giro_escalera-=1*velocidad;
+        case GLUT_KEY_F1:camionbomberos.giro_escalera-=1*v_escaleras;
                          if (camionbomberos.giro_escalera<camionbomberos.giro_escalera_min) camionbomberos.giro_escalera=camionbomberos.giro_escalera_min;
                          break;
-        case GLUT_KEY_F2:camionbomberos.giro_escalera+=1*velocidad;
+        case GLUT_KEY_F2:camionbomberos.giro_escalera+=1*v_escaleras;
                          if (camionbomberos.giro_escalera>camionbomberos.giro_escalera_max) camionbomberos.giro_escalera=camionbomberos.giro_escalera_max;
                          break;
-        case GLUT_KEY_F3:camionbomberos.giro_plataforma+=5*velocidad;break;
-        case GLUT_KEY_F4:camionbomberos.giro_plataforma-=5*velocidad;break;
-        case GLUT_KEY_F5:camionbomberos.translacion_escalera-=0.1*velocidad;
+        case GLUT_KEY_F3:camionbomberos.giro_plataforma+=5*v_plataforma;break;
+        case GLUT_KEY_F4:camionbomberos.giro_plataforma-=5*v_plataforma;break;
+        case GLUT_KEY_F5:camionbomberos.translacion_escalera-=0.1*v_escalera;
                          if (camionbomberos.translacion_escalera<camionbomberos.translacion_escalera_min) camionbomberos.translacion_escalera=camionbomberos.translacion_escalera_min;
                         break;
-        case GLUT_KEY_F6:camionbomberos.translacion_escalera+=0.1*velocidad;
+        case GLUT_KEY_F6:camionbomberos.translacion_escalera+=0.1*v_escalera;
                         if (camionbomberos.translacion_escalera>camionbomberos.translacion_escalera_max) camionbomberos.translacion_escalera=camionbomberos.translacion_escalera_max;
                         break;
-        case GLUT_KEY_F7:camionbomberos.giro_ruedas+=2*velocidad;
+        case GLUT_KEY_F7:camionbomberos.giro_ruedas+=2*v_ruedas;
                         break;
-        case GLUT_KEY_F8:camionbomberos.giro_ruedas-=2*velocidad;
+        case GLUT_KEY_F8:camionbomberos.giro_ruedas-=2*v_ruedas;
                         break;
-        case GLUT_KEY_F9:camionbomberos.levantamiento+=0.08*velocidad;
+        case GLUT_KEY_F9:camionbomberos.levantamiento+=0.08*v_elevador;
                          if (camionbomberos.levantamiento>camionbomberos.levantamiento_max) camionbomberos.levantamiento=camionbomberos.levantamiento_max;
                         break;
-        case GLUT_KEY_F10:camionbomberos.levantamiento-=0.08*velocidad;
+        case GLUT_KEY_F10:camionbomberos.levantamiento-=0.08*v_elevador;
                         if (camionbomberos.levantamiento<camionbomberos.levantamiento_min) camionbomberos.levantamiento=camionbomberos.levantamiento_min;
                         break;
-        case GLUT_KEY_F11:camionbomberos.giro_pistola_vertical+=1*velocidad;
+        case GLUT_KEY_F11:camionbomberos.giro_pistola_vertical+=1*v_pistola;
                          if (camionbomberos.giro_pistola_vertical>camionbomberos.giro_pistola_vertical_max) camionbomberos.giro_pistola_vertical=camionbomberos.giro_pistola_vertical_max;
                          break;
-        case GLUT_KEY_F12:camionbomberos.giro_pistola_vertical-=1*velocidad;
+        case GLUT_KEY_F12:camionbomberos.giro_pistola_vertical-=1*v_pistola;
                          if (camionbomberos.giro_pistola_vertical<camionbomberos.giro_pistola_vertical_min) camionbomberos.giro_pistola_vertical=camionbomberos.giro_pistola_vertical_min;
                          break;
-        case GLUT_KEY_HOME:camionbomberos.giro_pistola_horizontal+=1*velocidad;
+        case GLUT_KEY_HOME:camionbomberos.giro_pistola_horizontal+=1*v_pistola;
                          if (camionbomberos.giro_pistola_horizontal>camionbomberos.giro_pistola_horizontal_max) camionbomberos.giro_pistola_horizontal=camionbomberos.giro_pistola_horizontal_max;
                          break;
-        case GLUT_KEY_END: camionbomberos.giro_pistola_horizontal-=1*velocidad;
+        case GLUT_KEY_END: camionbomberos.giro_pistola_horizontal-=1*v_pistola;
                          if (camionbomberos.giro_pistola_horizontal<camionbomberos.giro_pistola_horizontal_min) camionbomberos.giro_pistola_horizontal=camionbomberos.giro_pistola_horizontal_min;
                          break;
-        case GLUT_KEY_INSERT: camionbomberos.movimiento_agua+=0.1*velocidad;
+        case GLUT_KEY_INSERT: camionbomberos.movimiento_agua+=0.1*v_agua;
                          if (camionbomberos.movimiento_agua>2) camionbomberos.movimiento_agua=0;
                          break;
 	}
@@ -465,3 +621,4 @@ initialize();
 glutMainLoop();
 return 0;
 }
+
