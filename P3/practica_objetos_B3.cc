@@ -223,7 +223,7 @@ switch (toupper(Tecla1)){
                 break;
         case '+':
                 switch(velocidad_gl){
-                        case 0:
+                        case 0: //0
                                 v_agua += 0.1;
                                 v_camion += 0.1;
                                 v_elevador += 0.1;
@@ -249,42 +249,42 @@ switch (toupper(Tecla1)){
                                 if(v_escaleras > v_max)
                                         v_escaleras = v_max;
                                 break;
-                        case 1:
+                        case 1: //5
                                 v_camion += 0.1;
                                 if(v_camion > v_max)
                                         v_camion = v_max;
                                 break;
-                        case 2:
+                        case 2: //6
                                 v_plataforma += 0.1;
                                 if(v_plataforma > v_max)
                                         v_plataforma = v_max;
                                 break;
-                        case 3:
+                        case 3: //7
                                 v_escaleras += 0.1;
                                 if(v_escaleras > v_max)
                                         v_escaleras = v_max;
                                 break;
-                        case 4:
+                        case 4: //8
                                 v_escalera += 0.1;
                                 if(v_escalera > v_max)
                                         v_escalera = v_max;
                                 break;
-                        case 5:
+                        case 5: //9
                                 v_ruedas += 0.1;
                                 if(v_ruedas > v_max)
                                         v_ruedas = v_max;
                                 break;
-                        case 6:
+                        case 6: //I
                                 v_elevador += 0.1;
                                 if(v_elevador > v_max)
                                         v_elevador = v_max;
                                 break;
-                        case 7: 
+                        case 7: //U
                                 v_pistola += 0.1;
                                 if(v_pistola > v_max)
                                         v_pistola = v_max;
                                 break;
-                        case 8: 
+                        case 8: //Y
                                 v_agua += 0.1;
                                 if(v_agua > v_max)
                                         v_agua = v_max;
@@ -295,7 +295,7 @@ switch (toupper(Tecla1)){
 
         break;
         case '-':switch(velocidad_gl){
-                        case 0:
+                        case 0://0
                                 v_agua -= 0.1;
                                 v_camion -= 0.1;
                                 v_elevador -= 0.1;
@@ -321,42 +321,42 @@ switch (toupper(Tecla1)){
                                 if(v_escaleras < v_min)
                                         v_escaleras = v_min;
                                 break;
-                        case 1:
+                        case 1://5
                                 v_camion -= 0.1;
                                 if(v_camion < v_min)
                                         v_camion = v_min;
                                 break;
-                        case 2:
+                        case 2://6
                                 v_plataforma -= 0.1;
                                 if(v_plataforma < v_min)
                                         v_plataforma = v_min;
                                 break;
-                        case 3:
+                        case 3://7
                                 v_escaleras -= 0.1;
                                 if(v_escaleras < v_min)
                                         v_escaleras = v_min;
                                 break;
-                        case 4:
+                        case 4://8
                                 v_escalera -= 0.1;
                                 if(v_escalera < v_min)
                                         v_escalera = v_min;
                                 break;
-                        case 5:
+                        case 5://9
                                 v_ruedas -= 0.1;
                                 if(v_ruedas < v_min)
                                         v_ruedas = v_min;
                                 break;
-                        case 6:
+                        case 6://I
                                 v_elevador -= 0.1;
                                 if(v_elevador < v_min)
                                         v_elevador = v_min;
                                 break;
-                        case 7: 
+                        case 7: //U
                                 v_pistola -= 0.1;
                                 if(v_pistola < v_min)
                                         v_pistola = v_min;
                                 break;
-                        case 8: 
+                        case 8: //Y
                                 v_agua -= 0.1;
                                 if(v_agua < v_min)
                                         v_agua = v_min;
