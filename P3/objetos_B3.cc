@@ -831,14 +831,20 @@ glPopMatrix();
 
 //Puertas
 glPushMatrix();
-glTranslatef(1.2,0.7,0.501);
-glScalef(0.6,0.34,0.01);
+glTranslatef(1,0.6,0.501);
+glScalef(0.8,0.48,0.01);
 carcasa.draw(modo, 0.6, 0.6, 0.6, 0.8, 0.8, 0.8, grosor);
 glPopMatrix();
 
 glPushMatrix();
-glTranslatef(2.8,0.8,-0.501);
-glScalef(0.5,0.3,0.01);
+glTranslatef(1,0.6,-0.501);
+glScalef(0.8,0.48,0.01);
+carcasa.draw(modo, 0.6, 0.6, 0.6, 0.8, 0.8, 0.8, grosor);
+glPopMatrix();
+
+glPushMatrix();
+glTranslatef(-0.4,0.68,0);
+glScalef(0.01,0.48,0.8);
 carcasa.draw(modo, 0.6, 0.6, 0.6, 0.8, 0.8, 0.8, grosor);
 glPopMatrix();
 }

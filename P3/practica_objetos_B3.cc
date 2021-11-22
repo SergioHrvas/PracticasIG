@@ -218,7 +218,9 @@ switch (toupper(Tecla1)){
         case 'Y':velocidad_gl = 8;break;
         case '0':velocidad_gl = 0;break;
 
-        case 'M':mov=true;break;
+        case 'M':mov=true;
+                n_mov = 0;
+                break;
         case '+':
                 switch(velocidad_gl){
                         case 0:
@@ -488,10 +490,50 @@ switch(n_mov){
                 }
         break;
 	case 7:
+                camionbomberos.movimiento_agua = 0;
+                n_mov = 8;
         break;
 	case 8:
+                //muevo la pistola
+                camionbomberos.giro_pistola_horizontal-=0.4;
+                camionbomberos.giro_pistola_vertical-=0.4;
+                if (camionbomberos.giro_pistola_horizontal < 0.0)
+                        n_mov = 9;
+
         break;
-	case 9:
+	case 9://bajo el elevador
+                camionbomberos.levantamiento-=0.005;
+                if(camionbomberos.levantamiento < 0.0){
+                        n_mov = 10;
+                }
+        break;
+        case 10: //bajo la escalera pequeña
+                camionbomberos.translacion_escalera-=0.007;
+                if(camionbomberos.translacion_escalera < 0.0){
+                        n_mov = 11;
+                }
+        break;
+        case 11://giro las escaleras
+                camionbomberos.giro_plataforma-=1;  
+                if(camionbomberos.giro_plataforma < 0){
+                        n_mov = 12;
+                }
+        break;
+        case 12: //levanto las escaleras
+                camionbomberos.giro_escalera-=0.4;  
+                if(camionbomberos.giro_escalera < 0){
+                        n_mov = 13;
+                }
+        break;
+        case 13: //camion acelera
+                camionbomberos.giro_ruedas+=2;  
+                n++;
+                if(n>20) //para que acelere bien
+                camionbomberos.movimiento_camion-=0.01;
+                if(camionbomberos.movimiento_camion < 0){
+                        n_mov = 14;
+                        n=0;
+                }
         break;
 	
 
