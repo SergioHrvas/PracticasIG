@@ -54,6 +54,11 @@ _esfera esferax(1.2,15,0), esferay(1.2,15,1), esferaz(1.2,15,2);
 
 // _objeto_ply *ply1;
 
+
+int estadoRaton[3], xc, yc;
+
+
+
 //variables de movimiento
 bool mov = false;
 int n_mov = 0;
@@ -573,7 +578,96 @@ switch(n_mov){
 glutPostRedisplay();
 }
 }
+//***************************************************************************
+// Funciones para manejo de eventos del ratón
+//***************************************************************************
 
+void clickRaton( int boton, int estado, int x, int y )
+{
+if(boton== GLUT_RIGHT_BUTTON) {
+   if( estado == GLUT_DOWN) {
+      estadoRaton[2] = 1;
+      xc=x;
+      yc=y;
+     } 
+   else estadoRaton[2] = 1;
+   }
+/*if(boton== GLUT_LEFT_BUTTON) {
+  if( estado == GLUT_DOWN) {
+      estadoRaton[2] = 2;
+      xc=x;
+      yc=y;
+      pick_color(xc, yc);
+    } 
+  }*/
+}
+
+/*************************************************************************/
+
+void getCamara (GLfloat *x, GLfloat *y)
+{
+*x=Observer_angle_x;
+*y=Observer_angle_y;
+}
+
+/*************************************************************************/
+
+void setCamara (GLfloat x, GLfloat y)
+{
+Observer_angle_x=x;
+Observer_angle_y=y;
+}
+
+
+
+/*************************************************************************/
+
+void RatonMovido( int x, int y )
+{
+float x0, y0, xn, yn; 
+if(estadoRaton[2]==1) 
+    {getCamara(&x0,&y0);
+     yn=y0+(y-yc);
+     xn=x0-(x-xc);
+     setCamara(xn,yn);
+     xc=x;
+     yc=y;
+     glutPostRedisplay();
+    }
+}
+/*
+void procesar_color(unsigned char color[3])
+{
+int i;
+
+for (i=0;i<tanque.piezas;i++)
+   {if (color[0]==tanque.color_selec[0][i])
+       {if (tanque.activo[i]==0) 
+                      {tanque.activo[i]=1;
+                      }
+                  else 
+                      {tanque.activo[i]=0;
+                      }
+         glutPostRedisplay();
+        }
+    }                
+ }*/
+
+/*
+
+void pick_color(int x, int y)
+{
+GLint viewport[4];
+unsigned char pixel[3];
+
+glGetIntegerv(GL_VIEWPORT, viewport);
+glReadBuffer(GL_BACK);
+glReadPixels(x,viewport[3]-y,1,1,GL_RGB,GL_UNSIGNED_BYTE,(GLubyte *) &pixel[0]);
+printf(" valor x %d, valor y %d, color %d, %d, %d \n",x,y,pixel[0],pixel[1],pixel[2]);
+
+procesar_color(pixel);
+}
+*/
 //***************************************************************************
 // Funcion de incializacion
 //***************************************************************************
@@ -686,6 +780,11 @@ glutKeyboardFunc(normal_key);
 glutSpecialFunc(special_key);
 
 glutIdleFunc(movimiento);
+
+
+// eventos ratón
+glutMouseFunc( clickRaton );
+glutMotionFunc(RatonMovido );
 
 // funcion de inicialización
 initialize();
