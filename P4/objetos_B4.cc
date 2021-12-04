@@ -47,9 +47,12 @@ _triangulos3D::_triangulos3D()
 b_normales_caras=false;
 b_normales_vertices=false;
 
-ambiente_difusa=_vertex4f(0.2,0.4,0.9,1.0);  //coeficientes ambiente y difuso
+ambiente_difusa=_vertex4f(0.7,0.4,0.9,1.0);  //coeficientes ambiente y difuso
 especular=_vertex4f(0.5,0.5,0.5,1.0);        //coeficiente especular
-brillo=120;                                   //exponente del brillo 
+brillo=50;                               //exponente del brillo 
+
+
+
 }
 
 
@@ -132,7 +135,7 @@ switch (modo){
 	case SOLID_CHESS:draw_solido_ajedrez(r1, g1, b1, r2, g2, b2);break;
 	case SOLID:draw_solido(r1, g1, b1);break;
     case SOLID_ILLUMINATED_FLAT: draw_iluminacion_plana();break;
- //   case SOLID_ILLUMINATED_GOURAUD: draw_iluminacion_suave();break;
+    case SOLID_ILLUMINATED_GOURAUD: draw_iluminacion_suave();break;
 	}
 }
 
@@ -141,7 +144,7 @@ void _triangulos3D::draw_iluminacion_plana( )
 	int i;
 
 	if (b_normales_caras==false) calcular_normales_caras();
-	luces();
+
 	glLightModeli(GL_LIGHT_MODEL_LOCAL_VIEWER,GL_TRUE);
 	glEnable (GL_LIGHTING);
 	glShadeModel(GL_FLAT);
@@ -188,35 +191,77 @@ b_normales_caras=true;
 }
 
 
+void _triangulos3D::calcular_normales_vertices(){
 
-void _triangulos3D::calcular_normales_vertices()
-{  
-	_vertex3f a1, a2, n;
-	normales_caras.resize(caras.size());
+  if (!b_normales_caras) calcular_normales_caras();
 
-	for(int i=0; i<caras.size(); i++){
-							// obtener dos vectores en el triángulo y calcular el producto vectorial
-		a1=vertices[caras[i]._1]-vertices[caras[i]._0];
-       	a2=vertices[caras[i]._2]-vertices[caras[i]._0];
-        n=a1.cross_product(a2);
-		// modulo
-		float m=sqrt(n.x*n.x+n.y*n.y+n.z*n.z);
-		// normalización
-    	normales_caras[i]= _vertex3f(n.x/m, n.y/m, n.z/m);
-	}
-  
-b_normales_caras=true;
+  normales_vertices.resize(vertices.size());
+
+    for (int i = 0; i < vertices.size(); i++){
+      normales_vertices[i].x = 0.0;
+      normales_vertices[i].y = 0.0;
+      normales_vertices[i].z = 0.0;
+    }
+
+    for (int i = 0; i < caras.size(); i++){
+      normales_vertices[caras[i]._0] += normales_caras[i];
+      normales_vertices[caras[i]._1] += normales_caras[i];
+      normales_vertices[caras[i]._2] += normales_caras[i];
+    }
+
+    for (int i = 0; i < vertices.size(); i++)
+      normales_vertices[i].normalize();
+
+    b_normales_vertices=true;
+  }
+
+
+void _triangulos3D::draw_iluminacion_suave() {
+
+  if (!b_normales_vertices) calcular_normales_vertices();
+
+  glLightModeli(GL_LIGHT_MODEL_LOCAL_VIEWER,GL_TRUE);
+  glShadeModel(GL_SMOOTH);
+  glEnable(GL_NORMALIZE);
+  glEnable(GL_LIGHTING);
+
+
+  glMaterialfv(GL_FRONT_AND_BACK,GL_AMBIENT_AND_DIFFUSE,(GLfloat *) &ambiente_difusa);
+  glMaterialfv(GL_FRONT_AND_BACK,GL_SPECULAR,(GLfloat *) &especular);
+  glMaterialf(GL_FRONT_AND_BACK,GL_SHININESS,brillo);
+
+  glPolygonMode(GL_FRONT_AND_BACK,GL_FILL);
+
+  glBegin(GL_TRIANGLES);
+
+    for (size_t i = 0; i < caras.size(); i++){
+      glNormal3fv((GLfloat *) &normales_vertices[caras[i]._0]);
+      glVertex3fv((GLfloat *) &vertices[caras[i]._0]);
+      glNormal3fv((GLfloat *) &normales_vertices[caras[i]._1]);
+      glVertex3fv((GLfloat *) &vertices[caras[i]._1]);
+      glNormal3fv((GLfloat *) &normales_vertices[caras[i]._2]);
+      glVertex3fv((GLfloat *) &vertices[caras[i]._2]);
+    }
+
+  glEnd();
+
+  glDisable(GL_LIGHTING);
+  glEnable(GL_CULL_FACE);
+  //glDisable(GL_NORMALIZE);
 }
-
 
 void luces ()
 {
-float luz1[]={1.0,1.0,1.0, 1}, pos1[]= {3, 2.0, 4.0, 1};
+float luz1[]={1.0,1.0,1.0, 1}, pos1[]= {25, 10, 20, 1},luz2[]={1.0,0.4,1.0, 1}, pos2[]= {-3, -3.0, -6.0, 1};
 
         glLightfv(GL_LIGHT1, GL_DIFFUSE, luz1);
 		glLightfv(GL_LIGHT1, GL_SPECULAR, luz1);
 		glLightfv(GL_LIGHT1, GL_POSITION, pos1);
 
+
+//        glLightfv(GL_LIGHT2, GL_DIFFUSE, luz2);
+//		glLightfv(GL_LIGHT2, GL_SPECULAR, luz2);
+//		glLightfv(GL_LIGHT2, GL_POSITION, pos2);
 		//la luz 0 esta activda por defecto y la tenemos que desactivar
 		glDisable(GL_LIGHT0);
 		glEnable(GL_LIGHT1);
@@ -242,7 +287,7 @@ vertices[7].x=-tam;vertices[7].y=tam;vertices[7].z=-tam;
 // triangulos
 caras.resize(12);
 caras[0]._0=0;caras[0]._1=1;caras[0]._2=3;
-caras[1]._0=3;caras[1]._1=1;caras[1]._2=2;
+caras[1]._0=1;caras[1]._1=2;caras[1]._2=3;
 caras[2]._0=1;caras[2]._1=5;caras[2]._2=2;
 caras[3]._0=5;caras[3]._1=6;caras[3]._2=2;
 caras[4]._0=5;caras[4]._1=4;caras[4]._2=6;
@@ -251,8 +296,8 @@ caras[6]._0=4;caras[6]._1=0;caras[6]._2=7;
 caras[7]._0=0;caras[7]._1=3;caras[7]._2=7;
 caras[8]._0=3;caras[8]._1=2;caras[8]._2=7;
 caras[9]._0=2;caras[9]._1=6;caras[9]._2=7;
-caras[10]._0=0;caras[10]._1=5;caras[10]._2=1;
-caras[11]._0=5;caras[11]._1=0;caras[11]._2=4;  
+caras[10]._0=4;caras[10]._1=5;caras[10]._2=0;
+caras[11]._0=5;caras[11]._1=1; caras[11]._2=0;  
 }
 
 
@@ -554,15 +599,15 @@ switch(eje){
 		{
 			for (int j = 0; j < num_auxB-1; ++j)
 			{
-			cara_aux._0 = i*num_auxB+j; //1
-			cara_aux._2 = ((i+1)%num)*num_auxB+j; //4
-			cara_aux._1 = ((i+1)%num)*num_auxB+j+1; //5
+			cara_aux._1 = i*num_auxB+j; //1
+			cara_aux._0 = ((i+1)%num)*num_auxB+j; //4
+			cara_aux._2 = ((i+1)%num)*num_auxB+j+1; //5
 			caras.push_back(cara_aux);
 
 
-			cara_aux._2 = i*num_auxB+j; //1
-			cara_aux._0 = i*num_auxB+j+1; //2
-			cara_aux._1 = ((i+1)%num)*num_auxB+j+1; //5
+			cara_aux._0 = i*num_auxB+j; //1
+			cara_aux._1 = i*num_auxB+j+1; //2
+			cara_aux._2 = ((i+1)%num)*num_auxB+j+1; //5
 			caras.push_back(cara_aux);
 			}
 		}
@@ -573,9 +618,9 @@ switch(eje){
 		{
 			for (int j = 0; j < num_auxB-1; ++j)
 			{
-			cara_aux._0 = i*num_auxB+j; //1
-			cara_aux._1 = ((i+1)%num)*num_auxB+j; //4
-			cara_aux._2 = ((i+1)%num)*num_auxB+j+1; //5
+			cara_aux._2 = i*num_auxB+j; //1
+			cara_aux._0 = ((i+1)%num)*num_auxB+j; //4
+			cara_aux._1 = ((i+1)%num)*num_auxB+j+1; //5
 			caras.push_back(cara_aux);
 
 
@@ -591,15 +636,15 @@ switch(eje){
 		{
 			for (int j = 0; j < num_auxB-1; ++j)
 			{
-			cara_aux._0 = i*num_auxB+j; //1
-			cara_aux._2 = ((i+1)%num)*num_auxB+j; //4
-			cara_aux._1 = ((i+1)%num)*num_auxB+j+1; //5
+			cara_aux._1 = i*num_auxB+j; //1
+			cara_aux._0 = ((i+1)%num)*num_auxB+j; //4
+			cara_aux._2 = ((i+1)%num)*num_auxB+j+1; //5
 			caras.push_back(cara_aux);
 
 
-			cara_aux._2 = i*num_auxB+j; //1
-			cara_aux._0 = i*num_auxB+j+1; //2
-			cara_aux._1 = ((i+1)%num)*num_auxB+j+1; //5
+			cara_aux._0 = i*num_auxB+j; //1
+			cara_aux._1 = i*num_auxB+j+1; //2
+			cara_aux._2 = ((i+1)%num)*num_auxB+j+1; //5
 			caras.push_back(cara_aux);
 			}
 		}
@@ -867,15 +912,32 @@ rueda.draw(modo, 0.4,0.4,0.4, 0.2,0.2,0.2, grosor);
 glPopMatrix();
 
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 //************************************************************************
 
 _carroceria::_carroceria()
 {
 // perfil para un cilindro
 carcasa = _cubo();
+carcasa2 = _cubo();
+
 foco = _esfera();
 sirena = _cilindro();
-carcasa.ambiente_difusa=_vertex4f(0.803,0.043,0.043,1.0);
 
 };
 
@@ -893,7 +955,7 @@ glPopMatrix();
 glPushMatrix();
 glTranslatef(2.8,1.1,0.0);
 glScalef(0.9,0.2,1);
-carcasa.draw(modo, r1, g1, b1, r2, g2, b2, grosor);
+carcasa2.draw(modo, r1, g1, b1, r2, g2, b2, grosor);
 glPopMatrix();
 
 
