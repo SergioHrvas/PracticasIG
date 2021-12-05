@@ -47,7 +47,7 @@ _triangulos3D::_triangulos3D()
 b_normales_caras=false;
 b_normales_vertices=false;
 
-ambiente_difusa=_vertex4f(0.7,0.4,0.9,1.0);  //coeficientes ambiente y difuso
+ambiente_difusa=_vertex4f(0.2,0.4,0.9,1.0);  //coeficientes ambiente y difuso
 especular=_vertex4f(0.5,0.5,0.5,1.0);        //coeficiente especular
 brillo=50;                               //exponente del brillo 
 
@@ -197,12 +197,6 @@ void _triangulos3D::calcular_normales_vertices(){
 
   normales_vertices.resize(vertices.size());
 
-    for (int i = 0; i < vertices.size(); i++){
-      normales_vertices[i].x = 0.0;
-      normales_vertices[i].y = 0.0;
-      normales_vertices[i].z = 0.0;
-    }
-
     for (int i = 0; i < caras.size(); i++){
       normales_vertices[caras[i]._0] += normales_caras[i];
       normales_vertices[caras[i]._1] += normales_caras[i];
@@ -210,7 +204,7 @@ void _triangulos3D::calcular_normales_vertices(){
     }
 
     for (int i = 0; i < vertices.size(); i++)
-      normales_vertices[i].normalize();
+      normales_vertices[i] = normales_vertices[i].normalize();
 
     b_normales_vertices=true;
   }
@@ -222,8 +216,8 @@ void _triangulos3D::draw_iluminacion_suave() {
 
   glLightModeli(GL_LIGHT_MODEL_LOCAL_VIEWER,GL_TRUE);
   glShadeModel(GL_SMOOTH);
-  glEnable(GL_NORMALIZE);
   glEnable(GL_LIGHTING);
+  glEnable(GL_NORMALIZE);
 
 
   glMaterialfv(GL_FRONT_AND_BACK,GL_AMBIENT_AND_DIFFUSE,(GLfloat *) &ambiente_difusa);
@@ -234,7 +228,7 @@ void _triangulos3D::draw_iluminacion_suave() {
 
   glBegin(GL_TRIANGLES);
 
-    for (size_t i = 0; i < caras.size(); i++){
+    for (int i = 0; i < caras.size(); i++){
       glNormal3fv((GLfloat *) &normales_vertices[caras[i]._0]);
       glVertex3fv((GLfloat *) &vertices[caras[i]._0]);
       glNormal3fv((GLfloat *) &normales_vertices[caras[i]._1]);
@@ -246,26 +240,25 @@ void _triangulos3D::draw_iluminacion_suave() {
   glEnd();
 
   glDisable(GL_LIGHTING);
-  glEnable(GL_CULL_FACE);
   //glDisable(GL_NORMALIZE);
 }
 
 void luces ()
 {
-float luz1[]={1.0,1.0,1.0, 1}, pos1[]= {25, 10, 20, 1},luz2[]={1.0,0.4,1.0, 1}, pos2[]= {-3, -3.0, -6.0, 1};
+float luz1[]={1.0,1.0,1.0, 1}, pos1[]= {25, 10, 20, 1},luz2[]={0.7922,0.0824,0.4157, 1}, pos2[]= {-20, -15.0, -20.0, 0};
 
         glLightfv(GL_LIGHT1, GL_DIFFUSE, luz1);
 		glLightfv(GL_LIGHT1, GL_SPECULAR, luz1);
 		glLightfv(GL_LIGHT1, GL_POSITION, pos1);
 
 
-//        glLightfv(GL_LIGHT2, GL_DIFFUSE, luz2);
-//		glLightfv(GL_LIGHT2, GL_SPECULAR, luz2);
-//		glLightfv(GL_LIGHT2, GL_POSITION, pos2);
-		//la luz 0 esta activda por defecto y la tenemos que desactivar
+        glLightfv(GL_LIGHT2, GL_DIFFUSE, luz2);
+		glLightfv(GL_LIGHT2, GL_SPECULAR, luz2);
+		glLightfv(GL_LIGHT2, GL_POSITION, pos2);
+	//	la luz 0 esta activda por defecto y la tenemos que desactivar
 		glDisable(GL_LIGHT0);
 		glEnable(GL_LIGHT1);
-		//glEnable (GL_LIGHT2);
+		glEnable (GL_LIGHT2);
 }
 //*************************************************************************
 // clase cubo
@@ -878,7 +871,9 @@ _ruedas::_ruedas()
 // perfil para un cilindro
 
 rueda = _cilindro(0.235, 0.165, 15, 1);
-
+rueda.ambiente_difusa=_vertex4f(0.25,0.25,0.25,1.0);  //coeficientes ambiente y difuso
+rueda.especular=_vertex4f(0,0,0,1.0);        //coeficiente especular
+brillo=50;  
 };
 
 void _ruedas::draw(_modo modo, float r1, float g1, float b1, float r2, float g2, float b2, float grosor)
@@ -935,9 +930,18 @@ _carroceria::_carroceria()
 // perfil para un cilindro
 carcasa = _cubo();
 carcasa2 = _cubo();
+ventana = _cubo();
 
 foco = _esfera();
 sirena = _cilindro();
+
+carcasa.ambiente_difusa=_vertex4f(0.7922,0.0,0.0,1.0);  //coeficientes ambiente y difuso
+carcasa.especular=_vertex4f(0.5,0.5,0.5,1.0);        //coeficiente especular
+brillo=50;                               //exponente del brillo 
+
+ventana.ambiente_difusa=_vertex4f(0.25,0.25,0.25,1.0);  //coeficientes ambiente y difuso
+ventana.especular=_vertex4f(0.5,0.5,0.5,1.0);        //coeficiente especular
+brillo=50;                               //exponente del brillo 
 
 };
 
@@ -955,7 +959,7 @@ glPopMatrix();
 glPushMatrix();
 glTranslatef(2.8,1.1,0.0);
 glScalef(0.9,0.2,1);
-carcasa2.draw(modo, r1, g1, b1, r2, g2, b2, grosor);
+carcasa.draw(modo, r1, g1, b1, r2, g2, b2, grosor);
 glPopMatrix();
 
 
@@ -963,20 +967,20 @@ glPopMatrix();
 glPushMatrix();
 glTranslatef(2.8,0.8,0.501);
 glScalef(0.5,0.3,0.01);
-carcasa.draw(modo, 0.2, 0.2, 0.2, 0.5, 0.5, 0.5, grosor);
+ventana.draw(modo, 0.2, 0.2, 0.2, 0.5, 0.5, 0.5, grosor);
 glPopMatrix();
 
 glPushMatrix();
 glTranslatef(2.8,0.8,-0.501);
 glScalef(0.5,0.3,0.01);
-carcasa.draw(modo, 0.2, 0.2, 0.2, 0.5, 0.5, 0.5, grosor);
+ventana.draw(modo, 0.2, 0.2, 0.2, 0.5, 0.5, 0.5, grosor);
 glPopMatrix();
 
 //parabrisas
 glPushMatrix();
 glTranslatef(3.21,0.8,0.0);
 glScalef(0.01,0.3,0.8);
-carcasa.draw(modo, 0.2, 0.2, 0.2, 0.5, 0.5, 0.5, grosor);
+ventana.draw(modo, 0.2, 0.2, 0.2, 0.5, 0.5, 0.5, grosor);
 glPopMatrix();
 
 //focos

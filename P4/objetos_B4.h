@@ -250,6 +250,7 @@ float radio;
 protected:
 _cubo carcasa;
 _cubo carcasa2;
+_cubo ventana;
 _esfera foco;
 _cilindro sirena;
 };
