@@ -1645,6 +1645,63 @@ agua.draw(modo, 0.0, 0.81, 1, 0.34, 0.1, 0.1, grosor);
 glPopMatrix();
 };
 
+
+
+/*******************************************************/
+// Métodos de luz
+
+Luz::Luz(){
+}
+
+Luz::Luz(GLenum iden, _vertex4f amb_dif, _vertex4f espec, _vertex4f pos){
+	id = iden;
+	ambiente_difusa = amb_dif;
+	especular = espec;
+	posicion = pos;
+}
+
+void Luz::encenderLuz(){
+	glEnable(GL_LIGHTING);
+	glEnable(id);
+}
+
+void Luz::movimientoLuz(){
+	angulo += 3.0;
+}
+
+void Luz::apagarLuz(){
+	glDisable(id);
+}
+
+void Luz::draw(){
+	glLightfv(id, GL_AMBIENT_AND_DIFFUSE, (GLfloat *)&ambiente_difusa);
+	glLightfv(id, GL_SPECULAR,(GLfloat *) &especular);
+	glPushMatrix();
+	        glRotatef(angulo,0.0,1.0,0.0);
+		glLightfv(id, GL_POSITION,(GLfloat *)& posicion);
+	glPopMatrix();
+}
+
+void Luz::setAmbienteDifuso(_vertex4f color){
+	ambiente_difusa = color;
+}
+
+void Luz::setEspecular(_vertex4f color){
+	especular = color;
+}
+
+void Luz::setPosicion(_vertex4f pos){
+	posicion = pos;
+}
+
+void Luz::setIDLuz(GLenum iden){
+	id = iden;
+}
+
+
 //Examen lampara
 //GLLIGHTTWO SIDES
 //a2.cross_product(a1); para cruzar el vector
+
+
+

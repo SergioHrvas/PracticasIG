@@ -386,3 +386,24 @@ class _camionbomberos: public _triangulos3D{
        _agua agua;
 };
 
+class Luz{
+
+	private:
+
+		_vertex4f ambiente_difusa, especular;
+		_vertex4f posicion;
+              int angulo = 0;
+              GLenum id;
+	public:
+
+		Luz();
+              Luz(GLenum id, _vertex4f amb_dif, _vertex4f espec, _vertex4f pos);
+              void encenderLuz();
+		void apagarLuz();
+		void draw();
+		void movimientoLuz();
+		void setAmbienteDifuso(_vertex4f color);
+		void setEspecular(_vertex4f color);
+		void setPosicion(_vertex4f pos);
+		void setIDLuz(GLenum id);
+};
