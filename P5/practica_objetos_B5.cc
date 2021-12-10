@@ -6,7 +6,7 @@
 #include <ctype.h>
 #include <math.h>
 #include <vector>
-#include "objetos_B4.h"
+#include "objetos_B5.h"
 
 
 using namespace std;
@@ -28,7 +28,7 @@ GLfloat Size_x,Size_y,Front_plane,Back_plane;
 int Window_x=50,Window_y=50,Window_width=450,Window_high=450;
 int cambio = 0;
 
-
+int Ancho, Alto;
 
 int estadoRaton[3], xc, yc;
 
@@ -159,7 +159,7 @@ switch (t_objeto){
 	case PIRAMIDE: piramide.draw(modo,1.0,0.0,0.0,0.0,1.0,0.0,2);break;
         case OBJETO_PLY: ply.draw(modo,1.0,0.6,0.0,0.0,1.0,0.3,2);break;
         case ROTACION: rotacion.draw(modo,1.0,0.0,0.0,0.0,1.0,0.0,2);break;
-        case ARTICULADO: camionbomberos.draw(modo,0.803,0.043,0.043,0.819,0.3686,0.3686,2);break;
+        case ARTICULADO: tanque.draw(modo,0.03,0.043,0.043,0.819,0.3686,0.3686,2);break;
         case ROTACIONX: rotacionx.draw(modo,0.0,0.0,0.0,0.0,1.0,0.0,2);break;
         case ROTACIONY: rotaciony.draw(modo,0.0,0.0,0.0,0.0,1.0,0.0,2);break;
         case ROTACIONZ: rotacionz.draw(modo,0.0,0.0,0.0,0.0,1.0,0.0,2);break;
@@ -185,22 +185,25 @@ void draw(void)
 {
 glDrawBuffer(GL_FRONT);
 clean_window();
-/*if(cambio ==0)
-        {glViewport(0.0,Ancho, Alto);
+if(cambio ==0)
+        {glViewport(0,0,Ancho, Alto);
         change_projection();
         change_observer();
         draw_axis();
         draw_objects();
 
         }
-        else vista_orto();
-*/
+        //else vista_orto();
+
 if(t_objeto==ARTICULADO)
         {glDrawBuffer(GL_BACK); //O GL_FRONT}
         clean_window();
         change_observer();
         tanque.seleccion();
-}}
+}
+glFlush();
+}
+
 
 
 
@@ -220,6 +223,8 @@ Aspect_ratio=(float) Alto1/(float )Ancho1;
 Size_y=Size_x*Aspect_ratio;
 change_projection();
 glViewport(0,0,Ancho1,Alto1);
+Ancho = Ancho1;
+Alto = Alto1;
 glutPostRedisplay();
 }
 
@@ -783,7 +788,7 @@ glutInitWindowSize(Window_width,Window_high);
 
 // llamada para crear la ventana, indicando el titulo (no se visualiza hasta que se llama
 // al bucle de eventos)
-glutCreateWindow("PRACTICA - 3");
+glutCreateWindow("PRACTICA - 5");
 
 // asignación de la funcion llamada "dibujar" al evento de dibujo
 glutDisplayFunc(draw);

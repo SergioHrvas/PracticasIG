@@ -2,7 +2,7 @@
 // Práctica 1 usando objetos
 //**************************************************************************
 
-#include "objetos_B4.h"
+#include "objetos_B5.h"
 
 
 //*************************************************************************
@@ -709,7 +709,6 @@ parametros(perfil, n, eje);
 
 }
 
-
 //************************************************************************
 // objeto articulado: tanque
 //************************************************************************
@@ -734,9 +733,8 @@ glScalef(1.0,0.22,0.95);
 base.draw(modo, r1, g1, b1, r2, g2, b2, grosor);
 glPopMatrix();
 
-
 glPushMatrix();
-glRotatef(90.0,1,0,0); //rota en el eje x 90º
+glRotatef(90.0,1,0,0);
 rodamiento.draw(modo, r1, g1, b1, r2, g2, b2, grosor);
 glPopMatrix();
 
@@ -759,7 +757,7 @@ rodamiento.draw(modo, r1, g1, b1, r2, g2, b2, grosor);
 glPopMatrix();
 
 glPushMatrix();
-glTranslatef(0.5,0.0,0.0); //mueve distancia (0.5 | 0 | 0)
+glTranslatef(0.5,0.0,0.0);
 glRotatef(90.0,1,0,0);
 rodamiento.draw(modo, r1, g1, b1, r2, g2, b2, grosor);
 glPopMatrix();
@@ -799,7 +797,7 @@ aux.x=0.04;aux.y=-0.4;aux.z=0.0;
 perfil.push_back(aux);
 aux.x=0.04;aux.y=0.4;aux.z=0.0;
 perfil.push_back(aux);
-tubo_abierto.parametros(perfil,12,0);
+tubo_abierto.parametros(perfil,12,1);
 };
 
 void _tubo::draw(_modo modo, float r1, float g1, float b1, float r2, float g2, float b2, float grosor)
@@ -862,7 +860,6 @@ glPopMatrix();
 glPopMatrix();
 
 }
-
 
 void _tanque::seleccion()
 {
