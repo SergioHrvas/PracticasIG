@@ -13,6 +13,36 @@ using namespace std;
 const float AXIS_SIZE=5000;
 typedef enum{POINTS,EDGES,SOLID_CHESS,SOLID,SOLID_ILLUMINATED_FLAT, SOLID_ILLUMINATED_GOURAUD} _modo;
 
+
+class Material{
+       public:
+              float * ambiente_difusa, * especular, *posicion;
+};     
+
+
+
+class Luz{
+
+	private:
+
+		float * ambiente_difusa, * especular;
+		float * posicion;
+              int angulo = 0;
+              GLenum id;
+	public:
+
+		Luz();
+              Luz(GLenum id, float *  amb_dif, float *  espec, float * pos);
+              void encenderLuz();
+		void apagarLuz();
+		void draw();
+		void movimientoLuz(bool horario);
+		void setAmbienteDifuso(float *  color);
+		void setEspecular(float *  color);
+		void setPosicion(float *  pos);
+		void setIDLuz(GLenum id);
+};
+
 //*************************************************************************
 // clase punto
 //*************************************************************************
@@ -29,7 +59,6 @@ vector<_vertex3f> vertices;
 };
 
 
-void luces();
 //*************************************************************************
 // clase triángulo
 //*************************************************************************
@@ -384,26 +413,4 @@ class _camionbomberos: public _triangulos3D{
        _elevador elevador;
        _pistola pistola;
        _agua agua;
-};
-
-class Luz{
-
-	private:
-
-		_vertex4f ambiente_difusa, especular;
-		_vertex4f posicion;
-              int angulo = 0;
-              GLenum id;
-	public:
-
-		Luz();
-              Luz(GLenum id, _vertex4f amb_dif, _vertex4f espec, _vertex4f pos);
-              void encenderLuz();
-		void apagarLuz();
-		void draw();
-		void movimientoLuz();
-		void setAmbienteDifuso(_vertex4f color);
-		void setEspecular(_vertex4f color);
-		void setPosicion(_vertex4f pos);
-		void setIDLuz(GLenum id);
 };

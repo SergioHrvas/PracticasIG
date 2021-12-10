@@ -12,7 +12,8 @@
 using namespace std;
 
 // tipos
-typedef enum{CUBO, PIRAMIDE, OBJETO_PLY, ROTACION, ARTICULADO,  ROTACIONX, ROTACIONY, ROTACIONZ, CILINDROY, CILINDROX, CILINDROZ, CONOY, CONOX, CONOZ, ESFERAY, ESFERAX, ESFERAZ} _tipo_objeto;
+typedef enum{CUBO, PIRAMIDE, OBJETO_PLY, ROTACION, ARTICULADO, CILINDRO, CONO, ESFERA} _tipo_objeto;
+
 _tipo_objeto t_objeto=ARTICULADO;
 _modo   modo=SOLID;
 
@@ -46,6 +47,10 @@ _elevador elevador;
 _pistola pistola;
 _agua agua;
 
+float luz1[]={1.0,1.0,1.0, 1}, pos1[]= {25, 10, 20, 1}, luz2[]={0.7922,0.0824,0.4157, 1}, pos2[]= {-20, -15.0, -20.0, 0};
+Luz luz(GL_LIGHT1, luz1, luz1, pos1);
+Luz luzb(GL_LIGHT2, luz2, luz2, pos2);
+
 _objeto_ply ply_perfil; 
 _rotacion rotacionx, rotaciony, rotacionz;
 _cilindro cilindrox(0.6,1.8,15,0), cilindroy(0.6,1.8,15,1), cilindroz(0.6,1.8,15,2);
@@ -69,7 +74,7 @@ float v_agua = 1;
 float v_max = 2;
 float v_min = 0.1;
 int velocidad_gl = 0;
-
+int eje = 1;
 //**************************************************************************
 //
 //***************************************************************************
@@ -148,24 +153,63 @@ switch (t_objeto){
 	case CUBO: cubo.draw(modo,1.0,0.0,0.0,0.0,1.0,0.0,2);break;
 	case PIRAMIDE: piramide.draw(modo,1.0,0.0,0.0,0.0,1.0,0.0,2);break;
         case OBJETO_PLY: ply.draw(modo,1.0,0.6,0.0,0.0,1.0,0.3,2);break;
-        case ROTACION: rotacion.draw(modo,1.0,0.0,0.0,0.0,1.0,0.0,2);break;
         case ARTICULADO: camionbomberos.draw(modo,0.803,0.043,0.043,0.819,0.3686,0.3686,2);break;
-        case ROTACIONX: rotacionx.draw(modo,0.0,0.0,0.0,0.0,1.0,0.0,2);break;
-        case ROTACIONY: rotaciony.draw(modo,0.0,0.0,0.0,0.0,1.0,0.0,2);break;
-        case ROTACIONZ: rotacionz.draw(modo,0.0,0.0,0.0,0.0,1.0,0.0,2);break;
-        case CILINDROX: cilindrox.draw(modo,1.0,0.0,0.0,0.0,1.0,0.0,2);break;
-        case CILINDROY: cilindroy.draw(modo,1.0,0.0,0.0,0.0,1.0,0.0,2);break;
-        case CILINDROZ: cilindroz.draw(modo,1.0,0.0,0.0,0.0,1.0,0.0,2);break;
-        case CONOX: conox.draw(modo,1.0,0.0,0.0,0.0,1.0,0.0,2);break;
-        case CONOY: conoy.draw(modo,1.0,0.0,0.0,0.0,1.0,0.0,2);break;
-        case CONOZ: conoz.draw(modo,1.0,0.0,0.0,0.0,1.0,0.0,2);break;
-        case ESFERAX: esferax.draw(modo,1.0,0.0,0.0,0.0,1.0,0.0,2);break;
-        case ESFERAY: esferay.draw(modo,1.0,0.0,0.0,0.0,1.0,0.0,2);break;
-        case ESFERAZ: esferaz.draw(modo,1.0,0.0,0.0,0.0,1.0,0.0,2);break;	
+        case ROTACION: if (eje==0)
+                                rotacionx.draw(modo,0.0,0.0,0.0,0.0,1.0,0.0,2);
+                        else if (eje==1)
+                                rotaciony.draw(modo,0.0,0.0,0.0,0.0,1.0,0.0,2);
+                        else if (eje==2)
+                                rotacionz.draw(modo,0.0,0.0,0.0,0.0,1.0,0.0,2);
+                        break;
+        case CILINDRO: if (eje==0)
+                                cilindrox.draw(modo,0.0,0.0,0.0,0.0,1.0,0.0,2);
+                        else if (eje==1)
+                                cilindroy.draw(modo,0.0,0.0,0.0,0.0,1.0,0.0,2);
+                        else if (eje==2)
+                                cilindroz.draw(modo,0.0,0.0,0.0,0.0,1.0,0.0,2);
+                        break;
+        case CONO:  if (eje==0)
+                                conox.draw(modo,0.0,0.0,0.0,0.0,1.0,0.0,2);
+                        else if (eje==1)
+                                conoy.draw(modo,0.0,0.0,0.0,0.0,1.0,0.0,2);
+                        else if (eje==2)
+                                conoz.draw(modo,0.0,0.0,0.0,0.0,1.0,0.0,2);
+                        break;
+        case ESFERA:  if (eje==0)
+                                esferax.draw(modo,0.0,0.0,0.0,0.0,1.0,0.0,2);
+                        else if (eje==1)
+                                esferay.draw(modo,0.0,0.0,0.0,0.0,1.0,0.0,2);
+                        else if (eje==2)
+                                esferaz.draw(modo,0.0,0.0,0.0,0.0,1.0,0.0,2);
+                        break;	
         }
 
 }
 
+void luces ()
+{
+
+	float luz1[]={1.0,1.0,1.0, 1}, pos1[]= {25, 10, 20, 1},luz2[]={0.7922,0.0824,0.4157, 1}, pos2[]= {-20, -15.0, -20.0, 0};
+        luz.setAmbienteDifuso(luz1);
+        luz.setEspecular(luz1);
+        luz.setAmbienteDifuso(luz1);
+        luz.setPosicion(pos1);
+        luz.draw();
+
+        // glLightfv(GL_LIGHT1, GL_DIFFUSE, luz1);
+	//	glLightfv(GL_LIGHT1, GL_SPECULAR, luz1);
+	//	glLightfv(GL_LIGHT1, GL_POSITION, pos1);
+/*
+	glLightfv(GL_LIGHT2, GL_DIFFUSE, luz2);
+	glLightfv(GL_LIGHT2, GL_SPECULAR, luz2);
+	glLightfv(GL_LIGHT2, GL_POSITION, pos2);*/
+	//	la luz 0 esta activda por defecto y la tenemos que desactivar
+	glDisable(GL_LIGHT0);
+	luz.encenderLuz();
+
+	//glEnable(GL_LIGHT1);
+	//glEnable (GL_LIGHT2);
+}
 
 //**************************************************************************
 //
@@ -224,19 +268,12 @@ switch (toupper(Tecla1)){
         case 'P':t_objeto=PIRAMIDE;break;
         case 'C':t_objeto=CUBO;break;
         case 'O':t_objeto=OBJETO_PLY;break;	
-        case 'R':t_objeto=ROTACIONX;break;
-        case 'T':t_objeto=ROTACIONY;break;
-        case 'Y':t_objeto=ROTACIONZ;break;
-        case 'D':t_objeto=CILINDROX;break;
-        case 'F':t_objeto=CILINDROY;break;
-        case 'G':t_objeto=CILINDROZ;break;
-        case 'V':t_objeto=CONOX;break;
-        case 'B':t_objeto=CONOY;break;
-        case 'N':t_objeto=CONOZ;break;
-        case 'E':t_objeto=ESFERAX;break;
-        case 'W':t_objeto=ESFERAY;break;
-        case 'S':t_objeto=ESFERAZ;break;
+        case 'R':t_objeto=ROTACION;break;
+        case 'D':t_objeto=CILINDRO;break;
+        case 'V':t_objeto=CONO;break;
+        case 'E':t_objeto=ESFERA;break;
         case 'A':t_objeto=ARTICULADO;break;
+        case 'W':eje = (eje+1) % 3;break;
         case '.':camionbomberos.movimiento_camion+=0.1*v_camion;break;
         case ',':camionbomberos.movimiento_camion-=0.1*v_camion;break;
         case '5':velocidad_gl = 1;break;
@@ -396,7 +433,15 @@ switch (toupper(Tecla1)){
 
                 }
 
-                break;
+        break;
+        case 'J': luz.movimientoLuz(1);
+        break;
+        case 'H': luz.movimientoLuz(0);
+        break;
+        /*case 'L': luz.elevar();
+        break;
+        case 'Ñ': luz.bajar();
+        break;*/
 	}
 glutPostRedisplay();
 }
@@ -651,6 +696,8 @@ perfil2.push_back(aux);
 aux.x=0.3;aux.y=1.4;aux.z=0.0;
 perfil2.push_back(aux);
 rotaciony.parametros(perfil2,6,1);
+rotacionz.parametros(perfil2,6,0);
+rotacionx.parametros(perfil2,6,2);
 
 
 // se llama a la inicialización de glut
