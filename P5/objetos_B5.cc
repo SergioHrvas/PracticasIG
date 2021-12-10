@@ -121,6 +121,26 @@ glEnd();
 }
 
 //*************************************************************************
+// dibujar en modo seleccion
+//*************************************************************************
+
+void _triangulos3D::draw_seleccion(int r, int g, int b)
+{
+int i;
+
+glPolygonMode(GL_FRONT_AND_BACK,GL_FILL);
+glColor3ub(r,g,b);
+glBegin(GL_TRIANGLES);
+for (i=0;i<caras.size();i++){
+	glVertex3fv((GLfloat *) &vertices[caras[i]._0]);
+	glVertex3fv((GLfloat *) &vertices[caras[i]._1]);
+	glVertex3fv((GLfloat *) &vertices[caras[i]._2]);
+	}
+glEnd();
+}
+
+
+//*************************************************************************
 // dibujar con distintos modos
 //*************************************************************************
 
@@ -131,8 +151,7 @@ switch (modo){
 	case EDGES:draw_aristas(r1, g1, b1, grosor);break;
 	case SOLID_CHESS:draw_solido_ajedrez(r1, g1, b1, r2, g2, b2);break;
 	case SOLID:draw_solido(r1, g1, b1);break;
-    case SOLID_ILLUMINATED_FLAT: draw_iluminacion_plana();break;
- //   case SOLID_ILLUMINATED_GOURAUD: draw_iluminacion_suave();break;
+	case SELECT:draw_seleccion(r1, g1, b1);break;
 	}
 }
 
@@ -211,16 +230,20 @@ b_normales_caras=true;
 
 void luces ()
 {
-float luz1[]={1.0,1.0,1.0, 1}, pos1[]= {3, 2.0, 4.0, 1};
-
+float luz1[]={1.0,1.0,1.0, 1}, pos1[]= {3, 2.0, 4.0, 1}, luz2[]={0.5,1.0,1.0, 1}, pos2[]= {3, -10, 0.0, 1};
         glLightfv(GL_LIGHT1, GL_DIFFUSE, luz1);
 		glLightfv(GL_LIGHT1, GL_SPECULAR, luz1);
 		glLightfv(GL_LIGHT1, GL_POSITION, pos1);
 
+
+
+        glLightfv(GL_LIGHT2, GL_DIFFUSE, luz2);
+		glLightfv(GL_LIGHT2, GL_SPECULAR, luz2);
+		glLightfv(GL_LIGHT2, GL_POSITION, pos2);
 		//la luz 0 esta activda por defecto y la tenemos que desactivar
 		glDisable(GL_LIGHT0);
 		glEnable(GL_LIGHT1);
-		//glEnable (GL_LIGHT2);
+		glEnable (GL_LIGHT2);
 }
 //*************************************************************************
 // clase cubo
@@ -794,36 +817,76 @@ glPopMatrix();
 
 _tanque::_tanque()
 {
+int c=100;
 giro_tubo=2.0;
 giro_torreta=0.0;
 giro_tubo_min=-9;
 giro_tubo_max=20;
+
+piezas=3;
+color_pick[0]=1.0;
+color_pick[1]=0.0;
+color_pick[2]=0.0; 
+for (int i=0;i<piezas;i++)
+  {activo[i]=0;
+   color_selec[0][i]=color_selec[1][i]=color_selec[2][i]=c;
+   c=c+20;
+  }
 };
 
 void _tanque::draw(_modo modo, float r1, float g1, float b1, float r2, float g2, float b2, float grosor)
 {
-glPushMatrix();
-chasis.draw(modo, r1, g1, b1, r2, g2, b2, grosor);
+float r_p,g_p,b_p;
 
-//las transformaciones se hacen de abajo a arriba
-//las clases torreta, tubo... están sobre el eje para poder girarlos
-//luego se giran y se ponen bien en la puta clase tanque de mierda
+r_p=color_pick[0];
+g_p=color_pick[1];
+b_p=color_pick[2];
+
+glPushMatrix();
+if (activo[0]==1) chasis.draw(modo, r_p, g_p, b_p, r_p, g_p, b_p, grosor);
+else chasis.draw(modo, r1, g1, b1, r2, g2, b2, grosor);
 
 glRotatef(giro_torreta,0,1,0);
 glPushMatrix();
 glTranslatef(0.0,(chasis.altura+torreta.altura)/2.0,0.0);
-torreta.draw(modo, r1, g1, b1, r2, g2, b2, grosor);
+if (activo[1]==1) torreta.draw(modo, r_p, g_p, b_p, r_p, g_p, b_p, grosor);
+else torreta.draw(modo, r1, g1, b1, r2, g2, b2, grosor);
 glPopMatrix();
 
 glPushMatrix();
 glTranslatef(torreta.anchura/2.0,(chasis.altura+torreta.altura)/2.0,0.0);
 glRotatef(giro_tubo,0,0,1);
-tubo.draw(modo, r1, g1, b1, r2, g2, b2, grosor);
+if (activo[2]==1) tubo.draw(modo, r_p, g_p, b_p, r_p, g_p, b_p, grosor);
+else tubo.draw(modo, r1, g1, b1, r2, g2, b2, grosor);
 glPopMatrix();
 glPopMatrix();
 
-};
+}
 
+
+void _tanque::seleccion()
+{
+int c;
+c=color_selec[0][0];
+glPushMatrix();
+chasis.draw(SELECT, c, c, c, c, c, c, 1);
+
+c=color_selec[0][1];
+glRotatef(giro_torreta,0,1,0);
+glPushMatrix();
+glTranslatef(0.0,(chasis.altura+torreta.altura)/2.0,0.0);
+torreta.draw(SELECT, c, c, c, c, c, c, 1);
+glPopMatrix();
+
+c=color_selec[0][2];
+glPushMatrix();
+glTranslatef(torreta.anchura/2.0,(chasis.altura+torreta.altura)/2.0,0.0);
+glRotatef(giro_tubo,0,0,1);
+tubo.draw(SELECT, c, c, c, c, c, c, 1);
+glPopMatrix();
+glPopMatrix();
+
+}
 
 //************************************************************************
 // objeto articulado: camion de bomberos
@@ -875,7 +938,6 @@ _carroceria::_carroceria()
 carcasa = _cubo();
 foco = _esfera();
 sirena = _cilindro();
-carcasa.ambiente_difusa=_vertex4f(0.803,0.043,0.043,1.0);
 
 };
 
@@ -1463,7 +1525,14 @@ glPopMatrix();
 _camionbomberos::_camionbomberos()
 {
 
+
 }
+
+//iluminacionsuave
+//iluminacionsuavepara la esfera
+//crear otra luz
+//mover luz y girarla
+
 
 void _camionbomberos::draw(_modo modo, float r1, float g1, float b1, float r2, float g2, float b2, float grosor)
 {

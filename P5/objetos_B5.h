@@ -11,7 +11,7 @@
 using namespace std;
 
 const float AXIS_SIZE=5000;
-typedef enum{POINTS,EDGES,SOLID_CHESS,SOLID,SOLID_ILLUMINATED_FLAT, SOLID_ILLUMINATED_GOURAUD} _modo;
+typedef enum{POINTS,EDGES,SOLID_CHESS,SOLID,SOLID_ILLUMINATED_FLAT, SOLID_ILLUMINATED_GOURAUD, SELECT} _modo;
 
 //*************************************************************************
 // clase punto
@@ -44,7 +44,7 @@ void    draw_solido(float r, float g, float b);
 void 	draw_solido_ajedrez(float r1, float g1, float b1, float r2, float g2, float b2);
 void 	draw_iluminacion_plana( );
 void 	draw_iluminacion_suave( );
-
+void    draw_seleccion(int r, int g, int b);
 void 	draw(_modo modo, float r1, float g1, float b1, float r2, float g2, float b2, float grosor);
 
 //calcular las normales
@@ -208,12 +208,18 @@ class _tanque: public _triangulos3D
 public:
        _tanque();
 void 	draw(_modo modo, float r1, float g1, float b1, float r2, float g2, float b2, float grosor);
+void    seleccion();
 
 float giro_tubo;
 float giro_torreta;
 
 float giro_tubo_min;
 float giro_tubo_max;
+
+float  color_pick[3];
+int    color_selec[3][3];
+int    activo[3];
+int    piezas;
 
 protected:
 _chasis  chasis;

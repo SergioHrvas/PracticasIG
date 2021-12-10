@@ -26,6 +26,13 @@ GLfloat Size_x,Size_y,Front_plane,Back_plane;
 
 // variables que determninan la posicion y tamaño de la ventana X
 int Window_x=50,Window_y=50,Window_width=450,Window_high=450;
+int cambio = 0;
+
+
+
+int estadoRaton[3], xc, yc;
+
+void pick_color(int x, int y);
 
 
 // objetos
@@ -54,8 +61,6 @@ _esfera esferax(1.2,15,0), esferay(1.2,15,1), esferaz(1.2,15,2);
 
 // _objeto_ply *ply1;
 
-
-int estadoRaton[3], xc, yc;
 
 
 
@@ -178,13 +183,24 @@ switch (t_objeto){
 
 void draw(void)
 {
-
+glDrawBuffer(GL_FRONT);
 clean_window();
-change_observer();
-draw_axis();
-draw_objects();
-glutSwapBuffers();
-}
+/*if(cambio ==0)
+        {glViewport(0.0,Ancho, Alto);
+        change_projection();
+        change_observer();
+        draw_axis();
+        draw_objects();
+
+        }
+        else vista_orto();
+*/
+if(t_objeto==ARTICULADO)
+        {glDrawBuffer(GL_BACK); //O GL_FRONT}
+        clean_window();
+        change_observer();
+        tanque.seleccion();
+}}
 
 
 
@@ -592,14 +608,14 @@ if(boton== GLUT_RIGHT_BUTTON) {
      } 
    else estadoRaton[2] = 1;
    }
-/*if(boton== GLUT_LEFT_BUTTON) {
+ if(boton== GLUT_LEFT_BUTTON) {
   if( estado == GLUT_DOWN) {
       estadoRaton[2] = 2;
       xc=x;
       yc=y;
       pick_color(xc, yc);
     } 
-  }*/
+  }
 }
 
 /*************************************************************************/
@@ -635,7 +651,7 @@ if(estadoRaton[2]==1)
      glutPostRedisplay();
     }
 }
-/*
+
 void procesar_color(unsigned char color[3])
 {
 int i;
@@ -651,9 +667,8 @@ for (i=0;i<tanque.piezas;i++)
          glutPostRedisplay();
         }
     }                
- }*/
+ }
 
-/*
 
 void pick_color(int x, int y)
 {
@@ -667,7 +682,7 @@ printf(" valor x %d, valor y %d, color %d, %d, %d \n",x,y,pixel[0],pixel[1],pixe
 
 procesar_color(pixel);
 }
-*/
+
 //***************************************************************************
 // Funcion de incializacion
 //***************************************************************************
