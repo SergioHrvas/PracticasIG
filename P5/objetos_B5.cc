@@ -797,7 +797,7 @@ aux.x=0.04;aux.y=-0.4;aux.z=0.0;
 perfil.push_back(aux);
 aux.x=0.04;aux.y=0.4;aux.z=0.0;
 perfil.push_back(aux);
-tubo_abierto.parametros(perfil,12,1);
+tubo_abierto.parametros(perfil,12,);
 };
 
 void _tubo::draw(_modo modo, float r1, float g1, float b1, float r2, float g2, float b2, float grosor)
@@ -1648,3 +1648,8 @@ glPopMatrix();
 //Examen lampara
 //GLLIGHTTWO SIDES
 //a2.cross_product(a1); para cruzar el vector
+
+
+// SELECCION DEL CAMION DE BOMBEROS
+// EXTRA: MODO FIJO
+
