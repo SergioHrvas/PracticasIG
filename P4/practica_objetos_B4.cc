@@ -16,7 +16,7 @@ typedef enum{CUBO, PIRAMIDE, OBJETO_PLY, ROTACION, ARTICULADO, CILINDRO, CONO, E
 
 _tipo_objeto t_objeto=ARTICULADO;
 _modo   modo=SOLID;
-_material materi = ORO;
+_material materi = VACIO;
 // variables que definen la posicion de la camara en coordenadas polares
 GLfloat Observer_distance;
 GLfloat Observer_angle_x;
@@ -47,9 +47,10 @@ _elevador elevador;
 _pistola pistola;
 _agua agua;
 
-float luz1[]={1.0,1.0,1.0, 1}, pos1[]= {25, 10, 20, 1}, luz2[]={0.7922,0.0824,0.4157, 1}, pos2[]= {-20, -15.0, -20.0, 0};
-Luz luz(GL_LIGHT1, luz1, luz1, pos1);
-Luz luzb(GL_LIGHT2, luz2, luz2, pos2);
+_vertex4f luz1(1.0,1.0,1.0, 1), pos1 (15, 8, 13, 1),
+        luz2(0.5,0.5,1, 1), pos2(-20, -5.0, -20.0, 0);
+Luz luz(GL_LIGHT1, luz1, luz1, luz1, pos1);
+Luz luzb(GL_LIGHT2, luz2, luz2, luz2, pos2);
 
 _objeto_ply ply_perfil; 
 _rotacion rotacionx, rotaciony, rotacionz;
@@ -108,12 +109,12 @@ glFrustum(-Size_x,Size_x,-Size_y,Size_y,Front_plane,Back_plane);
 void change_observer()
 {
 
-// posicion del observador
-glMatrixMode(GL_MODELVIEW);
-glLoadIdentity();
-glTranslatef(0,0,-Observer_distance);
-glRotatef(Observer_angle_x,1,0,0);
-glRotatef(Observer_angle_y,0,1,0);
+        // posicion del observador
+        glMatrixMode(GL_MODELVIEW);
+        glLoadIdentity();
+        glTranslatef(0,0,-Observer_distance);
+        glRotatef(Observer_angle_x,1,0,0);
+        glRotatef(Observer_angle_y,0,1,0);
 }
 
 //**************************************************************************
@@ -122,23 +123,23 @@ glRotatef(Observer_angle_y,0,1,0);
 
 void draw_axis()
 {
-	
-glDisable(GL_LIGHTING);
-glLineWidth(2);
-glBegin(GL_LINES);
-// eje X, color rojo
-glColor3f(1,0,0);
-glVertex3f(-AXIS_SIZE,0,0);
-glVertex3f(AXIS_SIZE,0,0);
-// eje Y, color verde
-glColor3f(0,1,0);
-glVertex3f(0,-AXIS_SIZE,0);
-glVertex3f(0,AXIS_SIZE,0);
-// eje Z, color azul
-glColor3f(0,0,1);
-glVertex3f(0,0,-AXIS_SIZE);
-glVertex3f(0,0,AXIS_SIZE);
-glEnd();
+                
+        glDisable(GL_LIGHTING);
+        glLineWidth(2);
+        glBegin(GL_LINES);
+        // eje X, color rojo
+        glColor3f(1,0,0);
+        glVertex3f(-AXIS_SIZE,0,0);
+        glVertex3f(AXIS_SIZE,0,0);
+        // eje Y, color verde
+        glColor3f(0,1,0);
+        glVertex3f(0,-AXIS_SIZE,0);
+        glVertex3f(0,AXIS_SIZE,0);
+        // eje Z, color azul
+        glColor3f(0,0,1);
+        glVertex3f(0,0,-AXIS_SIZE);
+        glVertex3f(0,0,AXIS_SIZE);
+        glEnd();
 }
 
 
@@ -187,27 +188,13 @@ void draw_objects()
 
 void luces ()
 {
-
-	float luz1[]={1.0,1.0,1.0, 1}, pos1[]= {25, 10, 20, 1},luz2[]={0.7922,0.0824,0.4157, 1}, pos2[]= {-20, -15.0, -20.0, 0};
-        luz.setAmbienteDifuso(luz1);
-        luz.setEspecular(luz1);
-        luz.setAmbienteDifuso(luz1);
-        luz.setPosicion(pos1);
         luz.draw();
+        luzb.draw();
 
-        // glLightfv(GL_LIGHT1, GL_DIFFUSE, luz1);
-	//	glLightfv(GL_LIGHT1, GL_SPECULAR, luz1);
-	//	glLightfv(GL_LIGHT1, GL_POSITION, pos1);
-/*
-	glLightfv(GL_LIGHT2, GL_DIFFUSE, luz2);
-	glLightfv(GL_LIGHT2, GL_SPECULAR, luz2);
-	glLightfv(GL_LIGHT2, GL_POSITION, pos2);*/
-	//	la luz 0 esta activda por defecto y la tenemos que desactivar
 	glDisable(GL_LIGHT0);
 	luz.encenderLuz();
+      //  luzb.encenderLuz();
 
-	//glEnable(GL_LIGHT1);
-	//glEnable (GL_LIGHT2);
 }
 
 //**************************************************************************

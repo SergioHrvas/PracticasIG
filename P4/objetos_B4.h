@@ -35,19 +35,20 @@ class _Material{
 class Luz{
 	private:
 
-		float * ambiente_difusa, * especular;
-		float * posicion;
+		_vertex4f ambiente, difusa, especular;
+		_vertex4f posicion;
               int angulo = 0;
               GLenum id;
 	public:
 
 		Luz();
-              Luz(GLenum id, float *  amb_dif, float *  espec, float * pos);
+              Luz(GLenum id, _vertex4f  amb, _vertex4f dif, _vertex4f  espec, _vertex4f pos);
               void encenderLuz();
 		void apagarLuz();
 		void draw();
 		void movimientoLuz(bool horario);
-		void setAmbienteDifuso(float *  color);
+		void setAmbiente(float *  color);
+              void setDifusa(float * color);
 		void setEspecular(float *  color);
 		void setPosicion(float *  pos);
 		void setIDLuz(GLenum id);
@@ -95,12 +96,12 @@ class _triangulos3D: public _puntos3D
               bool b_normales_vertices;
 
               //material
-              _vertex4f ambiente_difusa;     //coeficientes ambiente y difuso
+              _vertex4f ambiente;     //coeficientes ambiente y difuso
+              _vertex4f difusa;
               _vertex4f especular;           //coeficiente especular
               float brillo;                  //exponente del brillo 
 
               _Material material;
-              bool materializado;
 };
 
 
@@ -275,10 +276,16 @@ class _carroceria: public _triangulos3D
 
        protected:
               _cubo carcasa;
-              _cubo carcasa2;
+              _cubo reposa;
               _cubo ventana;
+              _cubo puerta;
               _esfera foco;
               _cilindro sirena;
+              _cubo matricula_b;
+              _cubo matricula_a;
+              _cubo luza;
+              _cubo luzb;
+              _cubo luzc;
 };
 
 class _plataforma: public _triangulos3D

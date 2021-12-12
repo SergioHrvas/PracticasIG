@@ -46,11 +46,10 @@ _triangulos3D::_triangulos3D()
 {
 	b_normales_caras=false;
 	b_normales_vertices=false;
-
-	ambiente_difusa=_vertex4f(0.2,0.4,0.9,1.0);  //coeficientes ambiente y difuso
-	especular=_vertex4f(0.5,0.5,0.5,1.0);        //coeficiente especular
-	brillo=50;                               //exponente del brillo 
-
+	difusa=_vertex4f(0.90,0.0,0.0,1.0); 
+  	ambiente=_vertex4f(1,0.2,0.2,1.0);	
+	especular=_vertex4f(0.5,0.5,0.5,1.0);  
+	brillo=50;  
 }
 
 //*************************************************************************
@@ -157,7 +156,8 @@ void _triangulos3D::draw_iluminacion_plana(_material mate)
 		glMaterialf(GL_FRONT_AND_BACK,GL_SHININESS,material.brillo);	
 	}
 	else{
-		glMaterialfv(GL_FRONT_AND_BACK,GL_AMBIENT_AND_DIFFUSE,(GLfloat *) &ambiente_difusa);
+		glMaterialfv(GL_FRONT_AND_BACK,GL_DIFFUSE,(GLfloat *) &difusa);
+		glMaterialfv(GL_FRONT_AND_BACK,GL_AMBIENT,(GLfloat *) &ambiente);
 		glMaterialfv(GL_FRONT_AND_BACK,GL_SPECULAR,(GLfloat *) &especular);
 		glMaterialf(GL_FRONT_AND_BACK,GL_SHININESS,brillo);
 	}
@@ -197,33 +197,12 @@ void _triangulos3D::calcular_normales_caras()
 }
 
 
-void _triangulos3D::calcular_normales_vertices(){
-
-  if (!b_normales_caras) calcular_normales_caras();
-
-  normales_vertices.resize(vertices.size());
-
-    for (int i = 0; i < caras.size(); i++){
-      normales_vertices[caras[i]._0] += normales_caras[i];
-      normales_vertices[caras[i]._1] += normales_caras[i];
-      normales_vertices[caras[i]._2] += normales_caras[i];
-    }
-
-    for (int i = 0; i < vertices.size(); i++)
-      normales_vertices[i] = normales_vertices[i].normalize();
-
-    b_normales_vertices=true;
-}
-
-
 void _triangulos3D::draw_iluminacion_suave(_material mate) {
 
   if (!b_normales_vertices) calcular_normales_vertices();
-
-  glLightModeli(GL_LIGHT_MODEL_LOCAL_VIEWER,GL_TRUE);
-  glShadeModel(GL_SMOOTH);
-  glEnable(GL_LIGHTING);
-  glEnable(GL_NORMALIZE);
+  	 glShadeModel(GL_SMOOTH);
+ 	 glEnable(GL_NORMALIZE);
+	 glEnable(GL_LIGHTING);
 
 	//Establecemos material
 	if(mate!=VACIO){
@@ -234,12 +213,13 @@ void _triangulos3D::draw_iluminacion_suave(_material mate) {
 		glMaterialf(GL_FRONT_AND_BACK,GL_SHININESS,material.brillo);	
 	}
 	else{
-		glMaterialfv(GL_FRONT_AND_BACK,GL_AMBIENT_AND_DIFFUSE,(GLfloat *) &ambiente_difusa);
+		glMaterialfv(GL_FRONT_AND_BACK,GL_AMBIENT,(GLfloat *) &ambiente);
+		glMaterialfv(GL_FRONT_AND_BACK,GL_DIFFUSE,(GLfloat *) &difusa);
 		glMaterialfv(GL_FRONT_AND_BACK,GL_SPECULAR,(GLfloat *) &especular);
 		glMaterialf(GL_FRONT_AND_BACK,GL_SHININESS,brillo);
 	}
-  glPolygonMode(GL_FRONT_AND_BACK,GL_FILL);
 
+  glPolygonMode(GL_FRONT_AND_BACK,GL_FILL);
   glBegin(GL_TRIANGLES);
 
     for (int i = 0; i < caras.size(); i++){
@@ -254,8 +234,33 @@ void _triangulos3D::draw_iluminacion_suave(_material mate) {
   glEnd();
 
   glDisable(GL_LIGHTING);
-  //glDisable(GL_NORMALIZE);
+
 }
+
+void _triangulos3D::calcular_normales_vertices(){
+;
+  if (!b_normales_caras) calcular_normales_caras();
+
+	normales_vertices.resize(vertices.size());
+
+	_vertex3f normal;
+
+	for(int i = 0; i < vertices.size(); ++i)
+		normales_vertices[i] = _vertex3f(0.0,0.0,0.0);
+
+	for(int i = 0; i < caras.size(); ++i){
+		normales_vertices[caras[i]._0] += normales_caras[i];
+		normales_vertices[caras[i]._1] += normales_caras[i];
+		normales_vertices[caras[i]._2] += normales_caras[i];
+	}
+
+	for(int i = 0; i < vertices.size(); ++i)
+		normales_vertices[i].normalize();
+
+	b_normales_vertices = true;
+}
+
+
 
 
 //*************************************************************************
@@ -268,27 +273,27 @@ _cubo::_cubo(float tam)
 	vertices.resize(8);
 	vertices[0].x=-tam;vertices[0].y=-tam;vertices[0].z=tam;
 	vertices[1].x=tam;vertices[1].y=-tam;vertices[1].z=tam;
-	vertices[2].x=tam;vertices[2].y=tam;vertices[2].z=tam;
-	vertices[3].x=-tam;vertices[3].y=tam;vertices[3].z=tam;
-	vertices[4].x=-tam;vertices[4].y=-tam;vertices[4].z=-tam;
-	vertices[5].x=tam;vertices[5].y=-tam;vertices[5].z=-tam;
+	vertices[2].x=tam;vertices[2].y=-tam;vertices[2].z=-tam;
+	vertices[3].x=-tam;vertices[3].y=-tam;vertices[3].z=-tam;
+	vertices[4].x=-tam;vertices[4].y=tam;vertices[4].z=tam;
+	vertices[5].x=tam;vertices[5].y=tam;vertices[5].z=tam;
 	vertices[6].x=tam;vertices[6].y=tam;vertices[6].z=-tam;
 	vertices[7].x=-tam;vertices[7].y=tam;vertices[7].z=-tam;
 
 	// triangulos
 	caras.resize(12);
-	caras[0]._0=0;caras[0]._1=1;caras[0]._2=3;
-	caras[1]._0=1;caras[1]._1=2;caras[1]._2=3;
-	caras[2]._0=1;caras[2]._1=5;caras[2]._2=2;
-	caras[3]._0=5;caras[3]._1=6;caras[3]._2=2;
-	caras[4]._0=5;caras[4]._1=4;caras[4]._2=6;
-	caras[5]._0=4;caras[5]._1=7;caras[5]._2=6;
-	caras[6]._0=4;caras[6]._1=0;caras[6]._2=7;
-	caras[7]._0=0;caras[7]._1=3;caras[7]._2=7;
-	caras[8]._0=3;caras[8]._1=2;caras[8]._2=7;
-	caras[9]._0=2;caras[9]._1=6;caras[9]._2=7;
-	caras[10]._0=4;caras[10]._1=5;caras[10]._2=0;
-	caras[11]._0=5;caras[11]._1=1; caras[11]._2=0;  
+	caras[0]._0=0;caras[0]._1=2;caras[0]._2=1;
+	caras[1]._0=0;caras[1]._1=3;caras[1]._2=2;
+	caras[2]._0=0;caras[2]._1=1;caras[2]._2=4;
+	caras[3]._0=1;caras[3]._1=5;caras[3]._2=4;
+	caras[4]._0=1;caras[4]._1=2;caras[4]._2=5;
+	caras[5]._0=2;caras[5]._1=6;caras[5]._2=5;
+	caras[6]._0=3;caras[6]._1=6;caras[6]._2=2;
+	caras[7]._0=3;caras[7]._1=7;caras[7]._2=6;
+	caras[8]._0=0;caras[8]._1=7;caras[8]._2=3;
+	caras[9]._0=0; caras[9]._1=4;caras[9]._2=7;
+	caras[10]._0=5;caras[10]._1=7;caras[10]._2=4;
+	caras[11]._0=5;caras[11]._1=6; caras[11]._2=7;  
 }
 
 
@@ -869,8 +874,9 @@ _ruedas::_ruedas()
 	// perfil para un cilindro
 
 	rueda = _cilindro(0.235, 0.165, 15, 1);
-	rueda.ambiente_difusa=_vertex4f(0.25,0.25,0.25,1.0);  //coeficientes ambiente y difuso
-	rueda.especular=_vertex4f(0,0,0,1.0);        //coeficiente especular
+	rueda.ambiente=_vertex4f(0.25,0.25,0.25,1.0);  //coeficientes ambiente y difuso
+	rueda.difusa=_vertex4f(0.1,0.1,0.1,1.0);
+	rueda.especular=_vertex4f(0.5,0.5,0.5,1.0);        //coeficiente especular
 	brillo=50;  
 };
 
@@ -914,20 +920,70 @@ _carroceria::_carroceria()
 {
 	// perfil para un cilindro
 	carcasa = _cubo();
-	carcasa2 = _cubo();
+	reposa = _cubo();
 	ventana = _cubo();
-
+	puerta = _cubo();
 	foco = _esfera();
 	sirena = _cilindro();
+	matricula_b = _cubo();
+	matricula_a = _cubo();
 
-	carcasa.ambiente_difusa=_vertex4f(0.7922,0.0,0.0,1.0);  //coeficientes ambiente y difuso
-	carcasa.especular=_vertex4f(0.5,0.5,0.5,1.0);        //coeficiente especular
-	brillo=50;                               //exponente del brillo 
+	carcasa.difusa=_vertex4f(0.90,0.0,0.0,1.0);  //coeficientes ambiente y difuso
+	carcasa.ambiente=_vertex4f(0.25,0.25,0.25,1.0);
+	//carcasa.especular=_vertex4f(0.5,0.5,0.5,1.0);        //coeficiente especular
+	carcasa.brillo=50;   
 
-	ventana.ambiente_difusa=_vertex4f(0.25,0.25,0.25,1.0);  //coeficientes ambiente y difuso
-	ventana.especular=_vertex4f(0.5,0.5,0.5,1.0);        //coeficiente especular
-	brillo=50;                               //exponente del brillo 
+	reposa.difusa=_vertex4f(0.90,0.0,0.0,1.0); 
+	reposa.ambiente=_vertex4f(1,0.2,0.2,1.0);	
+	reposa.especular=_vertex4f(0.5,0.5,0.5,1.0);  
+	reposa.brillo=50;                              
 
+	ventana.difusa=_vertex4f(0.15,0.15,0.15,1.0);
+	ventana.ambiente=_vertex4f(0.55,0.55,0.55,1.0);	
+	ventana.especular=_vertex4f(0.5,0.5,0.5,1.0);     
+	ventana.brillo = 50;                               
+
+	puerta.difusa=_vertex4f(0.25,0.25,0.25,1.0);  //coeficientes ambiente y difuso
+	puerta.ambiente=_vertex4f(0.55,0.55,0.55,1.0);	
+	puerta.especular=_vertex4f(0.5,0.5,0.5,1.0);        //coeficiente especular
+	puerta.brillo = 50; 
+
+
+	foco.difusa=_vertex4f(1, 0.9882, 0.2745,1.0);
+	foco.ambiente=_vertex4f(0.55,0.55,0.55,1.0);	
+	foco.especular=_vertex4f(0.5,0.5,0.5,1.0);     
+	foco.brillo = 50;   
+
+	sirena.difusa=_vertex4f(0.0, 0.5020, 0.8745,1.0);
+	sirena.ambiente=_vertex4f(0.55,0.55,0.55,1.0);	
+	sirena.especular=_vertex4f(0.5,0.5,0.5,1.0);     
+	sirena.brillo = 50; 
+
+	
+	matricula_b.difusa=_vertex4f(0.9, 0.9, 0.9,1.0);
+	matricula_b.ambiente=_vertex4f(0.55,0.55,0.55,1.0);	
+	matricula_b.especular=_vertex4f(0.5,0.5,0.5,1.0);     
+	matricula_b.brillo = 50; 
+
+	matricula_a.difusa=_vertex4f(0.0, 0.2902, 0.8353,1.0);
+	matricula_a.ambiente=_vertex4f(0.55,0.55,0.55,1.0);
+	matricula_a.especular=_vertex4f(0.5,0.5,0.5,1.0);     
+	matricula_a.brillo = 50; 
+
+	luza.difusa=_vertex4f(0.803,0.043,0.043,1.0);
+	luza.ambiente=_vertex4f(0.55,0.55,0.55,1.0);
+	luza.especular=_vertex4f(0.5,0.5,0.5,1.0);
+	luza.brillo = 50; 
+	
+	luzb.difusa=_vertex4f(1, 0.9882, 0.2745,1.0);
+	luzb.ambiente=_vertex4f(0.55,0.55,0.55,1.0);
+	luzb.especular=_vertex4f(0.5,0.5,0.5,1.0);     
+	luzb.brillo = 50; 
+
+	luzc.difusa=_vertex4f(0.55, 0.55, 0.55,1.0);
+	luzc.ambiente=_vertex4f(0.55,0.55,0.55,1.0);
+	luzc.especular=_vertex4f(0.5,0.5,0.5,1.0);     
+	luzc.brillo = 50; 
 };
 
 void _carroceria::draw(_modo modo, float r1, float g1, float b1, float r2, float g2, float b2, float grosor, _material mate)
@@ -944,7 +1000,7 @@ void _carroceria::draw(_modo modo, float r1, float g1, float b1, float r2, float
 	glPushMatrix();
 	glTranslatef(2.8,1.1,0.0);
 	glScalef(0.9,0.2,1);
-	carcasa.draw(modo, r1, g1, b1, r2, g2, b2, grosor, mate);
+	reposa.draw(modo, r1, g1, b1, r2, g2, b2, grosor, mate);
 	glPopMatrix();
 
 
@@ -985,56 +1041,56 @@ void _carroceria::draw(_modo modo, float r1, float g1, float b1, float r2, float
 	glPushMatrix();
 	glTranslatef(-0.4,0.3,0.0);
 	glScalef(0.01,0.15,0.98);
-	carcasa.draw(modo, 0.55, 0.55, 0.55, 0.7, 0.7, 0.7, grosor, mate);
+	luzc.draw(modo, 0.55, 0.55, 0.55, 0.7, 0.7, 0.7, grosor, mate);
 	glPopMatrix();
 
 	glPushMatrix();
 	glTranslatef(-0.41,0.3,0.3);
 	glScalef(0.01,0.07,0.15);
-	carcasa.draw(modo, 0.803,0.043,0.043,0.819,0.3686,0.3686, grosor, mate);
+	luza.draw(modo, 0.803,0.043,0.043,0.819,0.3686,0.3686, grosor, mate);
 	glPopMatrix();
 
 	glPushMatrix();
 	glTranslatef(-0.41,0.3,-0.3);
 	glScalef(0.01,0.07,0.15);
-	carcasa.draw(modo, 0.803,0.043,0.043,0.819,0.3686,0.3686, grosor, mate);
+	luza.draw(modo, 0.803,0.043,0.043,0.819,0.3686,0.3686, grosor, mate);
 	glPopMatrix();
 
 	glPushMatrix();
 	glTranslatef(-0.41,0.3,0.41);
 	glScalef(0.01,0.07,0.07);
-	carcasa.draw(modo, 1, 0.9882, 0.2745, 0.8588, 0.4627, 0.0941, grosor, mate);
+	luzb.draw(modo, 1, 0.9882, 0.2745, 0.8588, 0.4627, 0.0941, grosor, mate);
 	glPopMatrix();
 
 	glPushMatrix();
 	glTranslatef(-0.41,0.3,-0.41);
 	glScalef(0.01,0.07,0.07);
-	carcasa.draw(modo, 1, 0.9882, 0.2745, 0.8588, 0.4627, 0.0941, grosor, mate);
+	luzb.draw(modo, 1, 0.9882, 0.2745, 0.8588, 0.4627, 0.0941, grosor, mate);
 	glPopMatrix();
 
 	//matriculas
 	glPushMatrix();
 	glTranslatef(-0.41,0.3,0.0);
 	glScalef(0.01,0.15,0.4);
-	carcasa.draw(modo, 0.9, 0.9, 0.9, 0.8, 0.8, 0.8, grosor, mate);
+	matricula_b.draw(modo, 0.9, 0.9, 0.9, 0.8, 0.8, 0.8, grosor, mate);
 	glPopMatrix();
 
 	glPushMatrix();
 	glTranslatef(-0.415,0.3,-0.15);
 	glScalef(0.01,0.15,0.1);
-	carcasa.draw(modo, 0.0, 0.2902, 0.8353, 0.0, 0.0, 0.3333, grosor, mate);
+	matricula_a.draw(modo, 0.0, 0.2902, 0.8353, 0.0, 0.0, 0.3333, grosor, mate);
 	glPopMatrix();
 
 	glPushMatrix();
 	glTranslatef(3.2,0.3,0.0);
 	glScalef(0.01,0.15,0.4);
-	carcasa.draw(modo, 0.9, 0.9, 0.9, 0.8, 0.8, 0.8, grosor, mate);
+	matricula_b.draw(modo, 0.9, 0.9, 0.9, 0.8, 0.8, 0.8, grosor, mate);
 	glPopMatrix();
 
 	glPushMatrix();
 	glTranslatef(3.21,0.3,0.15);
 	glScalef(0.01,0.15,0.1);
-	carcasa.draw(modo, 0.0, 0.2902, 0.8353, 0.0, 0.0, 0.3333, grosor, mate);
+	matricula_a.draw(modo, 0.0, 0.2902, 0.8353, 0.0, 0.0, 0.3333, grosor, mate);
 	glPopMatrix();
 
 	//Sirenas
@@ -1054,19 +1110,19 @@ void _carroceria::draw(_modo modo, float r1, float g1, float b1, float r2, float
 	glPushMatrix();
 	glTranslatef(1,0.6,0.501);
 	glScalef(0.8,0.48,0.01);
-	carcasa.draw(modo, 0.6, 0.6, 0.6, 0.8, 0.8, 0.8, grosor, mate);
+	puerta.draw(modo, 0.6, 0.6, 0.6, 0.8, 0.8, 0.8, grosor, mate);
 	glPopMatrix();
 
 	glPushMatrix();
 	glTranslatef(1,0.6,-0.501);
 	glScalef(0.8,0.48,0.01);
-	carcasa.draw(modo, 0.6, 0.6, 0.6, 0.8, 0.8, 0.8, grosor, mate);
+	puerta.draw(modo, 0.6, 0.6, 0.6, 0.8, 0.8, 0.8, grosor, mate);
 	glPopMatrix();
 
 	glPushMatrix();
 	glTranslatef(-0.4,0.68,0);
 	glScalef(0.01,0.48,0.8);
-	carcasa.draw(modo, 0.6, 0.6, 0.6, 0.8, 0.8, 0.8, grosor, mate);
+	puerta.draw(modo, 0.6, 0.6, 0.6, 0.8, 0.8, 0.8, grosor, mate);
 	glPopMatrix();
 }
 //************************************************************************
@@ -1076,6 +1132,10 @@ _plataforma::_plataforma()
 	// perfil para un cilindro
 	cubo = _cubo();
 
+ 	cubo.difusa=_vertex4f(0.20,0.2,0.2,1.0);  //coeficientes ambiente y difuso
+	cubo.ambiente=_vertex4f(0.55,0.55,0.55,1.0);  //coeficientes ambiente y difuso
+	cubo.especular=_vertex4f(0.5,0.5,0.5,1.0);        //coeficiente especular
+	cubo.brillo = 50;  
 };
 
 void _plataforma::draw(_modo modo, float r1, float g1, float b1, float r2, float g2, float b2, float grosor, _material mate)
@@ -1110,6 +1170,11 @@ _escaleragrande::_escaleragrande()
 {
 	// perfil para un cilindro
 	barra = _cubo();
+
+ 	barra.difusa=_vertex4f(0.40,0.4,0.4,1.0);  //coeficientes ambiente y difuso
+	barra.ambiente=_vertex4f(0.55,0.55,0.55,1.0);  //coeficientes ambiente y difuso
+	barra.especular=_vertex4f(0.5,0.5,0.5,1.0);        //coeficiente especular
+	barra.brillo = 50; 
 };
 
 void _escaleragrande::draw(_modo modo, float r1, float g1, float b1, float r2, float g2, float b2, float grosor, _material mate)
@@ -1216,6 +1281,14 @@ _escalerachica::_escalerachica()
 {
 	// perfil para un cilindro
 	barra = _cubo();
+
+	// perfil para un cilindro
+	barra = _cubo();
+
+ 	barra.difusa=_vertex4f(0.30,0.3,0.3,1.0);  //coeficientes ambiente y difuso
+	barra.ambiente=_vertex4f(0.55,0.55,0.55,1.0);  //coeficientes ambiente y difuso
+	barra.especular=_vertex4f(0.5,0.5,0.5,1.0);        //coeficiente especular
+	barra.brillo = 50; 
 };
 
 void _escalerachica::draw(_modo modo, float r1, float g1, float b1, float r2, float g2, float b2, float grosor, _material mate)
@@ -1315,6 +1388,11 @@ void _escalerachica::draw(_modo modo, float r1, float g1, float b1, float r2, fl
 _cabina::_cabina()
 {
 	barra = _cubo();
+
+ 	barra.difusa=_vertex4f(0.8,0.2,0.2,1.0);  //coeficientes ambiente y difuso
+	barra.ambiente=_vertex4f(0.55,0.55,0.55,1.0);  //coeficientes ambiente y difuso
+	barra.especular=_vertex4f(0.5,0.5,0.5,1.0);        //coeficiente especular
+	barra.brillo = 50; 
 };
 
 void _cabina::draw(_modo modo, float r1, float g1, float b1, float r2, float g2, float b2, float grosor, _material mate)
@@ -1390,6 +1468,10 @@ _elevador::_elevador()
 {
 	// perfil para un cilindro
 	barra = _cubo();
+ 	barra.difusa=_vertex4f(0.8,0.5,0.5,1.0);  //coeficientes ambiente y difuso
+	barra.ambiente=_vertex4f(0.55,0.55,0.55,1.0);  //coeficientes ambiente y difuso
+	barra.especular=_vertex4f(0.5,0.5,0.5,1.0);        //coeficiente especular
+	barra.brillo = 50; 
 };
 
 void _elevador::draw(_modo modo, float r1, float g1, float b1, float r2, float g2, float b2, float grosor, _material mate)
@@ -1478,6 +1560,10 @@ void _elevador::draw(_modo modo, float r1, float g1, float b1, float r2, float g
 _pistola::_pistola()
 {
 	pistola = _cilindro(0.06,0.4,15,1);
+ 	pistola.difusa=_vertex4f(0.3,0.5,0.7,1.0);  //coeficientes ambiente y difuso
+	pistola.ambiente=_vertex4f(0.25,0.25,0.25,1.0);  //coeficientes ambiente y difuso
+	pistola.especular=_vertex4f(0.5,0.5,0.5,1.0);        //coeficiente especular
+	pistola.brillo = 50; 
 };
 
 void _pistola::draw(_modo modo, float r1, float g1, float b1, float r2, float g2, float b2, float grosor, _material mate)
@@ -1496,6 +1582,10 @@ void _pistola::draw(_modo modo, float r1, float g1, float b1, float r2, float g2
 _agua::_agua()
 {
 	gota = _esfera();
+ 	gota.difusa=_vertex4f(0.0, 0.81, 1,1.0);  //coeficientes ambiente y difuso
+	gota.ambiente=_vertex4f(0.25,0.25,0.25,1.0);  //coeficientes ambiente y difuso
+	gota.especular=_vertex4f(0.5,0.5,0.5,1.0);        //coeficiente especular
+	gota.brillo = 50; 
 };
 
 void _agua::draw(_modo modo, float r1, float g1, float b1, float r2, float g2, float b2, float grosor, _material mate)
@@ -1636,15 +1726,16 @@ void _camionbomberos::draw(_modo modo, float r1, float g1, float b1, float r2, f
 // Métodos de luz
 
 Luz::Luz(){
-	
+	 float l[] = {20, 30, 20, 1};
+	 posicion = l;
 }
 
-Luz::Luz(GLenum iden, float *  amb_dif, float *  espec, float *  pos){
+Luz::Luz(GLenum iden, _vertex4f  amb, _vertex4f dif, _vertex4f espec, _vertex4f  pos){
 		id = iden;
-		ambiente_difusa = amb_dif;
+		ambiente = amb;
+		difusa = dif;
 		especular = espec;
 		posicion = pos;
-	
 }
 
 void Luz::encenderLuz(){
@@ -1661,17 +1752,20 @@ void Luz::apagarLuz(){
 }
 
 void Luz::draw(){
-	glLightfv(id, GL_DIFFUSE, ambiente_difusa);
-	glLightfv(id, GL_AMBIENT, ambiente_difusa);
-	glLightfv(id, GL_SPECULAR, especular);
+	glEnable(GL_LIGHTING);
+	glLightfv(id, GL_DIFFUSE, (GLfloat*) &difusa);
 	glPushMatrix();
 	    glRotatef(angulo,0.0,1.0,0.0);
-		glLightfv(id, GL_POSITION, posicion);
+		glLightfv(id, GL_POSITION, (GLfloat*) &posicion);
 	glPopMatrix();
 }
 
-void Luz::setAmbienteDifuso(float *  color){
-	ambiente_difusa = color;
+void Luz::setAmbiente(float *  color){
+	ambiente = color;
+}
+
+void Luz::setDifusa(float *  color){
+	difusa = color;
 }
 
 void Luz::setEspecular(float *  color){
@@ -1797,7 +1891,7 @@ _Material::_Material(_material mat){
 			brillo = 32;
 			break;
 		case CAUCHO_NEGRO:
-			ambiente[0] = 0.2; ambiente[1] = 0.2; ambiente[2] = 0.2; ambiente[3] = 1.0;
+			ambiente[0] = 0.02; ambiente[1] = 0.02; ambiente[2] = 0.02; ambiente[3] = 1.0;
 			difusa[0] = 0.01; difusa[1] = 0.01; difusa[2] = 0.01; difusa[3] = 1;
 			especular[0] = 0.4; especular[1] = 0.4; especular[2] = 0.4; especular[3] = 1;
 			brillo = 10;
