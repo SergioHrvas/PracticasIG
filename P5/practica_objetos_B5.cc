@@ -253,9 +253,10 @@ void vista_orto(){
         draw_objects();
 
         //perfil
+        glViewport(0,0,Window_width/2, Window_high/2);
+
         glMatrixMode(GL_PROJECTION);
         glLoadIdentity();
-        glViewport(0,0,Window_width/2, Window_high/2);
         glOrtho(-Size_x * Observer_distance,Size_x * Observer_distance,
         -Size_y * Observer_distance, Size_y * Observer_distance,
         -100, 100);
@@ -266,7 +267,19 @@ void vista_orto(){
         draw_axis();
         draw_objects();
 
+        //PERSPECTIVA
+        glViewport(Window_width / 2, 0, Window_width / 2, Window_high / 2);
+        glMatrixMode(GL_PROJECTION);
+        glLoadIdentity();
+        glFrustum(-Size_x, Size_x, -Size_y, Size_y, Front_plane, Back_plane);
+        glTranslatef(0,0,-Observer_distance);
+        glRotatef(Observer_angle_x,1,0,0);
+        glRotatef(Observer_angle_y,0,1,0);
+	glMatrixMode(GL_MODELVIEW);
+        glLoadIdentity();
 
+        draw_axis();
+        draw_objects();
 
 }
 void draw(void)
