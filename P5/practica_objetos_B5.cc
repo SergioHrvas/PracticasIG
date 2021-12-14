@@ -222,30 +222,78 @@ void luces ()
 //
 //***************************************************************************
 
-void draw(void)
-{
-glDrawBuffer(GL_FRONT);
-clean_window();
-if(cambio ==0)
-        {glViewport(0,0,Ancho, Alto);
-        change_projection();
-        change_observer();
+void vista_orto(){
+        //Alzado
+        glViewport(0,Alto/2,Ancho/2,Alto/2);
+
+        glMatrixMode(GL_PROJECTION);
+        glLoadIdentity();
+        glOrtho(-Size_x * Observer_distance, Size_x * Observer_distance,
+        -Size_y * Observer_distance, Size_y * Observer_distance,
+        -100, 100);
+        glMatrixMode(GL_MODELVIEW);
+        glLoadIdentity();
+        
         draw_axis();
         draw_objects();
-        }
-        //else vista_orto();
 
-if(t_objeto==ARTICULADO)
-        {glDrawBuffer(GL_BACK); //O GL_FRONT}
+        //Perfil
+        glViewport(Window_width/2,Window_high/2,Window_width/2, Window_high/2);
+
+        glMatrixMode(GL_PROJECTION);
+        glLoadIdentity();
+        glOrtho(-Size_x * Observer_distance,Size_x * Observer_distance,
+        -Size_y * Observer_distance, Size_y * Observer_distance,
+        -100, 100);
+        glRotatef(90,0,1,0);
+        glMatrixMode(GL_MODELVIEW);
+        glLoadIdentity();
+
+        draw_axis();
+        draw_objects();
+
+        //perfil
+        glMatrixMode(GL_PROJECTION);
+        glLoadIdentity();
+        glViewport(0,0,Window_width/2, Window_high/2);
+        glOrtho(-Size_x * Observer_distance,Size_x * Observer_distance,
+        -Size_y * Observer_distance, Size_y * Observer_distance,
+        -100, 100);
+        glRotatef(90,1,0,0);
+        glMatrixMode(GL_MODELVIEW);
+        glLoadIdentity();
+
+        draw_axis();
+        draw_objects();
+
+
+
+}
+void draw(void)
+{
+        glDrawBuffer(GL_FRONT);
         clean_window();
-        change_observer();
-        tanque.seleccion();
+        if (cambio == 0)
+        {
+                glViewport(0, 0, Ancho, Alto);
+                change_projection();
+                change_observer();
+                draw_axis();
+                draw_objects();
+
+                if (t_objeto == ARTICULADO)
+                {
+                        glDrawBuffer(GL_BACK); //O GL_FRONT}
+                        clean_window();
+                        change_observer();
+                        tanque.seleccion();
+                }
+        }
+        else
+                vista_orto();
+
+        glFlush();
 }
-glFlush();
-}
-
-
-
 
 //***************************************************************************
 // Funcion llamada cuando se produce un cambio en el tamaño de la ventana
@@ -296,7 +344,9 @@ void normal_key(unsigned char Tecla1,int x,int y)
                 case 'D':t_objeto=CILINDRO;break;
                 case 'V':t_objeto=CONO;break;
                 case 'E':t_objeto=ESFERA;break;
-                case 'A':t_objeto=ARTICULADO;break;
+                case 'A':if(materiales) t_objeto=ARTICULADO;
+                        else cambio=1;               
+                break;
                 case 'W':eje = (eje+1) % 3;break;
                 case '.':camionbomberos.movimiento_camion+=0.1*v_camion;break;
                 case ',':camionbomberos.movimiento_camion-=0.1*v_camion;break;
@@ -578,114 +628,118 @@ void special_key(int Tecla1,int x,int y)
         glutPostRedisplay();
 }
 
+
+
+//***************************************************************************
+
 void movimiento()
 {
-if(mov){
-switch(n_mov){
-	case 0: //camion acelera
-                camionbomberos.giro_ruedas-=2;  
-                n++;
-                if(n>20) //para que acelere bien
-                camionbomberos.movimiento_camion+=0.01;
-                if(camionbomberos.movimiento_camion > 2){
-                        n_mov = 1;
-                        n=0;
-                }
-        break;
-	case 1: //levanto las escaleras
-                camionbomberos.giro_escalera+=0.4;  
-                if(camionbomberos.giro_escalera > camionbomberos.giro_escalera_max){
-                        n_mov = 2;
-                }
-        break;
-	case 2: //giro las escaleras
-                camionbomberos.giro_plataforma+=1;  
-                if(camionbomberos.giro_plataforma > 30){
-                        n_mov = 3;
-                }
-        break;
-	case 3: //subo la escalera pequeña
-                camionbomberos.translacion_escalera+=0.007;
-                if(camionbomberos.translacion_escalera > camionbomberos.translacion_escalera_max){
-                        n_mov = 4;
-                }
-        break;
-	case 4: //subo el elevador
-                camionbomberos.levantamiento+=0.005;
-                if(camionbomberos.levantamiento > camionbomberos.levantamiento_max){
-                        n_mov = 5;
-                }
-        break;
-	case 5: //muevo la pistola
-                camionbomberos.giro_pistola_horizontal+=0.4;
-                camionbomberos.giro_pistola_vertical+=0.4;
-                if (camionbomberos.giro_pistola_horizontal > 8.3)
-                        n_mov = 6;
-        break;
-	case 6: //expulso agua
-                if(n<20){
-                        camionbomberos.movimiento_agua+=0.1;
-                        if (camionbomberos.movimiento_agua > 2){
-                                camionbomberos.movimiento_agua=0;
-                                n++;
+        if(mov){
+        switch(n_mov){
+                case 0: //camion acelera
+                        camionbomberos.giro_ruedas-=2;  
+                        n++;
+                        if(n>20) //para que acelere bien
+                        camionbomberos.movimiento_camion+=0.01;
+                        if(camionbomberos.movimiento_camion > 2){
+                                n_mov = 1;
+                                n=0;
                         }
-                }
-                else{
-                        n_mov = 7;
-                }
-        break;
-	case 7:
-                camionbomberos.movimiento_agua = 0;
-                n_mov = 8;
-        break;
-	case 8:
-                //muevo la pistola
-                camionbomberos.giro_pistola_horizontal-=0.4;
-                camionbomberos.giro_pistola_vertical-=0.4;
-                if (camionbomberos.giro_pistola_horizontal < 0.0)
-                        n_mov = 9;
+                break;
+                case 1: //levanto las escaleras
+                        camionbomberos.giro_escalera+=0.4;  
+                        if(camionbomberos.giro_escalera > camionbomberos.giro_escalera_max){
+                                n_mov = 2;
+                        }
+                break;
+                case 2: //giro las escaleras
+                        camionbomberos.giro_plataforma+=1;  
+                        if(camionbomberos.giro_plataforma > 30){
+                                n_mov = 3;
+                        }
+                break;
+                case 3: //subo la escalera pequeña
+                        camionbomberos.translacion_escalera+=0.007;
+                        if(camionbomberos.translacion_escalera > camionbomberos.translacion_escalera_max){
+                                n_mov = 4;
+                        }
+                break;
+                case 4: //subo el elevador
+                        camionbomberos.levantamiento+=0.005;
+                        if(camionbomberos.levantamiento > camionbomberos.levantamiento_max){
+                                n_mov = 5;
+                        }
+                break;
+                case 5: //muevo la pistola
+                        camionbomberos.giro_pistola_horizontal+=0.4;
+                        camionbomberos.giro_pistola_vertical+=0.4;
+                        if (camionbomberos.giro_pistola_horizontal > 8.3)
+                                n_mov = 6;
+                break;
+                case 6: //expulso agua
+                        if(n<20){
+                                camionbomberos.movimiento_agua+=0.1;
+                                if (camionbomberos.movimiento_agua > 2){
+                                        camionbomberos.movimiento_agua=0;
+                                        n++;
+                                }
+                        }
+                        else{
+                                n_mov = 7;
+                        }
+                break;
+                case 7:
+                        camionbomberos.movimiento_agua = 0;
+                        n_mov = 8;
+                break;
+                case 8:
+                        //muevo la pistola
+                        camionbomberos.giro_pistola_horizontal-=0.4;
+                        camionbomberos.giro_pistola_vertical-=0.4;
+                        if (camionbomberos.giro_pistola_horizontal < 0.0)
+                                n_mov = 9;
 
-        break;
-	case 9://bajo el elevador
-                camionbomberos.levantamiento-=0.005;
-                if(camionbomberos.levantamiento < 0.0){
-                        n_mov = 10;
-                }
-        break;
-        case 10: //bajo la escalera pequeña
-                camionbomberos.translacion_escalera-=0.007;
-                if(camionbomberos.translacion_escalera < 0.0){
-                        n_mov = 11;
-                }
-        break;
-        case 11://giro las escaleras
-                camionbomberos.giro_plataforma-=1;  
-                if(camionbomberos.giro_plataforma < 0){
-                        n_mov = 12;
-                }
-        break;
-        case 12: //levanto las escaleras
-                camionbomberos.giro_escalera-=0.4;  
-                if(camionbomberos.giro_escalera < 0){
-                        n_mov = 13;
-                }
-        break;
-        case 13: //camion acelera
-                camionbomberos.giro_ruedas+=2;  
-                n++;
-                if(n>20) //para que acelere bien
-                camionbomberos.movimiento_camion-=0.01;
-                if(camionbomberos.movimiento_camion < 0){
-                        n_mov = 14;
-                        n=0;
-                }
-        break;
-	
+                break;
+                case 9://bajo el elevador
+                        camionbomberos.levantamiento-=0.005;
+                        if(camionbomberos.levantamiento < 0.0){
+                                n_mov = 10;
+                        }
+                break;
+                case 10: //bajo la escalera pequeña
+                        camionbomberos.translacion_escalera-=0.007;
+                        if(camionbomberos.translacion_escalera < 0.0){
+                                n_mov = 11;
+                        }
+                break;
+                case 11://giro las escaleras
+                        camionbomberos.giro_plataforma-=1;  
+                        if(camionbomberos.giro_plataforma < 0){
+                                n_mov = 12;
+                        }
+                break;
+                case 12: //levanto las escaleras
+                        camionbomberos.giro_escalera-=0.4;  
+                        if(camionbomberos.giro_escalera < 0){
+                                n_mov = 13;
+                        }
+                break;
+                case 13: //camion acelera
+                        camionbomberos.giro_ruedas+=2;  
+                        n++;
+                        if(n>20) //para que acelere bien
+                        camionbomberos.movimiento_camion-=0.01;
+                        if(camionbomberos.movimiento_camion < 0){
+                                n_mov = 14;
+                                n=0;
+                        }
+                break;
+                
 
 
-}
-glutPostRedisplay();
-}
+        }
+        glutPostRedisplay();
+        }
 }
 //***************************************************************************
 // Funciones para manejo de eventos del ratón
@@ -741,7 +795,6 @@ Observer_angle_y=y;
 }
 
 
-
 /*************************************************************************/
 
 void RatonMovido( int x, int y )
@@ -749,8 +802,8 @@ void RatonMovido( int x, int y )
 float x0, y0, xn, yn; 
 if(estadoRaton[2]==1) 
     {getCamara(&x0,&y0);
-     yn=y0+(y-yc);
-     xn=x0-(x-xc);
+     xn=x0+(y-yc);
+     yn=y0+(x-xc);
      setCamara(xn,yn);
      xc=x;
      yc=y;
