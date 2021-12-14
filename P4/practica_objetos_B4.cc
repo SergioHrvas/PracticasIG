@@ -27,7 +27,7 @@ GLfloat Size_x,Size_y,Front_plane,Back_plane;
 
 // variables que determninan la posicion y tamaño de la ventana X
 int Window_x=50,Window_y=50,Window_width=450,Window_high=450;
-
+bool inicio = true;
 bool materiales = false;
 // objetos
 _cubo cubo;
@@ -46,9 +46,11 @@ _camionbomberos camionbomberos;
 _elevador elevador;
 _pistola pistola;
 _agua agua;
+bool encendidaluz1 = true, encendidaluz2 = true;
 
-_vertex4f luz1(1.0,1.0,1.0, 1), pos1 (15, 8, 13, 1),
-        luz2(0.5,0.5,1, 1), pos2(-20, -5.0, -20.0, 0);
+_vertex4f luz1(1.0,1.0,1.0, 1.0), pos1 (20, 20.0, 20.0, 1.0),
+        luz2(1,0,0.9569, 1), pos2(-10, 2.0, -10.0, 0);
+
 Luz luz(GL_LIGHT1, luz1, luz1, luz1, pos1);
 Luz luzb(GL_LIGHT2, luz2, luz2, luz2, pos2);
 
@@ -188,12 +190,16 @@ void draw_objects()
 
 void luces ()
 {
+        glEnable(GL_LIGHTING);
         luz.draw();
         luzb.draw();
 
 	glDisable(GL_LIGHT0);
-	luz.encenderLuz();
-      //  luzb.encenderLuz();
+        if(inicio){
+                luz.encenderLuz();
+                luzb.encenderLuz();
+                inicio = false;
+        }
 
 }
 
@@ -449,16 +455,35 @@ void normal_key(unsigned char Tecla1,int x,int y)
                                 materi = BRONCE;
                         else luz.movimientoLuz(0);
                 break;
-                /*case 'L': luz.elevar();
-                break;
-                case 'Ñ': luz.bajar();
-                break;*/
                 case 'F':materi = JADE;
                         break;
                 case 'B': materi = VACIO;
                         break;
-                case 'L': materiales = !materiales;
-                }
+                case 'L': materiales = !materiales; break;
+                case 'G': if (encendidaluz1){
+                                 luz.apagarLuz();
+                                 encendidaluz1 = false;
+                        }
+                          else{
+                                  luz.encenderLuz();
+                                  encendidaluz1 = true;
+                          }
+                          break;
+                case 'N': if(encendidaluz2){
+                        luzb.apagarLuz();
+                        encendidaluz2 = false;
+                        }
+                          else{
+                          luzb.encenderLuz();
+                          encendidaluz2 = true;
+                          }
+                case 'T': 
+                         luzb.movimientoLuz(1);
+                break;
+                case 'S': 
+                         luzb.movimientoLuz(0);
+                break;
+        }
         glutPostRedisplay();
 }
 

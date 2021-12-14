@@ -3,7 +3,7 @@
 //**************************************************************************
 
 #include "objetos_B4.h"
-
+#include <iostream>
 
 //*************************************************************************
 // _puntos3D
@@ -238,13 +238,10 @@ void _triangulos3D::draw_iluminacion_suave(_material mate) {
 }
 
 void _triangulos3D::calcular_normales_vertices(){
-;
+
   if (!b_normales_caras) calcular_normales_caras();
 
 	normales_vertices.resize(vertices.size());
-
-	_vertex3f normal;
-
 	for(int i = 0; i < vertices.size(); ++i)
 		normales_vertices[i] = _vertex3f(0.0,0.0,0.0);
 
@@ -255,7 +252,25 @@ void _triangulos3D::calcular_normales_vertices(){
 	}
 
 	for(int i = 0; i < vertices.size(); ++i)
-		normales_vertices[i].normalize();
+		normales_vertices[i] = normales_vertices[i].normalize();
+
+	b_normales_vertices = true;
+}
+
+/////////////////////////////////////////
+
+void _esfera::calcular_normales_vertices(){
+	_vertex3f a1, a2, n;
+	normales_vertices.resize(vertices.size());
+	for(int i = 0; i < vertices.size(); ++i){
+		a1=vertices[caras[i]._0];
+		// modulo
+		float m=sqrt(a1.x*a1.x+a1.y*a1.y+a1.z*a1.z);
+		// normalización
+    	normales_vertices[i]= _vertex3f(a1.x/m, a1.y/m, a1.z/m);
+	}
+
+		//normales_vertices[i] = normales_vertices[i].normalize();
 
 	b_normales_vertices = true;
 }
@@ -929,13 +944,13 @@ _carroceria::_carroceria()
 	matricula_a = _cubo();
 
 	carcasa.difusa=_vertex4f(0.90,0.0,0.0,1.0);  //coeficientes ambiente y difuso
-	carcasa.ambiente=_vertex4f(0.25,0.25,0.25,1.0);
-	//carcasa.especular=_vertex4f(0.5,0.5,0.5,1.0);        //coeficiente especular
+	carcasa.ambiente=_vertex4f(0.15,0.15,0.15,1.0);	
+	carcasa.especular=_vertex4f(0.5,0.5,0.5,1.0);        //coeficiente especular
 	carcasa.brillo=50;   
 
 	reposa.difusa=_vertex4f(0.90,0.0,0.0,1.0); 
-	reposa.ambiente=_vertex4f(1,0.2,0.2,1.0);	
-	reposa.especular=_vertex4f(0.5,0.5,0.5,1.0);  
+	reposa.ambiente=_vertex4f(0.15,0.15,0.15,0.0);	
+	//reposa.especular=_vertex4f(0.5,0.5,0.5,1.0);  
 	reposa.brillo=50;                              
 
 	ventana.difusa=_vertex4f(0.15,0.15,0.15,1.0);
@@ -993,14 +1008,14 @@ void _carroceria::draw(_modo modo, float r1, float g1, float b1, float r2, float
 	glPushMatrix();
 	glTranslatef(1.4,0.6,0.0);
 	glScalef(3.6,0.8,1);
-	carcasa.draw(modo, r1, g1, b1, r2, g2, b2, grosor, mate);
+	carcasa.draw(modo, 0.90,0.0,0.0, r2, g2, b2, grosor, mate);
 	glPopMatrix();
 
 	//reposa escaleras
 	glPushMatrix();
 	glTranslatef(2.8,1.1,0.0);
 	glScalef(0.9,0.2,1);
-	reposa.draw(modo, r1, g1, b1, r2, g2, b2, grosor, mate);
+	reposa.draw(modo, 0.90,0.0,0.0, r2, g2, b2, grosor, mate);
 	glPopMatrix();
 
 
@@ -1428,36 +1443,29 @@ void _cabina::draw(_modo modo, float r1, float g1, float b1, float r2, float g2,
 
 	//barras verticales
 	glPushMatrix();
-	glTranslated(0.0,0.025,-0.275);
-	glRotatef(-90,1,0,0);
-	glTranslated(0.025, 0.0, 0.3);
-	glScalef(0.05,0.05,0.6);
+	glTranslated(0.025,0.325,-0.275);
+	glScalef(0.05,0.6,0.05);
 	barra.draw(modo, r1, g1, b1, r2, g2, b2, grosor, mate);
 	glPopMatrix();
 
 	glPushMatrix();
-	glTranslated(0.0,0.025,0.275);
-	glRotatef(-90,1,0,0);
-	glTranslated(0.025, 0.0, 0.3);
-	glScalef(0.05,0.05,0.6);
+	glTranslated(0.025,0.325,+0.275);
+	glScalef(0.05,0.6,0.05);
 	barra.draw(modo, r1, g1, b1, r2, g2, b2, grosor, mate);
 	glPopMatrix();
 
 	glPushMatrix();
-	glTranslated(0.55,0.025,-0.275);
-	glRotatef(-90,1,0,0);
-	glTranslated(0.025, 0.0, 0.3);
-	glScalef(0.05,0.05,0.6);
+	glTranslated(0.575,0.325,-0.275);
+	glScalef(0.05,0.6,0.05);
 	barra.draw(modo, r1, g1, b1, r2, g2, b2, grosor, mate);
 	glPopMatrix();
 
 	glPushMatrix();
-	glTranslated(0.55,0.025,0.275);
-	glRotatef(-90,1,0,0);
-	glTranslated(0.025, 0.0, 0.3);
-	glScalef(0.05,0.05,0.6);
+	glTranslated(0.575,0.325,+0.275);
+	glScalef(0.05,0.6,0.05);
 	barra.draw(modo, r1, g1, b1, r2, g2, b2, grosor, mate);
 	glPopMatrix();
+
 }
 
 
@@ -1486,34 +1494,26 @@ void _elevador::draw(_modo modo, float r1, float g1, float b1, float r2, float g
 
 	//paredes elevador
 	glPushMatrix();
-	glTranslated(0.0,0.025,0);
-	glRotatef(-90,1,0,0);
-	glTranslated(0.02, 0.0, 0.2);
-	glScalef(0.04,0.5,0.40);
+	glTranslated(0.02, 0.22, 0);
+	glScalef(0.04,0.4,0.52);
 	barra.draw(modo, r1, g1, b1, r2, g2, b2, grosor, mate);
 	glPopMatrix();
 
 	glPushMatrix();
-	glTranslated(0.23,0.025,-0.23);
-	glRotatef(-90,1,0,0);
-	glTranslated(0.02, 0.0, 0.2);
-	glScalef(0.42,0.04,0.40);
+	glTranslated(0.25,0.22,-0.22);
+	glScalef(0.42,0.40,0.04);
 	barra.draw(modo, r1, g1, b1, r2, g2, b2, grosor, mate);
 	glPopMatrix();
 
 	glPushMatrix();
-	glTranslated(0.46,0.025,0);
-	glRotatef(-90,1,0,0);
-	glTranslated(0.02, 0.0, 0.2);
-	glScalef(0.04,0.5,0.40);
+	glTranslated(0.48, 0.22, 0);
+	glScalef(0.04,0.4,0.52);
 	barra.draw(modo, r1, g1, b1, r2, g2, b2, grosor, mate);
 	glPopMatrix();
 
 	glPushMatrix();
-	glTranslated(0.23,0.025,0.23);
-	glRotatef(-90,1,0,0);
-	glTranslated(0.02, 0.0, 0.2);
-	glScalef(0.42,0.04,0.40);
+	glTranslated(0.25,0.22,0.22);
+	glScalef(0.42,0.40,0.04);
 	barra.draw(modo, r1, g1, b1, r2, g2, b2, grosor, mate);
 	glPopMatrix();
 
@@ -1754,6 +1754,8 @@ void Luz::apagarLuz(){
 void Luz::draw(){
 	glEnable(GL_LIGHTING);
 	glLightfv(id, GL_DIFFUSE, (GLfloat*) &difusa);
+	//glLightfv(id, GL_SPECULAR, (GLfloat*) &especular);
+
 	glPushMatrix();
 	    glRotatef(angulo,0.0,1.0,0.0);
 		glLightfv(id, GL_POSITION, (GLfloat*) &posicion);

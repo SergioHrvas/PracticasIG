@@ -183,6 +183,7 @@ class _esfera: public _rotacion
 {
        public:
               _esfera(float radio=1.2, int n = 10, int eje = 2);
+              void calcular_normales_vertices();
 
 };
 
