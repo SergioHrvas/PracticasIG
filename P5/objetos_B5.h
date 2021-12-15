@@ -322,7 +322,7 @@ protected:
        _cubo matricula_a;
        _cubo luza;
        _cubo luzb;
-       _cubo luzc;
+       _cubo luzc; 
 };
 
 class _ventana : public _triangulos3D
