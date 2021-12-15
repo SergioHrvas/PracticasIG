@@ -1071,7 +1071,7 @@ void _tanque::seleccion()
 //************************************************************************
 // ruedas
 //************************************************************************
-_ruedas::_ruedas()
+_ruedas_der::_ruedas_der()
 {
 	// perfil para un cilindro
 
@@ -1082,7 +1082,7 @@ _ruedas::_ruedas()
 	brillo = 50;
 };
 
-void _ruedas::draw(_modo modo, float r1, float g1, float b1, float r2, float g2, float b2, float grosor, _material mate)
+void _ruedas_der::draw(_modo modo, float r1, float g1, float b1, float r2, float g2, float b2, float grosor, _material mate)
 {
 	//Goma de las ruedas
 	glPushMatrix();
@@ -1091,12 +1091,13 @@ void _ruedas::draw(_modo modo, float r1, float g1, float b1, float r2, float g2,
 	rueda.draw(modo, r1, g1, b1, r2, g2, b2, grosor, mate);
 	glPopMatrix();
 
+/*
 	glPushMatrix();
 	glTranslatef(0.0, 0.0, 0.5); //mueve distancia (0.5 | 0 | 0)
 	glRotatef(90.0, 1, 0, 0);
 	rueda.draw(modo, r1, g1, b1, r2, g2, b2, grosor, mate);
 	glPopMatrix();
-
+*/
 	//Llanta de las ruedas
 	glPushMatrix();
 	glTranslatef(0.0, 0.0, -0.575);
@@ -1104,15 +1105,57 @@ void _ruedas::draw(_modo modo, float r1, float g1, float b1, float r2, float g2,
 	glScalef(0.5, 0.1, 0.5);
 	rueda.draw(modo, 0.4, 0.4, 0.4, 0.2, 0.2, 0.2, grosor, mate);
 	glPopMatrix();
+/*
+	glPushMatrix();
+	glTranslatef(0.0, 0.0, 0.575);
+	glRotatef(90.0, 1, 0, 0);
+	glScalef(0.5, 0.1, 0.5);
+	rueda.draw(modo, 0.4, 0.4, 0.4, 0.2, 0.2, 0.2, grosor, mate);
+	glPopMatrix();*/
+}
 
+_ruedas_izq::_ruedas_izq()
+{
+	// perfil para un cilindro
+
+	rueda = _cilindro(0.235, 0.165, 15, 1);
+	rueda.ambiente = _vertex4f(0.25, 0.25, 0.25, 1.0); //coeficientes ambiente y difuso
+	rueda.difusa = _vertex4f(0.1, 0.1, 0.1, 1.0);
+	rueda.especular = _vertex4f(0.5, 0.5, 0.5, 1.0); //coeficiente especular
+	brillo = 50;
+};
+
+void _ruedas_izq::draw(_modo modo, float r1, float g1, float b1, float r2, float g2, float b2, float grosor, _material mate)
+{
+	//Goma de las ruedas
+	glPushMatrix();
+	glTranslatef(0.0, 0.0, 0.5);
+	glRotatef(90.0, 1, 0, 0);
+	rueda.draw(modo, r1, g1, b1, r2, g2, b2, grosor, mate);
+	glPopMatrix();
+
+/*
+	glPushMatrix();
+	glTranslatef(0.0, 0.0, 0.5); //mueve distancia (0.5 | 0 | 0)
+	glRotatef(90.0, 1, 0, 0);
+	rueda.draw(modo, r1, g1, b1, r2, g2, b2, grosor, mate);
+	glPopMatrix();
+*/
+	//Llanta de las ruedas
 	glPushMatrix();
 	glTranslatef(0.0, 0.0, 0.575);
 	glRotatef(90.0, 1, 0, 0);
 	glScalef(0.5, 0.1, 0.5);
 	rueda.draw(modo, 0.4, 0.4, 0.4, 0.2, 0.2, 0.2, grosor, mate);
 	glPopMatrix();
+/*
+	glPushMatrix();
+	glTranslatef(0.0, 0.0, 0.575);
+	glRotatef(90.0, 1, 0, 0);
+	glScalef(0.5, 0.1, 0.5);
+	rueda.draw(modo, 0.4, 0.4, 0.4, 0.2, 0.2, 0.2, grosor, mate);
+	glPopMatrix();*/
 }
-
 //************************************************************************
 // carroceria
 //************************************************************************
@@ -1810,7 +1853,7 @@ void _agua::draw(_modo modo, float r1, float g1, float b1, float r2, float g2, f
 _camionbomberos::_camionbomberos()
 {
 	int c = 90;
-	piezas = 12;
+	piezas = 15;
 	color_pick[0] = 1.0;
 	color_pick[1] = 0.0;
 	color_pick[2] = 0.0;
@@ -1831,32 +1874,63 @@ void _camionbomberos::draw(_modo modo, float r1, float g1, float b1, float r2, f
 	b_p = color_pick[2];
 	glPushMatrix();
 	glTranslatef(movimiento_camion, 0, 0);
-	glTranslatef(0.0, 0.2, 0.0);
+	glTranslatef(0.0, 0.2, 0);
 	glRotatef(giro_ruedas, 0, 0, 1);
 	if (activo[0] == 1)
-		ruedas1.draw(modo, r_p, g_p, b_p, r_p, g_p, b_p, grosor, mate);
+		rueda1.draw(modo, r_p, g_p, b_p, r_p, g_p, b_p, grosor, mate);
 	else
-		ruedas1.draw(modo, 0, 0, 0, 0.7, 0.7, 0.7, grosor, mate);
+		rueda1.draw(modo, 0, 0, 0, 0.7, 0.7, 0.7, grosor, mate);
 	glPopMatrix();
 
 	glPushMatrix();
 	glTranslatef(movimiento_camion, 0, 0);
-	glTranslatef(1.9, 0.2, 0.0);
+	glTranslatef(1.9, 0.2, 0);
 	glRotatef(giro_ruedas, 0, 0, 1);
 	if (activo[1] == 1)
-		ruedas2.draw(modo, r_p, g_p, b_p, r_p, g_p, b_p, grosor, mate);
+		rueda2.draw(modo, r_p, g_p, b_p, r_p, g_p, b_p, grosor, mate);
 	else
-		ruedas2.draw(modo, 0, 0, 0, 0.7, 0.7, 0.7, grosor, mate);
+		rueda2.draw(modo, 0, 0, 0, 0.7, 0.7, 0.7, grosor, mate);
 	glPopMatrix();
 
 	glPushMatrix();
 	glTranslatef(movimiento_camion, 0, 0);
-	glTranslatef(2.7, 0.2, 0.0);
+	glTranslatef(2.7, 0.2, 0);
 	glRotatef(giro_ruedas, 0, 0, 1);
 	if (activo[2] == 1)
-		ruedas3.draw(modo, r_p, g_p, b_p, r_p, g_p, b_p, grosor, mate);
+		rueda3.draw(modo, r_p, g_p, b_p, r_p, g_p, b_p, grosor, mate);
 	else
-		ruedas3.draw(modo, 0, 0, 0, 0.7, 0.7, 0.7, grosor, mate);
+		rueda3.draw(modo, 0, 0, 0, 0.7, 0.7, 0.7, grosor, mate);
+	glPopMatrix();
+
+
+	glPushMatrix();
+	glTranslatef(movimiento_camion, 0, 0);
+	glTranslatef(0.0, 0.2, 0);
+	glRotatef(giro_ruedas, 0, 0, 1);
+	if (activo[3] == 1)
+		rueda4.draw(modo, r_p, g_p, b_p, r_p, g_p, b_p, grosor, mate);
+	else
+		rueda4.draw(modo, 0, 0, 0, 0.7, 0.7, 0.7, grosor, mate);
+	glPopMatrix();
+
+	glPushMatrix();
+	glTranslatef(movimiento_camion, 0, 0);
+	glTranslatef(1.9, 0.2, 0);
+	glRotatef(giro_ruedas, 0, 0, 1);
+	if (activo[4] == 1)
+		rueda5.draw(modo, r_p, g_p, b_p, r_p, g_p, b_p, grosor, mate);
+	else
+		rueda5.draw(modo, 0, 0, 0, 0.7, 0.7, 0.7, grosor, mate);
+	glPopMatrix();
+
+	glPushMatrix();
+	glTranslatef(movimiento_camion, 0, 0);
+	glTranslatef(2.7, 0.2, 0);
+	glRotatef(giro_ruedas, 0, 0, 1);
+	if (activo[5] == 1)
+		rueda6.draw(modo, r_p, g_p, b_p, r_p, g_p, b_p, grosor, mate);
+	else
+		rueda6.draw(modo, 0, 0, 0, 0.7, 0.7, 0.7, grosor, mate);
 	glPopMatrix();
 	//las transformaciones se hacen de abajo a arriba
 	//las clases torreta, tubo... están sobre el eje para poder girarlos
@@ -1864,7 +1938,7 @@ void _camionbomberos::draw(_modo modo, float r1, float g1, float b1, float r2, f
 
 	glPushMatrix();
 	glTranslatef(movimiento_camion, 0, 0);
-	if (activo[3] == 1){
+	if (activo[6] == 1){
 		carroceria.draw(modo, r_p, g_p, b_p, r_p, g_p, b_p, grosor, mate);
 	}
 	else{
@@ -1874,7 +1948,7 @@ void _camionbomberos::draw(_modo modo, float r1, float g1, float b1, float r2, f
 
 	glPushMatrix();
 	glTranslatef(movimiento_camion, 0, 0);
-	if (activo[4] == 1){
+	if (activo[7] == 1){
 		ventana.draw(modo, r_p, g_p, b_p, r_p, g_p, b_p, grosor, mate);
 	}
 	else{
@@ -1886,7 +1960,7 @@ void _camionbomberos::draw(_modo modo, float r1, float g1, float b1, float r2, f
 	glTranslatef(movimiento_camion, 0, 0);
 	glTranslatef(0.0, 1.05, 0.0);
 	glRotatef(giro_plataforma, 0, 1, 0);
-	if (activo[5] == 1)
+	if (activo[8] == 1)
 		plataforma.draw(modo, r_p, g_p, b_p, r_p, g_p, b_p, grosor, mate);
 	else
 		plataforma.draw(modo, r1, g1, b1, r2, g2, b2, grosor, mate);
@@ -1897,7 +1971,7 @@ void _camionbomberos::draw(_modo modo, float r1, float g1, float b1, float r2, f
 	glTranslatef(0.0, 1.30, 0.0);
 	glRotatef(giro_plataforma, 0, 1, 0);
 	glRotatef(giro_escalera, 0, 0, 1);
-	if (activo[6] == 1)
+	if (activo[9] == 1)
 		escaleragrande.draw(modo, r_p, g_p, b_p, r_p, g_p, b_p, grosor, mate);
 	else
 		escaleragrande.draw(modo, 0.75, 0.75, 0.75, 0.8, 0.8, 0.1, grosor, mate);
@@ -1909,7 +1983,7 @@ void _camionbomberos::draw(_modo modo, float r1, float g1, float b1, float r2, f
 	glRotatef(giro_plataforma, 0, 1, 0);
 	glRotatef(giro_escalera, 0, 0, 1);
 	glTranslatef(translacion_escalera, 0, 0);
-	if (activo[7] == 1)
+	if (activo[10] == 1)
 		escalerachica.draw(modo, r_p, g_p, b_p, r_p, g_p, b_p, grosor, mate);
 	else
 		escalerachica.draw(modo, 0.3, 0.5, 0.7, 0.1, 0.1, 0.5, grosor, mate);
@@ -1923,7 +1997,7 @@ void _camionbomberos::draw(_modo modo, float r1, float g1, float b1, float r2, f
 	glTranslatef(translacion_escalera, 0, 0);
 	glTranslatef(2.5, 0, 0);
 	glRotatef(-giro_escalera, 0, 0, 1);
-	if (activo[8] == 1)
+	if (activo[11] == 1)
 		cabina.draw(modo, r_p, g_p, b_p, r_p, g_p, b_p, grosor, mate);
 	else
 		cabina.draw(modo, 0.1, 0.3, 0.1, 0.1, 0.1, 0.5, grosor, mate);
@@ -1938,7 +2012,7 @@ void _camionbomberos::draw(_modo modo, float r1, float g1, float b1, float r2, f
 	glTranslatef(2.55, 0, 0);
 	glRotatef(-giro_escalera, 0, 0, 1);
 	glTranslatef(0, levantamiento, 0);
-	if (activo[9] == 1)
+	if (activo[12] == 1)
 		elevador.draw(modo, r_p, g_p, b_p, r_p, g_p, b_p, grosor, mate);
 	else
 		elevador.draw(modo, 0.45, 0.45, 0.45, 0.8, 0.8, 0.8, grosor, mate);
@@ -1956,7 +2030,7 @@ void _camionbomberos::draw(_modo modo, float r1, float g1, float b1, float r2, f
 	glTranslatef(0, levantamiento, 0);
 	glRotatef(giro_pistola_vertical, 0, 0, 1);
 	glRotatef(giro_pistola_horizontal, 0, 1, 0);
-	if (activo[10] == 1)
+	if (activo[13] == 1)
 		pistola.draw(modo, r_p, g_p, b_p, r_p, g_p, b_p, grosor, mate);
 	else
 		pistola.draw(modo, 0.27, 0.6235, 0.5686, r2, g2, b2, grosor, mate);
@@ -1975,7 +2049,7 @@ void _camionbomberos::draw(_modo modo, float r1, float g1, float b1, float r2, f
 	glRotatef(giro_pistola_vertical, 0, 0, 1);
 	glRotatef(giro_pistola_horizontal, 0, 1, 0);
 	glTranslatef(movimiento_agua, 0, 0);
-	if (activo[11] == 1)
+	if (activo[14] == 1)
 		agua.draw(modo, r_p, g_p, b_p, r_p, g_p, b_p, grosor, mate);
 	else
 		agua.draw(modo, 0.0, 0.81, 1, 0.34, 0.1, 0.1, grosor, mate);
@@ -1990,7 +2064,7 @@ void _camionbomberos::seleccion()
 	glTranslatef(movimiento_camion, 0, 0);
 	glTranslatef(0.0, 0.2, 0.0);
 	glRotatef(giro_ruedas, 0, 0, 1);
-	ruedas1.draw(SELECT, c, c, c, c, c, c, 1, VACIO);
+	rueda1.draw(SELECT, c, c, c, c, c, c, 1, VACIO);
 	glPopMatrix();
 
 	c = color_selec[0][1];
@@ -1998,7 +2072,7 @@ void _camionbomberos::seleccion()
 	glTranslatef(movimiento_camion, 0, 0);
 	glTranslatef(1.9, 0.2, 0.0);
 	glRotatef(giro_ruedas, 0, 0, 1);
-	ruedas2.draw(SELECT, c, c, c, c, c, c, 1, VACIO);
+	rueda2.draw(SELECT, c, c, c, c, c, c, 1, VACIO);
 	glPopMatrix();
 
 	c = color_selec[0][2];
@@ -2006,22 +2080,46 @@ void _camionbomberos::seleccion()
 	glTranslatef(movimiento_camion, 0, 0);
 	glTranslatef(2.7, 0.2, 0.0);
 	glRotatef(giro_ruedas, 0, 0, 1);
-	ruedas3.draw(SELECT, c, c, c, c, c, c, 1, VACIO);
+	rueda3.draw(SELECT, c, c, c, c, c, c, 1, VACIO);
 	glPopMatrix();
 
 	c = color_selec[0][3];
 	glPushMatrix();
 	glTranslatef(movimiento_camion, 0, 0);
-	carroceria.draw(SELECT, c, c, c, c, c, c, 1, VACIO);
+	glTranslatef(0.0, 0.2, 0.0);
+	glRotatef(giro_ruedas, 0, 0, 1);
+	rueda4.draw(SELECT, c, c, c, c, c, c, 1, VACIO);
 	glPopMatrix();
 
 	c = color_selec[0][4];
 	glPushMatrix();
 	glTranslatef(movimiento_camion, 0, 0);
-	ventana.draw(SELECT, c, c, c, c, c, c, 1, VACIO);
+	glTranslatef(1.9, 0.2, 0.0);
+	glRotatef(giro_ruedas, 0, 0, 1);
+	rueda5.draw(SELECT, c, c, c, c, c, c, 1, VACIO);
 	glPopMatrix();
 
 	c = color_selec[0][5];
+	glPushMatrix();
+	glTranslatef(movimiento_camion, 0, 0);
+	glTranslatef(2.7, 0.2, 0.0);
+	glRotatef(giro_ruedas, 0, 0, 1);
+	rueda6.draw(SELECT, c, c, c, c, c, c, 1, VACIO);
+	glPopMatrix();
+
+	c = color_selec[0][6];
+	glPushMatrix();
+	glTranslatef(movimiento_camion, 0, 0);
+	carroceria.draw(SELECT, c, c, c, c, c, c, 1, VACIO);
+	glPopMatrix();
+
+	c = color_selec[0][7];
+	glPushMatrix();
+	glTranslatef(movimiento_camion, 0, 0);
+	ventana.draw(SELECT, c, c, c, c, c, c, 1, VACIO);
+	glPopMatrix();
+
+	c = color_selec[0][8];
 	glPushMatrix();
 	glTranslatef(movimiento_camion, 0, 0);
 	glTranslatef(0.0, 1.05, 0.0);
@@ -2029,7 +2127,7 @@ void _camionbomberos::seleccion()
 	plataforma.draw(SELECT, c, c, c, c, c, c, 1, VACIO);
 	glPopMatrix();
 
-	c = color_selec[0][6];
+	c = color_selec[0][9];
 	glPushMatrix();
 	glTranslatef(movimiento_camion, 0, 0);
 	glTranslatef(0.0, 1.30, 0.0);
@@ -2038,7 +2136,7 @@ void _camionbomberos::seleccion()
 	escaleragrande.draw(SELECT, c, c, c, c, c, c, 1, VACIO);
 	glPopMatrix();
 
-	c = color_selec[0][7];
+	c = color_selec[0][10];
 	glPushMatrix();
 	glTranslatef(movimiento_camion, 0, 0);
 	glTranslatef(0.0, 1.30, 0.0);
@@ -2048,7 +2146,7 @@ void _camionbomberos::seleccion()
 	escalerachica.draw(SELECT, c, c, c, c, c, c, 1, VACIO);
 	glPopMatrix();
 
-	c = color_selec[0][8];
+	c = color_selec[0][11];
 	glPushMatrix();
 	glTranslatef(movimiento_camion, 0, 0);
 	glTranslatef(0.0, 1.30, 0.0);
@@ -2060,7 +2158,7 @@ void _camionbomberos::seleccion()
 	cabina.draw(SELECT, c, c, c, c, c, c, 1, VACIO);
 	glPopMatrix();
 
-	c = color_selec[0][9];
+	c = color_selec[0][12];
 	glPushMatrix();
 	glTranslatef(movimiento_camion, 0, 0);
 	glTranslatef(0.0, 1.30, 0.0);
@@ -2073,7 +2171,7 @@ void _camionbomberos::seleccion()
 	elevador.draw(SELECT, c, c, c, c, c, c, 1, VACIO);
 	glPopMatrix();
 
-	c = color_selec[0][10];
+	c = color_selec[0][13];
 	glPushMatrix();
 	glTranslatef(movimiento_camion, 0, 0);
 	glTranslatef(0.0, 1.30, 0.0);
@@ -2089,7 +2187,7 @@ void _camionbomberos::seleccion()
 	pistola.draw(SELECT, c, c, c, c, c, c, 1, VACIO);
 	glPopMatrix();
 
-	c = color_selec[0][11];
+	c = color_selec[0][14];
 	glPushMatrix();
 	glTranslatef(movimiento_camion, 0, 0);
 	glTranslatef(0.0, 1.30, 0.0);

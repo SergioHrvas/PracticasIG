@@ -293,10 +293,20 @@ protected:
 //*********************************************************************
 // objeto articulado: camion de bomberos
 //*********************************************************************
-class _ruedas : public _triangulos3D
+class _ruedas_der : public _triangulos3D
 {
 public:
-       _ruedas();
+       _ruedas_der();
+       void draw(_modo modo, float r1, float g1, float b1, float r2, float g2, float b2, float grosor, _material mate);
+       float radio;
+
+protected:
+       _cilindro rueda;
+};
+class _ruedas_izq : public _triangulos3D
+{
+public:
+       _ruedas_izq();
        void draw(_modo modo, float r1, float g1, float b1, float r2, float g2, float b2, float grosor, _material mate);
        float radio;
 
@@ -444,12 +454,13 @@ public:
        float movimiento_camion_min = -3;
 
        float color_pick[3];
-       int color_selec[3][12];
-       int activo[12];
+       int color_selec[3][15];
+       int activo[15];
        int piezas;
        
 protected:
-       _ruedas ruedas1, ruedas2, ruedas3;
+       _ruedas_der rueda1, rueda2, rueda3;
+       _ruedas_izq rueda4, rueda5, rueda6;
        _carroceria carroceria;
        _ventana ventana;
        _plataforma plataforma;

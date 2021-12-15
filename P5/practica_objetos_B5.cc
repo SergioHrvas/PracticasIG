@@ -51,7 +51,6 @@ _piramide piramide(0.85, 1.3);
 _objeto_ply ply;
 _rotacion rotacion;
 _tanque tanque;
-_ruedas ruedas;
 _chasis chasis;
 _plataforma plataforma;
 _carroceria carroceria;
