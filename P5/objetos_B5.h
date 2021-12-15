@@ -298,20 +298,33 @@ class _ruedas_der : public _triangulos3D
 public:
        _ruedas_der();
        void draw(_modo modo, float r1, float g1, float b1, float r2, float g2, float b2, float grosor, _material mate);
+       void seleccion();
        float radio;
 
+       float color_pick[3];
+       int color_selec[3][2];
+       int activo[2];
+       int piezas;
+       
 protected:
        _cilindro rueda;
+       _cilindro llanta;
+
 };
 class _ruedas_izq : public _triangulos3D
 {
 public:
        _ruedas_izq();
        void draw(_modo modo, float r1, float g1, float b1, float r2, float g2, float b2, float grosor, _material mate);
+       void seleccion();      
        float radio;
-
+       float color_pick[3];
+       int color_selec[3][2];
+       int activo[2];
+       int piezas;
 protected:
        _cilindro rueda;
+       _cilindro llanta;
 };
 
 class _carroceria : public _triangulos3D
@@ -454,12 +467,11 @@ public:
        float movimiento_camion_min = -3;
 
        float color_pick[3];
-       int color_selec[3][15];
-       int activo[15];
+       int color_selec[3][9];
+       int activo[9];
        int piezas;
-       
-protected:
-       _ruedas_der rueda1, rueda2, rueda3;
+
+              _ruedas_der rueda1, rueda2, rueda3;
        _ruedas_izq rueda4, rueda5, rueda6;
        _carroceria carroceria;
        _ventana ventana;
