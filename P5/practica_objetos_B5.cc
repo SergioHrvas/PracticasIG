@@ -253,7 +253,7 @@ void vista_orto()
         draw_objects();
 
         //Perfil
-        glViewport(Window_width / 2, Window_high / 2, Window_width / 2, Window_high / 2);
+        glViewport(Ancho / 2, Alto / 2, Ancho / 2, Alto / 2);
 
         glMatrixMode(GL_PROJECTION);
         glLoadIdentity();
@@ -268,7 +268,7 @@ void vista_orto()
         draw_objects();
 
         //perfil
-        glViewport(0, 0, Window_width / 2, Window_high / 2);
+        glViewport(0, 0, Ancho / 2, Alto / 2);
 
         glMatrixMode(GL_PROJECTION);
         glLoadIdentity();
@@ -283,7 +283,7 @@ void vista_orto()
         draw_objects();
 
         //PERSPECTIVA
-        glViewport(Window_width / 2, 0, Window_width / 2, Window_high / 2);
+        glViewport(Ancho / 2, 0, Ancho / 2, Alto / 2);
         glMatrixMode(GL_PROJECTION);
         glLoadIdentity();
         glFrustum(-Size_x, Size_x, -Size_y, Size_y, Front_plane, Back_plane);
@@ -1005,8 +1005,8 @@ void procesar_color(unsigned char color[3])
                 {
                         if (color[0] == camionbomberos.color_selec[0][i])
                         {
-                                if (camionbomberos.activo[i] == 0){
-                                        camionbomberos.activo[i] = 1; cout << "dsd";}
+                                if (camionbomberos.activo[i] == 0)
+                                        camionbomberos.activo[i] = 1;
                                 else
                                         camionbomberos.activo[i] = 0;
                                 glutPostRedisplay();

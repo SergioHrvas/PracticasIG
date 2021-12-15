@@ -325,6 +325,19 @@ protected:
        _cubo luzc;
 };
 
+class _ventana : public _triangulos3D
+{
+public:
+       _ventana();
+       void draw(_modo modo, float r1, float g1, float b1, float r2, float g2, float b2, float grosor, _material mate);
+       float radio;
+
+protected:
+       _cubo ventana;
+
+
+};
+
 class _plataforma : public _triangulos3D
 {
 public:
@@ -431,13 +444,14 @@ public:
        float movimiento_camion_min = -3;
 
        float color_pick[3];
-       int color_selec[3][11];
-       int activo[11];
+       int color_selec[3][12];
+       int activo[12];
        int piezas;
        
 protected:
        _ruedas ruedas1, ruedas2, ruedas3;
        _carroceria carroceria;
+       _ventana ventana;
        _plataforma plataforma;
        _escaleragrande escaleragrande;
        _escalerachica escalerachica;

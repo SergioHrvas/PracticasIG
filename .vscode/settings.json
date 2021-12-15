@@ -15,6 +15,7 @@
         "streambuf": "cpp",
         "type_traits": "cpp",
         "tuple": "cpp",
-        "random": "cpp"
+        "random": "cpp",
+        "iostream": "cpp"
     }
 }
