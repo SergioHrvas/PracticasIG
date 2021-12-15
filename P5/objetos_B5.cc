@@ -50,6 +50,9 @@ _triangulos3D::_triangulos3D()
 	ambiente = _vertex4f(1, 0.2, 0.2, 1.0);
 	especular = _vertex4f(0.5, 0.5, 0.5, 1.0);
 	brillo = 50;
+	int c = 100;
+
+
 }
 
 
@@ -133,7 +136,6 @@ void _triangulos3D::draw_solido_ajedrez(float r1, float g1, float b1, float r2, 
 void _triangulos3D::draw_seleccion(int r, int g, int b)
 {
 	int i;
-
 	glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
 	glColor3ub(r, g, b);
 	glBegin(GL_TRIANGLES);
@@ -146,6 +148,15 @@ void _triangulos3D::draw_seleccion(int r, int g, int b)
 	glEnd();
 }
 
+/*
+void _cubo::seleccion(){
+	int c;
+	c = color_selec[0][0];
+	glPushMatrix();
+	draw(SELECT, c, c, c, c, c, c, 1, VACIO);
+	glPopMatrix();
+}
+*/
 
 //*************************************************************************
 // dibujar con distintos modos
@@ -424,6 +435,7 @@ _cubo::_cubo(float tam)
 	caras[11]._0 = 5;
 	caras[11]._1 = 6;
 	caras[11]._2 = 7;
+
 }
 
 
@@ -592,7 +604,6 @@ void _rotacion::parametros(vector<_vertex3f> perfil, int num, int eje)
 		}
 		num_aux = perfil.size();
 		num_auxB = perfilnuevo.size(); //numero de vertices del perfil sin los del eje y
-		cout << "NUMAUX: " << num_aux << endl;
 		//rotamos los vértices
 		for (j = 0; j < num; j++)
 		{
@@ -1833,31 +1844,49 @@ void _agua::draw(_modo modo, float r1, float g1, float b1, float r2, float g2, f
 
 _camionbomberos::_camionbomberos()
 {
+		int c = 100;
+	piezas = 11;
+	color_pick[0] = 1.0;
+	color_pick[1] = 0.0;
+	color_pick[2] = 0.0;
+	for (int i = 0; i < piezas; i++)
+	{
+		activo[i] = 0;
+		color_selec[0][i] = color_selec[1][i] = color_selec[2][i] = c;
+		c = c + 10;
+	}
 }
 
 
 void _camionbomberos::draw(_modo modo, float r1, float g1, float b1, float r2, float g2, float b2, float grosor, _material mate)
 {
+	float r_p, g_p, b_p;
 
+	r_p = color_pick[0];
+	g_p = color_pick[1];
+	b_p = color_pick[2];
 	glPushMatrix();
 	glTranslatef(movimiento_camion, 0, 0);
 	glTranslatef(0.0, 0.2, 0.0);
 	glRotatef(giro_ruedas, 0, 0, 1);
-	ruedas.draw(modo, 0, 0, 0, 0.7, 0.7, 0.7, grosor, mate);
+	if(activo[0]==1) ruedas1.draw(modo, r_p,g_p,b_p,r_p,g_p,b_p, grosor, mate);
+	else ruedas1.draw(modo, 0, 0, 0, 0.7, 0.7, 0.7, grosor, mate);
 	glPopMatrix();
 
 	glPushMatrix();
 	glTranslatef(movimiento_camion, 0, 0);
 	glTranslatef(1.9, 0.2, 0.0);
 	glRotatef(giro_ruedas, 0, 0, 1);
-	ruedas.draw(modo, 0, 0, 0, 0.7, 0.7, 0.7, grosor, mate);
+	if(activo[1]==1) ruedas2.draw(modo, r_p,g_p,b_p,r_p,g_p,b_p, grosor, mate);
+	else ruedas2.draw(modo, 0, 0, 0, 0.7, 0.7, 0.7, grosor, mate);
 	glPopMatrix();
 
 	glPushMatrix();
 	glTranslatef(movimiento_camion, 0, 0);
 	glTranslatef(2.7, 0.2, 0.0);
 	glRotatef(giro_ruedas, 0, 0, 1);
-	ruedas.draw(modo, 0, 0, 0, 0.7, 0.7, 0.7, grosor, mate);
+	if(activo[2]==1) ruedas3.draw(modo, r_p,g_p,b_p,r_p,g_p,b_p, grosor, mate);
+	else ruedas3.draw(modo, 0, 0, 0, 0.7, 0.7, 0.7, grosor, mate);
 	glPopMatrix();
 	//las transformaciones se hacen de abajo a arriba
 	//las clases torreta, tubo... están sobre el eje para poder girarlos
@@ -1865,14 +1894,16 @@ void _camionbomberos::draw(_modo modo, float r1, float g1, float b1, float r2, f
 
 	glPushMatrix();
 	glTranslatef(movimiento_camion, 0, 0);
-	carroceria.draw(modo, r1, g1, b1, r2, g2, b2, grosor, mate);
+	if(activo[3]==1) carroceria.draw(modo, r_p,g_p,b_p,r_p,g_p,b_p, grosor, mate);
+	else carroceria.draw(modo, r1, g1, b1, r2, g2, b2, grosor, mate);
 	glPopMatrix();
 
 	glPushMatrix();
 	glTranslatef(movimiento_camion, 0, 0);
 	glTranslatef(0.0, 1.05, 0.0);
 	glRotatef(giro_plataforma, 0, 1, 0);
-	plataforma.draw(modo, r1, g1, b1, r2, g2, b2, grosor, mate);
+	if(activo[4]==1) plataforma.draw(modo, r_p,g_p,b_p,r_p,g_p,b_p, grosor, mate);
+	else plataforma.draw(modo, r1, g1, b1, r2, g2, b2, grosor, mate);
 	glPopMatrix();
 
 	glPushMatrix();
@@ -1880,7 +1911,8 @@ void _camionbomberos::draw(_modo modo, float r1, float g1, float b1, float r2, f
 	glTranslatef(0.0, 1.30, 0.0);
 	glRotatef(giro_plataforma, 0, 1, 0);
 	glRotatef(giro_escalera, 0, 0, 1);
-	escaleragrande.draw(modo, 0.75, 0.75, 0.75, 0.8, 0.8, 0.1, grosor, mate);
+	if(activo[5]==1) escaleragrande.draw(modo, r_p,g_p,b_p,r_p,g_p,b_p, grosor, mate);
+	else escaleragrande.draw(modo,  0.75, 0.75, 0.75, 0.8, 0.8, 0.1, grosor, mate);
 	glPopMatrix();
 
 	glPushMatrix();
@@ -1889,7 +1921,8 @@ void _camionbomberos::draw(_modo modo, float r1, float g1, float b1, float r2, f
 	glRotatef(giro_plataforma, 0, 1, 0);
 	glRotatef(giro_escalera, 0, 0, 1);
 	glTranslatef(translacion_escalera, 0, 0);
-	escalerachica.draw(modo, 0.3, 0.5, 0.7, 0.1, 0.1, 0.5, grosor, mate);
+	if(activo[6]==1) escalerachica.draw(modo, r_p,g_p,b_p,r_p,g_p,b_p, grosor, mate);
+	else escalerachica.draw(modo, 0.3, 0.5, 0.7, 0.1, 0.1, 0.5, grosor, mate);
 	glPopMatrix();
 
 	glPushMatrix();
@@ -1900,7 +1933,8 @@ void _camionbomberos::draw(_modo modo, float r1, float g1, float b1, float r2, f
 	glTranslatef(translacion_escalera, 0, 0);
 	glTranslatef(2.5, 0, 0);
 	glRotatef(-giro_escalera, 0, 0, 1);
-	cabina.draw(modo, 0.1, 0.3, 0.1, 0.1, 0.1, 0.5, grosor, mate);
+	if(activo[7]==1) cabina.draw(modo, r_p,g_p,b_p,r_p,g_p,b_p, grosor, mate);
+	else cabina.draw(modo, 0.1, 0.3, 0.1, 0.1, 0.1, 0.5, grosor, mate);
 	glPopMatrix();
 
 	glPushMatrix();
@@ -1912,7 +1946,8 @@ void _camionbomberos::draw(_modo modo, float r1, float g1, float b1, float r2, f
 	glTranslatef(2.55, 0, 0);
 	glRotatef(-giro_escalera, 0, 0, 1);
 	glTranslatef(0, levantamiento, 0);
-	elevador.draw(modo, 0.45, 0.45, 0.45, 0.8, 0.8, 0.8, grosor, mate);
+	if(activo[8]==1) elevador.draw(modo, r_p,g_p,b_p,r_p,g_p,b_p, grosor, mate);
+	else elevador.draw(modo, 0.45,0.45,0.45,0.8,0.8,0.8, grosor, mate);	
 	glPopMatrix();
 
 	glPushMatrix();
@@ -1927,7 +1962,8 @@ void _camionbomberos::draw(_modo modo, float r1, float g1, float b1, float r2, f
 	glTranslatef(0, levantamiento, 0);
 	glRotatef(giro_pistola_vertical, 0, 0, 1);
 	glRotatef(giro_pistola_horizontal, 0, 1, 0);
-	pistola.draw(modo, 0.27, 0.6235, 0.5686, r2, g2, b2, grosor, mate);
+if(activo[9]==1) pistola.draw(modo, r_p,g_p,b_p,r_p,g_p,b_p, grosor, mate);
+	else pistola.draw(modo, 0.27,0.6235,0.5686, r2, g2, b2, grosor, mate);
 	glPopMatrix();
 
 	glPushMatrix();
@@ -1943,11 +1979,129 @@ void _camionbomberos::draw(_modo modo, float r1, float g1, float b1, float r2, f
 	glRotatef(giro_pistola_vertical, 0, 0, 1);
 	glRotatef(giro_pistola_horizontal, 0, 1, 0);
 	glTranslatef(movimiento_agua, 0, 0);
-	agua.draw(modo, 0.0, 0.81, 1, 0.34, 0.1, 0.1, grosor, mate);
-	glPopMatrix();
+if(activo[10]==1) agua.draw(modo, r_p,g_p,b_p,r_p,g_p,b_p, grosor, mate);
+	else agua.draw(modo, 0.0, 0.81, 1, 0.34, 0.1, 0.1, grosor, mate);		glPopMatrix();
 };
 
 
+void _camionbomberos::seleccion()
+{
+	int c;
+	c = color_selec[0][0];
+	glPushMatrix();
+	glTranslatef(movimiento_camion, 0, 0);
+	glTranslatef(0.0, 0.2, 0.0);
+	glRotatef(giro_ruedas, 0, 0, 1);
+	ruedas1.draw(SELECT, c,c,c,c,c,c, 1, VACIO);
+	glPopMatrix();
+
+	c = color_selec[0][1];
+	glPushMatrix();
+	glTranslatef(movimiento_camion, 0, 0);
+	glTranslatef(1.9, 0.2, 0.0);
+	glRotatef(giro_ruedas, 0, 0, 1);
+	ruedas2.draw(SELECT, c,c,c,c,c,c, 1, VACIO);
+	glPopMatrix();
+
+	c = color_selec[0][2];
+	glPushMatrix();
+	glTranslatef(movimiento_camion, 0, 0);
+	glTranslatef(2.7, 0.2, 0.0);
+	glRotatef(giro_ruedas, 0, 0, 1);
+	ruedas3.draw(SELECT, c,c,c,c,c,c, 1, VACIO);
+	glPopMatrix();
+
+	c = color_selec[0][3];
+	glPushMatrix();
+	glTranslatef(movimiento_camion, 0, 0);
+	carroceria.draw(SELECT, c,c,c,c,c,c, 1, VACIO);
+	glPopMatrix();
+
+	c = color_selec[0][4];
+	glPushMatrix();
+	glTranslatef(movimiento_camion, 0, 0);
+	glTranslatef(0.0, 1.05, 0.0);
+	glRotatef(giro_plataforma, 0, 1, 0);
+	plataforma.draw(SELECT, c,c,c,c,c,c, 1, VACIO);
+	glPopMatrix();
+
+	c = color_selec[0][5];
+	glPushMatrix();
+	glTranslatef(movimiento_camion, 0, 0);
+	glTranslatef(0.0, 1.30, 0.0);
+	glRotatef(giro_plataforma, 0, 1, 0);
+	glRotatef(giro_escalera, 0, 0, 1);
+	escaleragrande.draw(SELECT, c,c,c,c,c,c, 1, VACIO);
+	glPopMatrix();
+
+	c = color_selec[0][6];
+	glPushMatrix();
+	glTranslatef(movimiento_camion, 0, 0);
+	glTranslatef(0.0, 1.30, 0.0);
+	glRotatef(giro_plataforma, 0, 1, 0);
+	glRotatef(giro_escalera, 0, 0, 1);
+	glTranslatef(translacion_escalera, 0, 0);
+	escalerachica.draw(SELECT, c,c,c,c,c,c, 1, VACIO);
+	glPopMatrix();
+
+	c = color_selec[0][7];
+	glPushMatrix();
+	glTranslatef(movimiento_camion, 0, 0);
+	glTranslatef(0.0, 1.30, 0.0);
+	glRotatef(giro_plataforma, 0, 1, 0);
+	glRotatef(giro_escalera, 0, 0, 1);
+	glTranslatef(translacion_escalera, 0, 0);
+	glTranslatef(2.5, 0, 0);
+	glRotatef(-giro_escalera, 0, 0, 1);
+	cabina.draw(SELECT,c,c,c,c,c,c, 1, VACIO);
+	glPopMatrix();
+
+	c = color_selec[0][8];
+	glPushMatrix();
+	glTranslatef(movimiento_camion, 0, 0);
+	glTranslatef(0.0, 1.30, 0.0);
+	glRotatef(giro_plataforma, 0, 1, 0);
+	glRotatef(giro_escalera, 0, 0, 1);
+	glTranslatef(translacion_escalera, 0, 0);
+	glTranslatef(2.55, 0, 0);
+	glRotatef(-giro_escalera, 0, 0, 1);
+	glTranslatef(0, levantamiento, 0);
+	elevador.draw(SELECT, c,c,c,c,c,c, 1, VACIO);
+	glPopMatrix();
+
+	c = color_selec[0][9];
+	glPushMatrix();
+	glTranslatef(movimiento_camion, 0, 0);
+	glTranslatef(0.0, 1.30, 0.0);
+	glRotatef(giro_plataforma, 0, 1, 0);
+	glTranslatef(0.4, +0.35, 0);
+	glRotatef(giro_escalera, 0, 0, 1);
+	glTranslatef(translacion_escalera, 0, 0);
+	glTranslatef(2.55, 0.00, 0);
+	glRotatef(-giro_escalera, 0, 0, 1);
+	glTranslatef(0, levantamiento, 0);
+	glRotatef(giro_pistola_vertical, 0, 0, 1);
+	glRotatef(giro_pistola_horizontal, 0, 1, 0);
+	pistola.draw(SELECT, c,c,c,c,c,c,1, VACIO);
+	glPopMatrix();
+
+	c = color_selec[0][10];
+	glPushMatrix();
+	glTranslatef(movimiento_camion, 0, 0);
+	glTranslatef(0.0, 1.30, 0.0);
+	glRotatef(giro_plataforma, 0, 1, 0);
+	glTranslatef(0.45, +0.35, 0);
+	glRotatef(giro_escalera, 0, 0, 1);
+	glTranslatef(translacion_escalera, 0, 0);
+	glTranslatef(2.55, 0, 0);
+	glRotatef(-giro_escalera, 0, 0, 1);
+	glTranslatef(0, levantamiento, 0);
+	glRotatef(giro_pistola_vertical, 0, 0, 1);
+	glRotatef(giro_pistola_horizontal, 0, 1, 0);
+	glTranslatef(movimiento_agua, 0, 0);
+	agua.draw(SELECT, c,c,c,c,c,c, 1, VACIO);
+	glPopMatrix();
+}
 //************************************************************************
 // Métodos de luz
 //************************************************************************
@@ -2332,3 +2486,4 @@ _Material::_Material(_material mat)
 //Examen lampara
 //GLLIGHTTWO SIDES
 //a2.cross_product(a1); para cruzar el vector
+

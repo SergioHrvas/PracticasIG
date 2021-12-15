@@ -135,6 +135,9 @@ public:
        float brillo;        //exponente del brillo
 
        _Material material;
+
+
+
 };
 
 //*************************************************************************
@@ -145,6 +148,8 @@ class _cubo : public _triangulos3D
 {
 public:
        _cubo(float tam = 0.5);
+       void seleccion();
+
 };
 
 //*************************************************************************
@@ -401,7 +406,7 @@ class _camionbomberos : public _triangulos3D
 public:
        _camionbomberos();
        void draw(_modo modo, float r1, float g1, float b1, float r2, float g2, float b2, float grosor, _material mate);
-
+       void seleccion();
        float giro_tubo;
        int giro_ruedas;
        float giro_plataforma = 0.0;
@@ -425,8 +430,13 @@ public:
        float movimiento_camion_max = 3;
        float movimiento_camion_min = -3;
 
+       float color_pick[3];
+       int color_selec[3][11];
+       int activo[11];
+       int piezas;
+       
 protected:
-       _ruedas ruedas;
+       _ruedas ruedas1, ruedas2, ruedas3;
        _carroceria carroceria;
        _plataforma plataforma;
        _escaleragrande escaleragrande;

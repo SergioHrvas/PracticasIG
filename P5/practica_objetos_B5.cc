@@ -181,7 +181,7 @@ void draw_objects()
                 ply.draw(modo, 1.0, 0.6, 0.0, 0.0, 1.0, 0.3, 2, materi);
                 break;
         case ARTICULADO:
-                tanque.draw(modo, 0.5, 0.7, 0.2, 0.3, 0.6, 0.3, 2, materi);
+                camionbomberos.draw(modo, 0.5, 0.7, 0.2, 0.3, 0.6, 0.3, 2, materi);
                 break;
         case ROTACION:
                 if (eje == 0)
@@ -313,7 +313,13 @@ void draw(void)
                         glDrawBuffer(GL_BACK); //O GL_FRONT}
                         clean_window();
                         change_observer();
-                        tanque.seleccion();
+                        camionbomberos.seleccion();
+                }
+                else if(t_objeto == CUBO){
+                        glDrawBuffer(GL_BACK); //O GL_FRONT}
+                        clean_window();
+                        change_observer();
+                        //cubo.seleccion(); 
                 }
         }
         else
@@ -994,15 +1000,15 @@ void procesar_color(unsigned char color[3])
 {
         int i;
 
-        for (i = 0; i < tanque.piezas; i++)
+        for (i = 0; i < camionbomberos.piezas; i++)
         {
                 {
-                        if (color[0] == tanque.color_selec[0][i])
+                        if (color[0] == camionbomberos.color_selec[0][i])
                         {
-                                if (tanque.activo[i] == 0)
-                                        tanque.activo[i] = 1;
+                                if (camionbomberos.activo[i] == 0){
+                                        camionbomberos.activo[i] = 1; cout << "dsd";}
                                 else
-                                        tanque.activo[i] = 0;
+                                        camionbomberos.activo[i] = 0;
                                 glutPostRedisplay();
                         }
                 }
