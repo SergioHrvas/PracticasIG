@@ -996,9 +996,9 @@ _tanque::_tanque()
 	giro_tubo_max = 20;
 
 	piezas = 3;
-	color_pick[0] = 1.0;
+	color_pick[0] = 0.0;
 	color_pick[1] = 0.0;
-	color_pick[2] = 0.0;
+	color_pick[2] = 1.0;
 	for (int i = 0; i < piezas; i++)
 	{
 		activo[i] = 0;
@@ -1083,9 +1083,9 @@ _ruedas_der::_ruedas_der()
 	brillo = 50;
 
 	piezas = 2;
-	color_pick[0] = 1.0;
+	color_pick[0] = 0.0;
 	color_pick[1] = 0.0;
-	color_pick[2] = 0.0;
+	color_pick[2] = 1.0;
 	for (int i = 0; i < piezas; i++)
 	{
 		activo[i] = 0;
@@ -1094,7 +1094,6 @@ _ruedas_der::_ruedas_der()
 	}
 }
 
-
 void _ruedas_der::draw(_modo modo, float r1, float g1, float b1, float r2, float g2, float b2, float grosor, _material mate)
 {
 	float r_p, g_p, b_p;
@@ -1102,7 +1101,6 @@ void _ruedas_der::draw(_modo modo, float r1, float g1, float b1, float r2, float
 	r_p = color_pick[0];
 	g_p = color_pick[1];
 	b_p = color_pick[2];
-	
 
 	glPushMatrix();
 	glTranslatef(0.0, 0.0, -0.5);
@@ -1122,7 +1120,6 @@ void _ruedas_der::draw(_modo modo, float r1, float g1, float b1, float r2, float
 	else
 		llanta.draw(modo, 0.4, 0.4, 0.4, 0.2, 0.2, 0.2, grosor, mate);
 	glPopMatrix();
-
 };
 
 void _ruedas_der::seleccion()
@@ -1132,7 +1129,7 @@ void _ruedas_der::seleccion()
 	glPushMatrix();
 	glTranslatef(0.0, 0.0, -0.5);
 	glRotatef(90.0, 1, 0, 0);
-	rueda.draw(SELECT, c,c,c,c,c,c, 1, VACIO);
+	rueda.draw(SELECT, c, c, c, c, c, c, 1, VACIO);
 	glPopMatrix();
 
 	c = color_selec[0][1];
@@ -1140,9 +1137,8 @@ void _ruedas_der::seleccion()
 	glTranslatef(0.0, 0.0, -0.575);
 	glRotatef(90.0, 1, 0, 0);
 	glScalef(0.5, 0.1, 0.5);
-	llanta.draw(SELECT, c,c,c,c,c,c, 1, VACIO);
+	llanta.draw(SELECT, c, c, c, c, c, c, 1, VACIO);
 	glPopMatrix();
-
 }
 
 _ruedas_izq::_ruedas_izq()
@@ -1150,7 +1146,7 @@ _ruedas_izq::_ruedas_izq()
 	// perfil para un cilindro
 
 	rueda = _cilindro(0.235, 0.165, 15, 1);
-	llanta =  _cilindro(0.235, 0.165, 15, 1);
+	llanta = _cilindro(0.235, 0.165, 15, 1);
 
 	rueda.ambiente = _vertex4f(0.25, 0.25, 0.25, 1.0); //coeficientes ambiente y difuso
 	rueda.difusa = _vertex4f(0.1, 0.1, 0.1, 1.0);
@@ -1158,9 +1154,9 @@ _ruedas_izq::_ruedas_izq()
 	brillo = 50;
 
 	piezas = 2;
-	color_pick[0] = 1.0;
+	color_pick[0] = 0.0;
 	color_pick[1] = 0.0;
-	color_pick[2] = 0.0;
+	color_pick[2] = 1.0;
 	for (int i = 0; i < piezas; i++)
 	{
 		activo[i] = 0;
@@ -1177,7 +1173,7 @@ void _ruedas_izq::draw(_modo modo, float r1, float g1, float b1, float r2, float
 	r_p = color_pick[0];
 	g_p = color_pick[1];
 	b_p = color_pick[2];
-	
+
 	//Goma de las ruedas
 	glPushMatrix();
 	glTranslatef(0.0, 0.0, 0.5);
@@ -1198,7 +1194,6 @@ void _ruedas_izq::draw(_modo modo, float r1, float g1, float b1, float r2, float
 	else
 		llanta.draw(modo, 0.4, 0.4, 0.4, 0.2, 0.2, 0.2, grosor, mate);
 	glPopMatrix();
-
 }
 
 void _ruedas_izq::seleccion()
@@ -1208,7 +1203,7 @@ void _ruedas_izq::seleccion()
 	glPushMatrix();
 	glTranslatef(0.0, 0.0, 0.5);
 	glRotatef(90.0, 1, 0, 0);
-	rueda.draw(SELECT, c,c,c,c,c,c, 1, VACIO);
+	rueda.draw(SELECT, c, c, c, c, c, c, 1, VACIO);
 	glPopMatrix();
 
 	c = color_selec[0][1];
@@ -1216,9 +1211,8 @@ void _ruedas_izq::seleccion()
 	glTranslatef(0.0, 0.0, 0.575);
 	glRotatef(90.0, 1, 0, 0);
 	glScalef(0.5, 0.1, 0.5);
-	llanta.draw(SELECT, c,c,c,c,c,c, 1, VACIO);
+	llanta.draw(SELECT, c, c, c, c, c, c, 1, VACIO);
 	glPopMatrix();
-
 }
 //************************************************************************
 // carroceria
@@ -1239,7 +1233,7 @@ _carroceria::_carroceria()
 	matricula_a = _cubo();
 	matricula_b2 = _cubo();
 	matricula_a2 = _cubo();
-	
+
 	carcasa.difusa = _vertex4f(0.90, 0.0, 0.0, 1.0); //coeficientes ambiente y difuso
 	carcasa.ambiente = _vertex4f(0.15, 0.15, 0.15, 1.0);
 	carcasa.especular = _vertex4f(0.5, 0.5, 0.5, 1.0); //coeficiente especular
@@ -1264,7 +1258,6 @@ _carroceria::_carroceria()
 	puerta3.ambiente = _vertex4f(0.55, 0.55, 0.55, 1.0);
 	puerta3.especular = _vertex4f(0.5, 0.5, 0.5, 1.0); //coeficiente especular
 	puerta3.brillo = 50;
-
 
 	foco1.difusa = _vertex4f(1, 0.9882, 0.2745, 1.0);
 	foco1.ambiente = _vertex4f(0.55, 0.55, 0.55, 1.0);
@@ -1336,11 +1329,10 @@ _carroceria::_carroceria()
 	luzc2.especular = _vertex4f(0.5, 0.5, 0.5, 1.0);
 	luzc2.brillo = 50;
 
-
 	piezas = 18;
-	color_pick[0] = 1.0;
+	color_pick[0] = 0.0;
 	color_pick[1] = 0.0;
-	color_pick[2] = 0.0;
+	color_pick[2] = 1.0;
 	for (int i = 0; i < piezas; i++)
 	{
 		activo[i] = 0;
@@ -1357,7 +1349,7 @@ void _carroceria::draw(_modo modo, float r1, float g1, float b1, float r2, float
 	r_p = color_pick[0];
 	g_p = color_pick[1];
 	b_p = color_pick[2];
-	
+
 	//carcasa
 	glPushMatrix();
 	glTranslatef(1.4, 0.6, 0.0);
@@ -1375,7 +1367,7 @@ void _carroceria::draw(_modo modo, float r1, float g1, float b1, float r2, float
 	if (activo[1] == 1)
 		reposa.draw(modo, r_p, g_p, b_p, r_p, g_p, b_p, grosor, mate);
 	else
-	    reposa.draw(modo, 0.90, 0.0, 0.0, r2, g2, b2, grosor, mate);
+		reposa.draw(modo, 0.90, 0.0, 0.0, r2, g2, b2, grosor, mate);
 	glPopMatrix();
 
 	//focos
@@ -1385,7 +1377,7 @@ void _carroceria::draw(_modo modo, float r1, float g1, float b1, float r2, float
 	if (activo[2] == 1)
 		foco1.draw(modo, r_p, g_p, b_p, r_p, g_p, b_p, grosor, mate);
 	else
-	    foco1.draw(modo, 1, 0.9882, 0.2745, 0.8588, 0.4627, 0.0941, grosor, mate);
+		foco1.draw(modo, 1, 0.9882, 0.2745, 0.8588, 0.4627, 0.0941, grosor, mate);
 	glPopMatrix();
 
 	glPushMatrix();
@@ -1528,20 +1520,21 @@ void _carroceria::draw(_modo modo, float r1, float g1, float b1, float r2, float
 	glPopMatrix();
 }
 
-void _carroceria::seleccion(){
+void _carroceria::seleccion()
+{
 	int c;
 	c = color_selec[0][0];
 	glPushMatrix();
 	glTranslatef(1.4, 0.6, 0.0);
 	glScalef(3.6, 0.8, 1);
-	carcasa.draw(SELECT, c,c,c,c,c,c, 1, VACIO);
+	carcasa.draw(SELECT, c, c, c, c, c, c, 1, VACIO);
 	glPopMatrix();
 
 	c = color_selec[0][1];
 	glPushMatrix();
 	glTranslatef(2.8, 1.1, 0.0);
 	glScalef(0.9, 0.2, 1);
-	reposa.draw(SELECT, c,c,c,c,c,c, 1, VACIO);
+	reposa.draw(SELECT, c, c, c, c, c, c, 1, VACIO);
 	glPopMatrix();
 
 	//focos
@@ -1549,14 +1542,14 @@ void _carroceria::seleccion(){
 	glPushMatrix();
 	glTranslatef(3.21, 0.4, 0.38);
 	glScalef(0.07, 0.07, 0.07);
-	foco1.draw(SELECT, c,c,c,c,c,c, 1, VACIO);
+	foco1.draw(SELECT, c, c, c, c, c, c, 1, VACIO);
 	glPopMatrix();
 
 	c = color_selec[0][3];
 	glPushMatrix();
 	glTranslatef(3.21, 0.4, -0.38);
 	glScalef(0.07, 0.07, 0.07);
-	foco2.draw(SELECT, c,c,c,c,c,c, 1, VACIO);
+	foco2.draw(SELECT, c, c, c, c, c, c, 1, VACIO);
 	glPopMatrix();
 
 	//luces
@@ -1564,35 +1557,35 @@ void _carroceria::seleccion(){
 	glPushMatrix();
 	glTranslatef(-0.4, 0.3, 0.0);
 	glScalef(0.01, 0.15, 0.98);
-	luzc.draw(SELECT, c,c,c,c,c,c, 1, VACIO);
+	luzc.draw(SELECT, c, c, c, c, c, c, 1, VACIO);
 	glPopMatrix();
 
 	c = color_selec[0][5];
 	glPushMatrix();
 	glTranslatef(-0.41, 0.3, 0.3);
 	glScalef(0.01, 0.07, 0.15);
-	luza.draw(SELECT, c,c,c,c,c,c, 1, VACIO);
+	luza.draw(SELECT, c, c, c, c, c, c, 1, VACIO);
 	glPopMatrix();
 
 	c = color_selec[0][6];
 	glPushMatrix();
 	glTranslatef(-0.41, 0.3, -0.3);
 	glScalef(0.01, 0.07, 0.15);
-	luza2.draw(SELECT, c,c,c,c,c,c, 1, VACIO);
+	luza2.draw(SELECT, c, c, c, c, c, c, 1, VACIO);
 	glPopMatrix();
 
 	c = color_selec[0][7];
 	glPushMatrix();
 	glTranslatef(-0.41, 0.3, 0.41);
 	glScalef(0.01, 0.07, 0.07);
-	luzb.draw(SELECT, c,c,c,c,c,c, 1, VACIO);
+	luzb.draw(SELECT, c, c, c, c, c, c, 1, VACIO);
 	glPopMatrix();
 
 	c = color_selec[0][8];
 	glPushMatrix();
 	glTranslatef(-0.41, 0.3, -0.41);
 	glScalef(0.01, 0.07, 0.07);
-	luzb2.draw(SELECT, c,c,c,c,c,c, 1, VACIO);
+	luzb2.draw(SELECT, c, c, c, c, c, c, 1, VACIO);
 	glPopMatrix();
 
 	//matriculas
@@ -1600,28 +1593,28 @@ void _carroceria::seleccion(){
 	glPushMatrix();
 	glTranslatef(-0.41, 0.3, 0.0);
 	glScalef(0.01, 0.15, 0.4);
-	matricula_b.draw(SELECT, c,c,c,c,c,c, 1, VACIO);
+	matricula_b.draw(SELECT, c, c, c, c, c, c, 1, VACIO);
 	glPopMatrix();
 
 	c = color_selec[0][10];
 	glPushMatrix();
 	glTranslatef(-0.415, 0.3, -0.15);
 	glScalef(0.01, 0.15, 0.1);
-	matricula_a.draw(SELECT, c,c,c,c,c,c, 1, VACIO);
+	matricula_a.draw(SELECT, c, c, c, c, c, c, 1, VACIO);
 	glPopMatrix();
 
 	c = color_selec[0][11];
 	glPushMatrix();
 	glTranslatef(3.2, 0.3, 0.0);
 	glScalef(0.01, 0.15, 0.4);
-	matricula_b2.draw(SELECT, c,c,c,c,c,c, 1, VACIO);
+	matricula_b2.draw(SELECT, c, c, c, c, c, c, 1, VACIO);
 	glPopMatrix();
 
 	c = color_selec[0][12];
 	glPushMatrix();
 	glTranslatef(3.21, 0.3, 0.15);
 	glScalef(0.01, 0.15, 0.1);
-	matricula_a2.draw(SELECT, c,c,c,c,c,c, 1, VACIO);
+	matricula_a2.draw(SELECT, c, c, c, c, c, c, 1, VACIO);
 	glPopMatrix();
 
 	//Sirenas
@@ -1629,14 +1622,14 @@ void _carroceria::seleccion(){
 	glPushMatrix();
 	glTranslatef(3.18, 1.17, 0.24);
 	glScalef(0.1, 0.1, 0.1);
-	sirena1.draw(SELECT, c,c,c,c,c,c, 1, VACIO);
+	sirena1.draw(SELECT, c, c, c, c, c, c, 1, VACIO);
 	glPopMatrix();
 
 	c = color_selec[0][14];
 	glPushMatrix();
 	glTranslatef(3.18, 1.17, -0.24);
 	glScalef(0.1, 0.1, 0.1);
-	sirena2.draw(SELECT, c,c,c,c,c,c, 1, VACIO);
+	sirena2.draw(SELECT, c, c, c, c, c, c, 1, VACIO);
 	glPopMatrix();
 
 	//Puertas
@@ -1644,25 +1637,22 @@ void _carroceria::seleccion(){
 	glPushMatrix();
 	glTranslatef(1, 0.6, 0.501);
 	glScalef(0.8, 0.48, 0.01);
-	puerta1.draw(SELECT, c,c,c,c,c,c, 1, VACIO);
+	puerta1.draw(SELECT, c, c, c, c, c, c, 1, VACIO);
 	glPopMatrix();
 
 	c = color_selec[0][16];
 	glPushMatrix();
 	glTranslatef(1, 0.6, -0.501);
 	glScalef(0.8, 0.48, 0.01);
-	puerta2.draw(SELECT, c,c,c,c,c,c, 1, VACIO);
+	puerta2.draw(SELECT, c, c, c, c, c, c, 1, VACIO);
 	glPopMatrix();
 
 	c = color_selec[0][17];
 	glPushMatrix();
 	glTranslatef(-0.4, 0.68, 0);
 	glScalef(0.01, 0.48, 0.8);
-	puerta3.draw(SELECT, c,c,c,c,c,c, 1, VACIO);
+	puerta3.draw(SELECT, c, c, c, c, c, c, 1, VACIO);
 	glPopMatrix();
-
-
-
 }
 
 //************************************************************************
@@ -1690,18 +1680,16 @@ _ventana::_ventana()
 	parabrisas.especular = _vertex4f(0.5, 0.5, 0.5, 1.0);
 	parabrisas.brillo = 50;
 
-
 	piezas = 3;
-	color_pick[0] = 1.0;
+	color_pick[0] = 0.0;
 	color_pick[1] = 0.0;
-	color_pick[2] = 0.0;
+	color_pick[2] = 1.0;
 	for (int i = 0; i < piezas; i++)
 	{
 		activo[i] = 0;
 		color_selec[0][i] = color_selec[1][i] = color_selec[2][i] = k;
 		k++;
 	}
-
 };
 
 void _ventana::draw(_modo modo, float r1, float g1, float b1, float r2, float g2, float b2, float grosor, _material mate)
@@ -1712,7 +1700,7 @@ void _ventana::draw(_modo modo, float r1, float g1, float b1, float r2, float g2
 	r_p = color_pick[0];
 	g_p = color_pick[1];
 	b_p = color_pick[2];
-	
+
 	//Goma de las ruedas
 	glPushMatrix();
 	glTranslatef(2.8, 0.8, 0.501);
@@ -1720,7 +1708,7 @@ void _ventana::draw(_modo modo, float r1, float g1, float b1, float r2, float g2
 	if (activo[0] == 1)
 		ventana1.draw(modo, r_p, g_p, b_p, r_p, g_p, b_p, grosor, mate);
 	else
-		ventana1.draw(modo, r1,g1,b1,r2,g2,b2, grosor, mate);
+		ventana1.draw(modo, r1, g1, b1, r2, g2, b2, grosor, mate);
 	glPopMatrix();
 
 	glPushMatrix();
@@ -1729,7 +1717,7 @@ void _ventana::draw(_modo modo, float r1, float g1, float b1, float r2, float g2
 	if (activo[1] == 1)
 		ventana2.draw(modo, r_p, g_p, b_p, r_p, g_p, b_p, grosor, mate);
 	else
-		ventana2.draw(modo, r1,g1,b1,r2,g2,b2, grosor, mate);
+		ventana2.draw(modo, r1, g1, b1, r2, g2, b2, grosor, mate);
 	glPopMatrix();
 
 	//parabrisas
@@ -1741,7 +1729,6 @@ void _ventana::draw(_modo modo, float r1, float g1, float b1, float r2, float g2
 	else
 		parabrisas.draw(modo, 0.2, 0.2, 0.2, 0.5, 0.5, 0.5, grosor, mate);
 	glPopMatrix();
-
 }
 
 void _ventana::seleccion()
@@ -1751,21 +1738,21 @@ void _ventana::seleccion()
 	glPushMatrix();
 	glTranslatef(2.8, 0.8, 0.501);
 	glScalef(0.5, 0.3, 0.01);
-	ventana1.draw(SELECT, c,c,c,c,c,c, 1, VACIO);
+	ventana1.draw(SELECT, c, c, c, c, c, c, 1, VACIO);
 	glPopMatrix();
 
 	c = color_selec[0][1];
 	glPushMatrix();
 	glTranslatef(2.8, 0.8, -0.501);
 	glScalef(0.5, 0.3, 0.01);
-	ventana2.draw(SELECT, c,c,c,c,c,c, 1, VACIO);
+	ventana2.draw(SELECT, c, c, c, c, c, c, 1, VACIO);
 	glPopMatrix();
 
 	c = color_selec[0][2];
 	glPushMatrix();
 	glTranslatef(3.21, 0.8, 0.0);
 	glScalef(0.01, 0.3, 0.8);
-	parabrisas.draw(SELECT, c,c,c,c,c,c, 1, VACIO);
+	parabrisas.draw(SELECT, c, c, c, c, c, c, 1, VACIO);
 	glPopMatrix();
 }
 //************************************************************************
@@ -2117,7 +2104,7 @@ void _elevador::draw(_modo modo, float r1, float g1, float b1, float r2, float g
 	glPushMatrix();
 	glTranslated(0.25, 0.0, 0.0);
 	glScalef(0.50, 0.05, 0.5);
-	if(r1==1 && g1 == 0 && b1 == 0)
+	if (r1 == 0 && g1 == 0 && b1 == 1)
 		barra.draw(modo, r1, g1, b1, r2, g2, b2, grosor, mate);
 	else
 		barra.draw(modo, 0.8, 0.8, 0.8, r2, g2, b2, grosor, mate);
@@ -2152,39 +2139,39 @@ void _elevador::draw(_modo modo, float r1, float g1, float b1, float r2, float g
 	glPushMatrix();
 	glTranslated(0.02, 0.44, 0.0);
 	glScalef(0.04, 0.04, 0.5);
-	if(r1==1 && g1 == 0 && b1 == 0)
-	barra.draw(modo, r1, g1, b1, r2, g2, b2, grosor, mate);
+	if (r1 == 0 && g1 == 0 && b1 == 1)
+		barra.draw(modo, r1, g1, b1, r2, g2, b2, grosor, mate);
 	else
-	barra.draw(modo, 0.3, 0.3, 0.3, r2, g2, b2, grosor, mate);
+		barra.draw(modo, 0.3, 0.3, 0.3, r2, g2, b2, grosor, mate);
 	glPopMatrix();
 
 	glPushMatrix();
 	glTranslated(0.48, 0.44, 0.0);
 	glScalef(0.04, 0.04, 0.5);
-	if(r1==1 && g1 == 0 && b1 == 0)
-	barra.draw(modo, r1, g1, b1, r2, g2, b2, grosor, mate);
+	if (r1 == 0 && g1 == 0 && b1 == 1)
+		barra.draw(modo, r1, g1, b1, r2, g2, b2, grosor, mate);
 	else
-	barra.draw(modo, 0.3, 0.3, 0.3, r2, g2, b2, grosor, mate);
-		glPopMatrix();
+		barra.draw(modo, 0.3, 0.3, 0.3, r2, g2, b2, grosor, mate);
+	glPopMatrix();
 
 	glPushMatrix();
 	glTranslated(0.25, 0.44, 0.23);
 	glRotatef(90, 0, 1, 0);
 	glScalef(0.04, 0.04, 0.42);
-	if(r1==1 && g1 == 0 && b1 == 0)
-	barra.draw(modo, r1, g1, b1, r2, g2, b2, grosor, mate);
+	if (r1 == 0 && g1 == 0 && b1 == 1)
+		barra.draw(modo, r1, g1, b1, r2, g2, b2, grosor, mate);
 	else
-	barra.draw(modo, 0.3, 0.3, 0.3, r2, g2, b2, grosor, mate);
-		glPopMatrix();
+		barra.draw(modo, 0.3, 0.3, 0.3, r2, g2, b2, grosor, mate);
+	glPopMatrix();
 
 	glPushMatrix();
 	glTranslated(0.25, 0.44, -0.23);
 	glRotatef(90, 0, 1, 0);
 	glScalef(0.04, 0.04, 0.5);
-	if(r1==1 && g1 == 0 && b1 == 0)
-	barra.draw(modo, r1, g1, b1, r2, g2, b2, grosor, mate);
+	if (r1 == 0 && g1 == 0 && b1 == 1)
+		barra.draw(modo, r1, g1, b1, r2, g2, b2, grosor, mate);
 	else
-	barra.draw(modo, 0.3, 0.3, 0.3, r2, g2, b2, grosor, mate);
+		barra.draw(modo, 0.3, 0.3, 0.3, r2, g2, b2, grosor, mate);
 	glPopMatrix();
 
 	//base de la pistola
@@ -2193,7 +2180,7 @@ void _elevador::draw(_modo modo, float r1, float g1, float b1, float r2, float g
 	glRotatef(-90, 1, 0, 0);
 	glTranslated(0.02, 0.0, 0.2);
 	glScalef(0.04, 0.24, 0.24);
-	if(r1==1 && g1 == 0 && b1 == 0)
+	if (r1 == 0 && g1 == 0 && b1 == 1)
 		barra.draw(modo, r1, g1, b1, r2, g2, b2, grosor, mate);
 	else
 		barra.draw(modo, 0.87, 0.6235, 0.1686, r2, g2, b2, grosor, mate);
@@ -2254,9 +2241,9 @@ _camionbomberos::_camionbomberos()
 {
 	int c = 90;
 	piezas = 7;
-	color_pick[0] = 1.0;
+	color_pick[0] = 0.0;
 	color_pick[1] = 0.0;
-	color_pick[2] = 0.0;
+	color_pick[2] = 1.0;
 	for (int i = 0; i < piezas; i++)
 	{
 		activo[i] = 0;
@@ -2276,43 +2263,42 @@ void _camionbomberos::draw(_modo modo, float r1, float g1, float b1, float r2, f
 	glTranslatef(movimiento_camion, 0, 0);
 	glTranslatef(0.0, 0.2, 0);
 	glRotatef(giro_ruedas, 0, 0, 1);
-		rueda1.draw(modo, 1, 0, 0, 0.7, 0.7, 0.7, grosor, mate);
+	rueda1.draw(modo, 0, 0, 0, 0.7, 0.7, 0.7, grosor, mate);
 	glPopMatrix();
 
 	glPushMatrix();
 	glTranslatef(movimiento_camion, 0, 0);
 	glTranslatef(1.9, 0.2, 0);
 	glRotatef(giro_ruedas, 0, 0, 1);
-		rueda2.draw(modo, 0, 0, 0, 0.7, 0.7, 0.7, grosor, mate);
+	rueda2.draw(modo, 0, 0, 0, 0.7, 0.7, 0.7, grosor, mate);
 	glPopMatrix();
 
 	glPushMatrix();
 	glTranslatef(movimiento_camion, 0, 0);
 	glTranslatef(2.7, 0.2, 0);
 	glRotatef(giro_ruedas, 0, 0, 1);
-		rueda3.draw(modo, 0, 0, 0, 0.7, 0.7, 0.7, grosor, mate);
+	rueda3.draw(modo, 0, 0, 0, 0.7, 0.7, 0.7, grosor, mate);
 	glPopMatrix();
-
 
 	glPushMatrix();
 	glTranslatef(movimiento_camion, 0, 0);
 	glTranslatef(0.0, 0.2, 0);
 	glRotatef(giro_ruedas, 0, 0, 1);
-		rueda4.draw(modo, 0, 0, 0, 0.7, 0.7, 0.7, grosor, mate);
+	rueda4.draw(modo, 0, 0, 0, 0.7, 0.7, 0.7, grosor, mate);
 	glPopMatrix();
 
 	glPushMatrix();
 	glTranslatef(movimiento_camion, 0, 0);
 	glTranslatef(1.9, 0.2, 0);
 	glRotatef(giro_ruedas, 0, 0, 1);
-		rueda5.draw(modo, 0, 0, 0, 0.7, 0.7, 0.7, grosor, mate);
+	rueda5.draw(modo, 0, 0, 0, 0.7, 0.7, 0.7, grosor, mate);
 	glPopMatrix();
 
 	glPushMatrix();
 	glTranslatef(movimiento_camion, 0, 0);
 	glTranslatef(2.7, 0.2, 0);
 	glRotatef(giro_ruedas, 0, 0, 1);
-		rueda6.draw(modo, 0, 0, 0, 0.7, 0.7, 0.7, grosor, mate);
+	rueda6.draw(modo, 0, 0, 0, 0.7, 0.7, 0.7, grosor, mate);
 	glPopMatrix();
 	//las transformaciones se hacen de abajo a arriba
 	//las clases torreta, tubo... están sobre el eje para poder girarlos
@@ -2320,17 +2306,19 @@ void _camionbomberos::draw(_modo modo, float r1, float g1, float b1, float r2, f
 
 	glPushMatrix();
 	glTranslatef(movimiento_camion, 0, 0);
-	if (activo[0] == 1){
+	if (activo[0] == 1)
+	{
 		carroceria.draw(modo, r_p, g_p, b_p, r_p, g_p, b_p, grosor, mate);
 	}
-	else{
+	else
+	{
 		carroceria.draw(modo, r1, g1, b1, r2, g2, b2, grosor, mate);
 	}
 	glPopMatrix();
 
 	glPushMatrix();
 	glTranslatef(movimiento_camion, 0, 0);
-		ventana.draw(modo, 0.2, 0.2, 0.2, 0.5, 0.5, 0.5, grosor, mate);
+	ventana.draw(modo, 0.2, 0.2, 0.2, 0.5, 0.5, 0.5, grosor, mate);
 	glPopMatrix();
 
 	glPushMatrix();

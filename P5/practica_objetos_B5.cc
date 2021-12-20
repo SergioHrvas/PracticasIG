@@ -163,10 +163,10 @@ void draw_axis()
 
 //**************************************************************************
 // Funcion que dibuja los objetos
-//****************************2***********************************************
+//***************************************************************************
 
 void draw_objects()
-{ 
+{
 
         switch (t_objeto)
         {
@@ -180,7 +180,7 @@ void draw_objects()
                 ply.draw(modo, 1.0, 0.6, 0.0, 0.0, 1.0, 0.3, 2, materi);
                 break;
         case ARTICULADO:
-                camionbomberos.draw(modo, 0.5, 0.7, 0.2, 0.3, 0.6, 0.3, 2, materi);
+                camionbomberos.draw(modo, 0.8, 0.0, 0.0, 0.3, 0.6, 0.3, 2, materi);
                 break;
         case ROTACION:
                 if (eje == 0)
@@ -405,7 +405,7 @@ void normal_key(unsigned char Tecla1, int x, int y)
                 if (materiales)
                         t_objeto = ARTICULADO;
                 else
-                        cambio = 1;
+                        cambio = (cambio+1) % 2;
                 break;
         case 'W':
                 eje = (eje + 1) % 3;
@@ -944,9 +944,18 @@ void clickRaton(int boton, int estado, int x, int y)
         }
         if (boton == 3)
         {
+                if (camionbomberos.activo[5])
+                {
+                        camionbomberos.movimiento_agua += 0.05;
+                        if(camionbomberos.movimiento_agua > 2){
+                                camionbomberos.movimiento_agua = 0;
+                        }
+                }
+                else{          
                 if (estado == GLUT_UP)
                         Observer_distance /= 1.2;
-                glutPostRedisplay();
+                }
+glutPostRedisplay();
         }
         if (boton == 4)
         {
@@ -989,39 +998,58 @@ void RatonMovido(int x, int y)
         }
         if (estadoRaton[2] == 2)
         {
-                if(yc > 0 && camionbomberos.activo[4]){
-                  camionbomberos.levantamiento += (yc-y)*0.00005;
-                  if (camionbomberos.levantamiento > camionbomberos.levantamiento_max)
-                        camionbomberos.levantamiento = camionbomberos.levantamiento_max;
-                  if (camionbomberos.levantamiento < camionbomberos.levantamiento_min)
-                        camionbomberos.levantamiento = camionbomberos.levantamiento_min;
+                if (yc > 0 && camionbomberos.activo[4])
+                {
+                        camionbomberos.levantamiento += (yc - y) * 0.00005;
+                        if (camionbomberos.levantamiento > camionbomberos.levantamiento_max)
+                                camionbomberos.levantamiento = camionbomberos.levantamiento_max;
+                        if (camionbomberos.levantamiento < camionbomberos.levantamiento_min)
+                                camionbomberos.levantamiento = camionbomberos.levantamiento_min;
                 }
                 glutPostRedisplay();
-                if(yc > 0 && camionbomberos.activo[1]){
-                  camionbomberos.giro_escalera += (yc-y)*0.001;
-                  if (camionbomberos.giro_escalera > camionbomberos.giro_escalera_max)
-                        camionbomberos.giro_escalera = camionbomberos.giro_escalera_max;
-                  if (camionbomberos.giro_escalera < camionbomberos.giro_escalera_min)
-                        camionbomberos.giro_escalera = camionbomberos.giro_escalera_min;
+                if (yc > 0 && camionbomberos.activo[1])
+                {
+                        camionbomberos.giro_escalera += (yc - y) * 0.001;
+                        if (camionbomberos.giro_escalera > camionbomberos.giro_escalera_max)
+                                camionbomberos.giro_escalera = camionbomberos.giro_escalera_max;
+                        if (camionbomberos.giro_escalera < camionbomberos.giro_escalera_min)
+                                camionbomberos.giro_escalera = camionbomberos.giro_escalera_min;
                 }
                 glutPostRedisplay();
-                if(xc > 0 && camionbomberos.activo[0]){
-                  camionbomberos.giro_plataforma += (x-xc)*0.004;
+                if (xc > 0 && camionbomberos.activo[0])
+                {
+                        camionbomberos.giro_plataforma += (x - xc) * 0.004;
                 }
-                if(camionbomberos.carroceria.activo[0]){
-                  camionbomberos.movimiento_camion += (x-xc)*0.004;
-                  if (camionbomberos.movimiento_camion > camionbomberos.movimiento_camion_max)
-                        camionbomberos.movimiento_camion = camionbomberos.movimiento_camion_max;
-                  if (camionbomberos.movimiento_camion < camionbomberos.movimiento_camion_min)
-                        camionbomberos.movimiento_camion = camionbomberos.movimiento_camion_min;
+                if (camionbomberos.carroceria.activo[0])
+                {
+                        camionbomberos.movimiento_camion += (x - xc) * 0.004;
+                        if (camionbomberos.movimiento_camion > camionbomberos.movimiento_camion_max)
+                                camionbomberos.movimiento_camion = camionbomberos.movimiento_camion_max;
+                        if (camionbomberos.movimiento_camion < camionbomberos.movimiento_camion_min)
+                                camionbomberos.movimiento_camion = camionbomberos.movimiento_camion_min;
                 }
                 glutPostRedisplay();
-                if(camionbomberos.activo[2]){
-                  camionbomberos.translacion_escalera += (x-xc)*0.0001;
-                  if (camionbomberos.translacion_escalera > camionbomberos.translacion_escalera_max)
-                        camionbomberos.translacion_escalera = camionbomberos.translacion_escalera_max;
-                  if (camionbomberos.translacion_escalera < camionbomberos.translacion_escalera_min)
-                        camionbomberos.translacion_escalera = camionbomberos.translacion_escalera_min;
+                if (camionbomberos.activo[2])
+                {
+                        camionbomberos.translacion_escalera += (x - xc) * 0.0001;
+                        if (camionbomberos.translacion_escalera > camionbomberos.translacion_escalera_max)
+                                camionbomberos.translacion_escalera = camionbomberos.translacion_escalera_max;
+                        if (camionbomberos.translacion_escalera < camionbomberos.translacion_escalera_min)
+                                camionbomberos.translacion_escalera = camionbomberos.translacion_escalera_min;
+                }
+                glutPostRedisplay();
+                if (camionbomberos.activo[5])
+                {
+                        camionbomberos.giro_pistola_horizontal += (x - xc) * 0.001;
+                        if (camionbomberos.giro_pistola_horizontal > camionbomberos.giro_pistola_horizontal_max)
+                                camionbomberos.giro_pistola_horizontal = camionbomberos.giro_pistola_horizontal_max;
+                        if (camionbomberos.giro_pistola_horizontal < camionbomberos.giro_pistola_horizontal_min)
+                                camionbomberos.giro_pistola_horizontal = camionbomberos.giro_pistola_horizontal_min;
+                        camionbomberos.giro_pistola_vertical += (yc - y) * 0.001;
+                        if (camionbomberos.giro_pistola_vertical > camionbomberos.giro_pistola_vertical_max)
+                                camionbomberos.giro_pistola_vertical = camionbomberos.giro_pistola_vertical_max;
+                        if (camionbomberos.giro_pistola_vertical < camionbomberos.giro_pistola_vertical_min)
+                                camionbomberos.giro_pistola_vertical = camionbomberos.giro_pistola_vertical_min;
                 }
                 glutPostRedisplay();
         }
@@ -1036,9 +1064,11 @@ void procesar_color(unsigned char color[3])
                 {
                         if (color[0] == camionbomberos.color_selec[0][i])
                         {
-                                if (camionbomberos.activo[i] == 0){
-                                        camionbomberos.activo[i] = 1; 
-                                }else
+                                if (camionbomberos.activo[i] == 0)
+                                {
+                                        camionbomberos.activo[i] = 1;
+                                }
+                                else
                                         camionbomberos.activo[i] = 0;
                                 glutPostRedisplay();
                         }
@@ -1046,76 +1076,92 @@ void procesar_color(unsigned char color[3])
         }
         for (i = 0; i < camionbomberos.rueda1.piezas; i++)
         {
-                        if (color[0] == camionbomberos.rueda1.color_selec[0][i])
+                if (color[0] == camionbomberos.rueda1.color_selec[0][i])
+                {
+                        if (camionbomberos.rueda1.activo[i] == 0)
                         {
-                                if (camionbomberos.rueda1.activo[i] == 0){
-                                        camionbomberos.rueda1.activo[i] = 1;
-                                }else
-                                        camionbomberos.rueda1.activo[i] = 0;
-                                glutPostRedisplay();
+                                camionbomberos.rueda1.activo[i] = 1;
                         }
-                        if (color[0] == camionbomberos.rueda2.color_selec[0][i])
+                        else
+                                camionbomberos.rueda1.activo[i] = 0;
+                        glutPostRedisplay();
+                }
+                if (color[0] == camionbomberos.rueda2.color_selec[0][i])
+                {
+                        if (camionbomberos.rueda2.activo[i] == 0)
                         {
-                                if (camionbomberos.rueda2.activo[i] == 0){
-                                        camionbomberos.rueda2.activo[i] = 1;
-                                }else
-                                        camionbomberos.rueda2.activo[i] = 0;
-                                glutPostRedisplay();
+                                camionbomberos.rueda2.activo[i] = 1;
                         }
-                        if (color[0] == camionbomberos.rueda3.color_selec[0][i])
+                        else
+                                camionbomberos.rueda2.activo[i] = 0;
+                        glutPostRedisplay();
+                }
+                if (color[0] == camionbomberos.rueda3.color_selec[0][i])
+                {
+                        if (camionbomberos.rueda3.activo[i] == 0)
                         {
-                                if (camionbomberos.rueda3.activo[i] == 0){
-                                        camionbomberos.rueda3.activo[i] = 1;
-                                }else
-                                        camionbomberos.rueda3.activo[i] = 0;
-                                glutPostRedisplay();
+                                camionbomberos.rueda3.activo[i] = 1;
                         }
-                        if (color[0] == camionbomberos.rueda4.color_selec[0][i])
+                        else
+                                camionbomberos.rueda3.activo[i] = 0;
+                        glutPostRedisplay();
+                }
+                if (color[0] == camionbomberos.rueda4.color_selec[0][i])
+                {
+                        if (camionbomberos.rueda4.activo[i] == 0)
                         {
-                                if (camionbomberos.rueda4.activo[i] == 0){
-                                        camionbomberos.rueda4.activo[i] = 1;
-                                }else
-                                        camionbomberos.rueda4.activo[i] = 0;
-                                glutPostRedisplay();
+                                camionbomberos.rueda4.activo[i] = 1;
                         }
-                        if (color[0] == camionbomberos.rueda5.color_selec[0][i])
+                        else
+                                camionbomberos.rueda4.activo[i] = 0;
+                        glutPostRedisplay();
+                }
+                if (color[0] == camionbomberos.rueda5.color_selec[0][i])
+                {
+                        if (camionbomberos.rueda5.activo[i] == 0)
                         {
-                                if (camionbomberos.rueda5.activo[i] == 0){
-                                        camionbomberos.rueda5.activo[i] = 1;
-                                }else
-                                        camionbomberos.rueda5.activo[i] = 0;
-                                glutPostRedisplay();
+                                camionbomberos.rueda5.activo[i] = 1;
                         }
-                        if (color[0] == camionbomberos.rueda6.color_selec[0][i])
+                        else
+                                camionbomberos.rueda5.activo[i] = 0;
+                        glutPostRedisplay();
+                }
+                if (color[0] == camionbomberos.rueda6.color_selec[0][i])
+                {
+                        if (camionbomberos.rueda6.activo[i] == 0)
                         {
-                                if (camionbomberos.rueda6.activo[i] == 0){
-                                        camionbomberos.rueda6.activo[i] = 1;
-                                }else
-                                        camionbomberos.rueda6.activo[i] = 0;
-                                glutPostRedisplay();
+                                camionbomberos.rueda6.activo[i] = 1;
                         }
+                        else
+                                camionbomberos.rueda6.activo[i] = 0;
+                        glutPostRedisplay();
+                }
         }
         for (i = 0; i < camionbomberos.ventana.piezas; i++)
         {
                 if (color[0] == camionbomberos.ventana.color_selec[0][i])
+                {
+                        if (camionbomberos.ventana.activo[i] == 0)
                         {
-                                if (camionbomberos.ventana.activo[i] == 0){
-                                        camionbomberos.ventana.activo[i] = 1;
-                                }else
-                                        camionbomberos.ventana.activo[i] = 0;
-                                glutPostRedisplay();
+                                camionbomberos.ventana.activo[i] = 1;
                         }
+                        else
+                                camionbomberos.ventana.activo[i] = 0;
+                        glutPostRedisplay();
+                }
         }
         for (i = 0; i < camionbomberos.carroceria.piezas; i++)
         {
                 if (color[0] == camionbomberos.carroceria.color_selec[0][i])
+                {
+                        if (camionbomberos.carroceria.activo[i] == 0)
                         {
-                                if (camionbomberos.carroceria.activo[i] == 0){
-                                        camionbomberos.carroceria.activo[i] = 1;
-                                }else
-                                        camionbomberos.carroceria.activo[i] = 0;
-                                glutPostRedisplay();
+                                camionbomberos.carroceria.activo[i] = 1;
                         }
+                        else
+                                camionbomberos.carroceria.activo[i] = 0;
+                        glutPostRedisplay();
+                }
         }
 }
 

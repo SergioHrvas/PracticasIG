@@ -135,9 +135,6 @@ public:
        float brillo;        //exponente del brillo
 
        _Material material;
-
-
-
 };
 
 //*************************************************************************
@@ -149,7 +146,6 @@ class _cubo : public _triangulos3D
 public:
        _cubo(float tam = 0.5);
        void seleccion();
-
 };
 
 //*************************************************************************
@@ -305,23 +301,23 @@ public:
        int color_selec[3][2];
        int activo[2];
        int piezas;
-       
+
 protected:
        _cilindro rueda;
        _cilindro llanta;
-
 };
 class _ruedas_izq : public _triangulos3D
 {
 public:
        _ruedas_izq();
        void draw(_modo modo, float r1, float g1, float b1, float r2, float g2, float b2, float grosor, _material mate);
-       void seleccion();      
+       void seleccion();
        float radio;
        float color_pick[3];
        int color_selec[3][2];
        int activo[2];
        int piezas;
+
 protected:
        _cilindro rueda;
        _cilindro llanta;
@@ -339,14 +335,15 @@ public:
        int color_selec[3][18];
        int activo[18];
        int piezas;
+
 protected:
        _cubo carcasa;
        _cubo reposa;
        _cubo puerta1, puerta2, puerta3;
        _esfera foco1, foco2;
        _cilindro sirena1, sirena2;
-       _cubo matricula_b,matricula_a,matricula_b2,matricula_a2;
-       _cubo luza, luza2, luzb, luzb2, luzc, luzc2; 
+       _cubo matricula_b, matricula_a, matricula_b2, matricula_a2;
+       _cubo luza, luza2, luzb, luzb2, luzc, luzc2;
 };
 
 class _ventana : public _triangulos3D
@@ -356,16 +353,14 @@ public:
        void draw(_modo modo, float r1, float g1, float b1, float r2, float g2, float b2, float grosor, _material mate);
        void seleccion();
        float radio;
-       
+
        float color_pick[3];
        int color_selec[3][3];
        int activo[3];
        int piezas;
-       
-       protected:
+
+protected:
        _cubo ventana1, ventana2, parabrisas;
-
-
 };
 
 class _plataforma : public _triangulos3D
@@ -478,7 +473,7 @@ public:
        int activo[7];
        int piezas;
 
-              _ruedas_der rueda1, rueda2, rueda3;
+       _ruedas_der rueda1, rueda2, rueda3;
        _ruedas_izq rueda4, rueda5, rueda6;
        _carroceria carroceria;
        _ventana ventana;
