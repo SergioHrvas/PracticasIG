@@ -314,12 +314,6 @@ void draw(void)
                         change_observer();
                         camionbomberos.seleccion();
                 }
-                else if(t_objeto == CUBO){
-                        glDrawBuffer(GL_BACK); //O GL_FRONT}
-                        clean_window();
-                        change_observer();
-                        //cubo.seleccion(); 
-                }
         }
         else
                 vista_orto();
@@ -991,6 +985,44 @@ void RatonMovido(int x, int y)
                 setCamara(xn, yn);
                 xc = x;
                 yc = y;
+                glutPostRedisplay();
+        }
+        if (estadoRaton[2] == 2)
+        {
+                if(yc > 0 && camionbomberos.activo[4]){
+                  camionbomberos.levantamiento += (yc-y)*0.00005;
+                  if (camionbomberos.levantamiento > camionbomberos.levantamiento_max)
+                        camionbomberos.levantamiento = camionbomberos.levantamiento_max;
+                  if (camionbomberos.levantamiento < camionbomberos.levantamiento_min)
+                        camionbomberos.levantamiento = camionbomberos.levantamiento_min;
+                }
+                glutPostRedisplay();
+                if(yc > 0 && camionbomberos.activo[1]){
+                  camionbomberos.giro_escalera += (yc-y)*0.001;
+                  if (camionbomberos.giro_escalera > camionbomberos.giro_escalera_max)
+                        camionbomberos.giro_escalera = camionbomberos.giro_escalera_max;
+                  if (camionbomberos.giro_escalera < camionbomberos.giro_escalera_min)
+                        camionbomberos.giro_escalera = camionbomberos.giro_escalera_min;
+                }
+                glutPostRedisplay();
+                if(xc > 0 && camionbomberos.activo[0]){
+                  camionbomberos.giro_plataforma += (x-xc)*0.004;
+                }
+                if(camionbomberos.carroceria.activo[0]){
+                  camionbomberos.movimiento_camion += (x-xc)*0.004;
+                  if (camionbomberos.movimiento_camion > camionbomberos.movimiento_camion_max)
+                        camionbomberos.movimiento_camion = camionbomberos.movimiento_camion_max;
+                  if (camionbomberos.movimiento_camion < camionbomberos.movimiento_camion_min)
+                        camionbomberos.movimiento_camion = camionbomberos.movimiento_camion_min;
+                }
+                glutPostRedisplay();
+                if(camionbomberos.activo[2]){
+                  camionbomberos.translacion_escalera += (x-xc)*0.0001;
+                  if (camionbomberos.translacion_escalera > camionbomberos.translacion_escalera_max)
+                        camionbomberos.translacion_escalera = camionbomberos.translacion_escalera_max;
+                  if (camionbomberos.translacion_escalera < camionbomberos.translacion_escalera_min)
+                        camionbomberos.translacion_escalera = camionbomberos.translacion_escalera_min;
+                }
                 glutPostRedisplay();
         }
 }

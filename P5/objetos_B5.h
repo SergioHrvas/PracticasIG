@@ -474,8 +474,8 @@ public:
        float movimiento_camion_min = -3;
 
        float color_pick[3];
-       int color_selec[3][9];
-       int activo[9];
+       int color_selec[3][7];
+       int activo[7];
        int piezas;
 
               _ruedas_der rueda1, rueda2, rueda3;
